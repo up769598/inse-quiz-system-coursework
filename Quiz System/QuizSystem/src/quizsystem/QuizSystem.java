@@ -1,5 +1,7 @@
 package quizsystem;
 
+import quizsystem.GUI.LoginRegister;
+
 public class QuizSystem {
 
     public static void main(String[] args) {

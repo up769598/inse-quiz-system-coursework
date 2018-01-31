@@ -1,4 +1,7 @@
-package quizsystem;
+package quizsystem.GUI;
+
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 public class LoginRegister extends javax.swing.JFrame {
 
@@ -6,30 +9,71 @@ public class LoginRegister extends javax.swing.JFrame {
         initComponents();
     }
 
-    public void validatePassword() {
-        char[] passwordIn = null;
-        char[] cpasswordIn = null;
+    /**
+     * Retrieve a text value as a String from a text field found on the GUI
+     *
+     * @param inputBox The input box that the text will be retrieved from
+     * @return The string entered into the text field. If the text field is
+     * empty, a default string is returned.
+     */
+    public String getTextInput(JTextField inputBox) {
+        String textIn = "Default";
         try {
-            passwordIn = tfPasswordIn.getPassword();
-            cpasswordIn = tfCPasswordIn.getPassword();
+            textIn = inputBox.getText();
         } catch (NullPointerException ex) {
-            //Textfields are empty
+            //Text field is empty
         }
-        String password = String.valueOf(passwordIn);
-        String cpassword = String.valueOf(cpasswordIn);
-        if (password.equals(cpassword)) {
+        return textIn;
+    }
+
+    /**
+     * Retrieve a text value as an array of characters from a password field
+     * found on the GUI
+     *
+     * @param inputBox The input box found on the GUI to return
+     * @return The password entered into the passed inputBox returned as an
+     * array of characters. If the password field is empty, a null variable is
+     * returned.
+     */
+    public char[] getPasswordInput(JPasswordField inputBox) {
+        char[] passwordIn = null;
+        try {
+            passwordIn = inputBox.getPassword();
+        } catch (NullPointerException ex) {
+            //Password fields are empty
+        }
+        return passwordIn;
+    }
+
+    /**
+     * Compare two passwords to confirm they match and that the passwords
+     * conform to having at least 1 number
+     *
+     * @param password1 The first password to be validated
+     * @param password2 The second password to be validated
+     * @return A boolean to indicate whether the two passwords are valid.
+     */
+    public boolean validatePasswords(char[] password1, char[] password2) {
+        password1 = getPasswordInput(tfPasswordIn);
+        password2 = getPasswordInput(tfCPasswordIn);
+        boolean valid = true; //Presume valid until proven invalid
+        if (password1 == password2) {
             //Passwords Match
-            if (passwordIn.length >= 8) {
-                //If password is the minimum size and above
-                boolean number = false;
-                for (char letter : passwordIn) {
-                    //Check array for whether numbers appear
+            boolean checkNum = false;
+            for (char i : password1) {
+                if (Character.isDigit(i)) {
+                    checkNum = true;
                 }
             }
-
+            if (!checkNum) {
+                //At least 1 number is not present in the password
+                valid = false;
+            }
         } else {
-            
+            //Passwords do not match
+            valid = false;
         }
+        return valid;
     }
 
     @SuppressWarnings("unchecked")
@@ -246,12 +290,7 @@ public class LoginRegister extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         //Login the user
-        try {
-            String email = tfEmail.getText();
-            char[] password = tfPassword.getPassword();
-        } catch (NullPointerException ex) {
 
-        }
         //Try to match a user to the entered details
     }//GEN-LAST:event_btnLoginActionPerformed
 
