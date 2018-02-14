@@ -31,20 +31,20 @@ public class StudentInterface extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        selectedQuiz = new javax.swing.JButton();
         CompleteQuiz = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        randomQuiz = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        advSearch = new javax.swing.JButton();
+        reviewAns = new javax.swing.JButton();
+        logout = new javax.swing.JButton();
+        exit = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -63,10 +63,10 @@ public class StudentInterface extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Take Quiz");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        selectedQuiz.setText("Take Quiz");
+        selectedQuiz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                selectedQuizActionPerformed(evt);
             }
         });
 
@@ -105,7 +105,7 @@ public class StudentInterface extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                    .addComponent(selectedQuiz)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(CompleteQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -120,14 +120,14 @@ public class StudentInterface extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(selectedQuiz)
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
-        jButton2.setText("Take a Random Quiz");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        randomQuiz.setText("Take a Random Quiz");
+        randomQuiz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                randomQuizActionPerformed(evt);
             }
         });
 
@@ -137,14 +137,14 @@ public class StudentInterface extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(71, 71, 71)
-                .addComponent(jButton2)
+                .addComponent(randomQuiz)
                 .addContainerGap(135, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addComponent(jButton2)
+                .addComponent(randomQuiz)
                 .addContainerGap(39, Short.MAX_VALUE))
         );
 
@@ -178,31 +178,31 @@ public class StudentInterface extends javax.swing.JFrame {
             jTable3.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        jButton3.setText("Advanced Search");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        advSearch.setText("Advanced Search");
+        advSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                advSearchActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Review Answers");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        reviewAns.setText("Review Answers");
+        reviewAns.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                reviewAnsActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Logout");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        logout.setText("Logout");
+        logout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                logoutActionPerformed(evt);
             }
         });
 
-        jButton6.setText("Exit");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        exit.setText("Exit");
+        exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                exitActionPerformed(evt);
             }
         });
 
@@ -218,13 +218,13 @@ public class StudentInterface extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton3)
+                        .addComponent(advSearch)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4))
+                        .addComponent(reviewAns))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton5)
+                        .addComponent(logout)
                         .addGap(100, 100, 100)
-                        .addComponent(jButton6)))
+                        .addComponent(exit)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -235,12 +235,12 @@ public class StudentInterface extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(advSearch)
+                    .addComponent(reviewAns))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
+                    .addComponent(logout)
+                    .addComponent(exit))
                 .addGap(30, 30, 30))
         );
 
@@ -270,29 +270,29 @@ public class StudentInterface extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void selectedQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectedQuizActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_selectedQuizActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void randomQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomQuizActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_randomQuizActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void advSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_advSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_advSearchActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void reviewAnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reviewAnsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_reviewAnsActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_logoutActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -331,12 +331,8 @@ public class StudentInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CompleteQuiz;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton advSearch;
+    private javax.swing.JButton exit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JPanel jPanel1;
@@ -348,5 +344,9 @@ public class StudentInterface extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
+    private javax.swing.JButton logout;
+    private javax.swing.JButton randomQuiz;
+    private javax.swing.JButton reviewAns;
+    private javax.swing.JButton selectedQuiz;
     // End of variables declaration//GEN-END:variables
 }

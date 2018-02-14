@@ -1,6 +1,7 @@
 package quizsystem;
 
 import quizsystem.GUI.LoginRegister;
+import quizsystem.GUI.StudentInterface;
 
 public class QuizSystem {
 
@@ -8,6 +9,8 @@ public class QuizSystem {
        LoginRegister qr = new LoginRegister();
        qr.setVisible(true);
        
+       StudentInterface qr2 = new StudentInterface();
+       qr2.setVisible(true);
     }
     
 }
