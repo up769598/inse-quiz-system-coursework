@@ -1,5 +1,6 @@
 package quizsystem.GUI;
 
+import java.util.Arrays;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -60,7 +61,7 @@ public class LoginRegister extends javax.swing.JFrame {
         char[] password1 = getPasswordInput(tfPasswordRegister);
         char[] password2 = getPasswordInput(tfCPasswordRegister);
         boolean valid = true; //Presume valid until proven invalid
-        if (password1 == password2) {
+        if (Arrays.equals(password1, password2)) {
             //Passwords Match
             if (password1.length >= 8) {
                 //Password must have at least 8 characters
@@ -83,11 +84,37 @@ public class LoginRegister extends javax.swing.JFrame {
         }
         return valid;
     }
-        
+
+    public boolean validateUsername(String username) {
+        return username.endsWith("@myport.co.uk") || username.endsWith("@port.co.uk");
+    }
+
+    public void getRegistrationDetails() {
+        //This could make a new user and then return that user
+        String username = getTextInput(tfEmailRegister);
+        if (validatePasswords() && validateUsername(username)) {
+            //If passwords are valid, continue with making a new user
+            String password = String.copyValueOf(getPasswordInput(tfPasswordRegister));
+            String cpassword = String.copyValueOf(getPasswordInput(tfCPasswordRegister));
+            boolean lecturer = false;
+            if (username.endsWith("@port.ac.uk")) {
+                lecturer = true;
+            }
+            String course = (String) cboCourseRegister.getSelectedItem();
+            quizsystem.User user = new quizsystem.User(username, password, course, lecturer);
+        }
+    }
+
+    public void getLoginDetails() {
+        String username = getTextInput(tfEmailLogin);
+        String password = String.copyValueOf(getPasswordInput(tfPasswordLogin));
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblErrorOutput1 = new javax.swing.JLabel();
         pnlLogin = new javax.swing.JPanel();
         lblLoginTitle = new javax.swing.JLabel();
         tfEmailLogin = new javax.swing.JTextField();
@@ -107,7 +134,9 @@ public class LoginRegister extends javax.swing.JFrame {
         btnRegister = new javax.swing.JButton();
         tfPasswordRegister = new javax.swing.JPasswordField();
         tfCPasswordRegister = new javax.swing.JPasswordField();
-        lblErrorOutput = new javax.swing.JLabel();
+        lblErrorOutputEmailR = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        lblErrorOutputPasswordR = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -134,31 +163,31 @@ public class LoginRegister extends javax.swing.JFrame {
                 .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlLoginLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tfEmailLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoginLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                        .addComponent(tfPasswordLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblLoginTitle)
+                        .addGap(0, 374, Short.MAX_VALUE))
                     .addGroup(pnlLoginLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlLoginLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(lblLoginTitle))
-                            .addGroup(pnlLoginLayout.createSequentialGroup()
-                                .addGap(128, 128, 128)
-                                .addComponent(btnLogin)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(tfEmailLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoginLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                                .addComponent(tfPasswordLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
+            .addGroup(pnlLoginLayout.createSequentialGroup()
+                .addGap(171, 171, 171)
+                .addComponent(btnLogin)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlLoginLayout.setVerticalGroup(
             pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlLoginLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblLoginTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfEmailLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
@@ -175,6 +204,12 @@ public class LoginRegister extends javax.swing.JFrame {
 
         lblNoAccountTitle.setText("Don't have an account? Register Here");
 
+        tfEmailRegister.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tfEmailRegisterFocusLost(evt);
+            }
+        });
+
         jLabel5.setText("Email:");
 
         jLabel6.setText("Password:");
@@ -188,6 +223,11 @@ public class LoginRegister extends javax.swing.JFrame {
         cboCourseRegister.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Computer Science", "Computing", "Software Engineering" }));
 
         btnRegister.setText("Register");
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
 
         tfPasswordRegister.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -201,38 +241,58 @@ public class LoginRegister extends javax.swing.JFrame {
             }
         });
 
+        lblErrorOutputEmailR.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel9.setText("Please enter your university email, ending in either @port.ac.uk or @myport.ac.uk");
+
+        lblErrorOutputPasswordR.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         javax.swing.GroupLayout pnlRegisterLayout = new javax.swing.GroupLayout(pnlRegister);
         pnlRegister.setLayout(pnlRegisterLayout);
         pnlRegisterLayout.setHorizontalGroup(
             pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlRegisterLayout.createSequentialGroup()
-                .addGap(221, 221, 221)
-                .addComponent(btnRegister)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(pnlRegisterLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlRegisterLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(tfEmailRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(pnlRegisterLayout.createSequentialGroup()
                                 .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblNoAccountTitle)
                                     .addGroup(pnlRegisterLayout.createSequentialGroup()
-                                        .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel7)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel10))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(lblErrorOutput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(tfCPasswordRegister, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
-                                                .addComponent(tfPasswordRegister, javax.swing.GroupLayout.Alignment.LEADING))
-                                            .addComponent(cboCourseRegister, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jLabel5)
+                                        .addGap(66, 66, 66)
+                                        .addComponent(tfEmailRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRegisterLayout.createSequentialGroup()
+                                        .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlRegisterLayout.createSequentialGroup()
+                                                .addComponent(jLabel10)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(cboCourseRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlRegisterLayout.createSequentialGroup()
+                                                .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel7)
+                                                    .addComponent(jLabel6))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addGroup(pnlRegisterLayout.createSequentialGroup()
+                                                        .addComponent(tfPasswordRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(0, 0, Short.MAX_VALUE))
+                                                    .addComponent(tfCPasswordRegister)))
+                                            .addComponent(lblErrorOutputPasswordR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGap(1, 1, 1)))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(pnlRegisterLayout.createSequentialGroup()
+                        .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlRegisterLayout.createSequentialGroup()
+                                .addGap(179, 179, 179)
+                                .addComponent(btnRegister))
+                            .addGroup(pnlRegisterLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblErrorOutputEmailR, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlRegisterLayout.setVerticalGroup(
@@ -241,9 +301,13 @@ public class LoginRegister extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblNoAccountTitle)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel9)
+                .addGap(18, 18, 18)
                 .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfEmailRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(tfEmailRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(lblErrorOutputEmailR, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
@@ -253,16 +317,16 @@ public class LoginRegister extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(tfCPasswordRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblErrorOutput, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tfCPasswordRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(lblErrorOutputPasswordR, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(pnlRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboCourseRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addGap(27, 27, 27)
+                    .addComponent(jLabel10)
+                    .addComponent(cboCourseRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
                 .addComponent(btnRegister)
-                .addContainerGap())
+                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -280,9 +344,9 @@ public class LoginRegister extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlRegister, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -290,27 +354,38 @@ public class LoginRegister extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        //Login the user
-        String username = getTextInput(tfEmailLogin);
-        char[] passwordIn = getPasswordInput(tfPasswordLogin);
-        String password = String.copyValueOf(passwordIn);
-
-        //PASS LOGIN DETAILS TO LOGIN LOGIC
+        //Login the User
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void tfPasswordRegisterFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfPasswordRegisterFocusLost
         //Check passwords for validity and whether they match
         if (!validatePasswords()) {
-            lblErrorOutput.setText("Passwords are not valid.");
+            lblErrorOutputPasswordR.setText("Passwords are not valid.");
+        } else {
+            lblErrorOutputPasswordR.setText("");
         }
     }//GEN-LAST:event_tfPasswordRegisterFocusLost
 
     private void tfCPasswordRegisterFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfCPasswordRegisterFocusLost
         //Check passwords for validity and whether they match
         if (!validatePasswords()) {
-            lblErrorOutput.setText("Passwords are not valid.");
+            lblErrorOutputPasswordR.setText("Passwords are not valid.");
+        } else {
+            lblErrorOutputPasswordR.setText("");
         }
     }//GEN-LAST:event_tfCPasswordRegisterFocusLost
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        //Register a new user
+    }//GEN-LAST:event_btnRegisterActionPerformed
+
+    private void tfEmailRegisterFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfEmailRegisterFocusLost
+        if (!validateUsername(getTextInput(tfEmailRegister))) {
+            lblErrorOutputEmailR.setText("Entered email is not valid, please enter your university email");
+        } else {
+            lblErrorOutputEmailR.setText("");
+        }
+    }//GEN-LAST:event_tfEmailRegisterFocusLost
 
     /**
      * @param args the command line arguments
@@ -358,7 +433,10 @@ public class LoginRegister extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel lblErrorOutput;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel lblErrorOutput1;
+    private javax.swing.JLabel lblErrorOutputEmailR;
+    private javax.swing.JLabel lblErrorOutputPasswordR;
     private javax.swing.JLabel lblLoginTitle;
     private javax.swing.JLabel lblNoAccountTitle;
     private javax.swing.JPanel pnlLogin;
