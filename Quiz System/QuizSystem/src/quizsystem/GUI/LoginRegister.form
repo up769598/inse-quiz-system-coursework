@@ -300,10 +300,11 @@
         <Component class="javax.swing.JComboBox" name="cboCourseRegister">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="3">
-                <StringItem index="0" value="Computer Science"/>
-                <StringItem index="1" value="Computing"/>
-                <StringItem index="2" value="Software Engineering"/>
+              <StringArray count="4">
+                <StringItem index="0" value="Choose Course Here"/>
+                <StringItem index="1" value="Computer Science"/>
+                <StringItem index="2" value="Computing"/>
+                <StringItem index="3" value="Software Engineering"/>
               </StringArray>
             </Property>
           </Properties>

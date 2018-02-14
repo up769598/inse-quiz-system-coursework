@@ -89,19 +89,41 @@ public class LoginRegister extends javax.swing.JFrame {
         return username.endsWith("@myport.co.uk") || username.endsWith("@port.co.uk");
     }
 
-    public void getRegistrationDetails() {
-        //This could make a new user and then return that user
-        String username = getTextInput(tfEmailRegister);
-        if (validatePasswords() && validateUsername(username)) {
-            //If passwords are valid, continue with making a new user
-            String password = String.copyValueOf(getPasswordInput(tfPasswordRegister));
-            String cpassword = String.copyValueOf(getPasswordInput(tfCPasswordRegister));
-            boolean lecturer = false;
-            if (username.endsWith("@port.ac.uk")) {
-                lecturer = true;
-            }
-            String course = (String) cboCourseRegister.getSelectedItem();
-            quizsystem.User user = new quizsystem.User(username, password, course, lecturer);
+    public String getRegEmail() {
+        String email = getTextInput(tfEmailRegister);
+        if (validateUsername(email)) {
+            return email;
+        }
+        return "Default"; //Return the email if correct
+    }
+
+    public String getRegPassword() {
+        String password = String.copyValueOf(getPasswordInput(tfPasswordRegister));
+        String cpassword = String.copyValueOf(getPasswordInput(tfCPasswordRegister));
+        if (validatePasswords()) {
+            return password;
+        }
+        return "Default";
+    }
+
+    public String getRegCourse() {
+        return (String) cboCourseRegister.getSelectedItem();
+    }
+
+    public void getRegDetails() {
+        boolean valid = true;
+        String email = getRegEmail();
+        String password = getRegPassword();
+        String course = getRegCourse();
+        if ("Default".equals(email) || "Default".equals(password) || course.equals("Choose Course Here")) {
+            valid = false;
+        }
+        boolean lecturer = false;
+        if (email.endsWith("@port.ac.uk")) {
+            lecturer = true;
+        }
+        if (valid) {
+            quizsystem.User user = new quizsystem.User(email, password, course, lecturer);
         }
     }
 
@@ -220,7 +242,7 @@ public class LoginRegister extends javax.swing.JFrame {
 
         jLabel10.setText("Course:");
 
-        cboCourseRegister.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Computer Science", "Computing", "Software Engineering" }));
+        cboCourseRegister.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose Course Here", "Computer Science", "Computing", "Software Engineering" }));
 
         btnRegister.setText("Register");
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
@@ -401,16 +423,24 @@ public class LoginRegister extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginRegister.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginRegister.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginRegister.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginRegister.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginRegister.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
