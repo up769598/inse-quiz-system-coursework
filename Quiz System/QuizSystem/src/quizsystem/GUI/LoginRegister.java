@@ -122,8 +122,12 @@ public class LoginRegister extends javax.swing.JFrame {
         if (email.endsWith("@port.ac.uk")) {
             lecturer = true;
         }
-        if (valid) {
-            quizsystem.User user = new quizsystem.User(email, password, course, lecturer);
+        if (valid && lecturer) {
+            //Create a new lecturer user
+        } else if(valid) {
+            //Create a new student user
+        } else {
+            //Return an error
         }
     }
 
