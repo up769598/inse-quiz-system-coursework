@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package quizsystem;
 
 /**
  *
- * @author James
+ * @author 769598
  */
 
 
@@ -21,6 +16,7 @@ public class Quiz {
    protected int[] correctAnswerIndex;
    protected int length;
    protected int score;
+   protected int currentQuestion;
     
    public Quiz(){
     
@@ -33,6 +29,7 @@ public class Quiz {
        this.correctAnswerIndex = db_CorrectAnswer;
        this.quizID = db_QuizID;
        this.score = 0;
+       this.currentQuestion = 0;
    }
 
 public String getQuestion (int questionNo){
@@ -52,6 +49,14 @@ public void upScore(){
 }
 public int getScore(){
     return this.score;
+}
+
+public int getCurrentQuestion(){
+    return this.currentQuestion;
+}
+
+public void setCurrentQuestion(int questionIndex){
+    this.currentQuestion = questionIndex;
 }
 
 }
