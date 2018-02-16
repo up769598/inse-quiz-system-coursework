@@ -6,4 +6,10 @@ package quizsystem;
  */
 public class Login {
     
+    
+    public boolean longin(String email, String password){
+        
+        return true;
+    }
+    
 }
