@@ -31,6 +31,7 @@ public class Quiz {
        this.score = 0;
        this.currentQuestion = 0;
    }
+  
 
 public String getQuestion (int questionNo){
        return this.questions[questionNo];
