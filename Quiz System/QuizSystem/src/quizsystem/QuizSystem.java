@@ -11,6 +11,11 @@ public class QuizSystem {
        
        StudentInterface qr2 = new StudentInterface();
        qr2.setVisible(true);
+       
+       String pa = "password" ;  
+       char[] pass = pa.toCharArray();
+       System.out.println(Login.hash(pass, Login.getNextSalt()));
+       System.out.println(Login.hash(pass, Login.getNextSalt()));
     }
     
 }
