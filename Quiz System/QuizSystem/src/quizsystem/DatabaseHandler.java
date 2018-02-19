@@ -10,5 +10,22 @@ package quizsystem;
  * @author James
  */
 public class DatabaseHandler {
+
+    public static String[] getPasswordAndSalt() {
+        String db_Password = null;
+        String db_Salt = null;
+        
+        
+        
+        
+        String[] passAndSalt = null;
+        passAndSalt[0] = db_Password;
+        passAndSalt[1] = db_Salt;
+        return passAndSalt;
+        
+    }
+    
+    
+    
     
 }

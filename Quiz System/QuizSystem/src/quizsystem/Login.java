@@ -14,15 +14,19 @@ import javax.crypto.spec.PBEKeySpec;
  */
 public class Login {
     
-    
-    public boolean longin(String email, String password){
-        
-        return true;
-    }
-     
   private static final Random random = new SecureRandom();
   private static final int iterations = 10000;
   private static final int keyLength = 256;
+    
+    public boolean longin(String email, String password){
+      String[] db_passwordAndSalt;
+      db_passwordAndSalt = DatabaseHandler.getPasswordAndSalt();
+      
+      
+        return true;
+    }
+     
+
 
   /**
    * Returns a random salt to be used to hash a password.
