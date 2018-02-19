@@ -271,12 +271,16 @@ public class StudentInterface extends javax.swing.JFrame {
 
     private void btnSelectQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectQuizActionPerformed
         //Selects the quiz pressed on the table and continues onto taking that quiz
+        // quizsystem.Quiz selectedQuiz = getSelectedQuiz(selectedQuiz);
+        //QuizPreview quiz = new QuizPreview(selectedQuiz)
+       //quiz.setVisible(true);
     }//GEN-LAST:event_btnSelectQuizActionPerformed
 
     private void btnRandomQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRandomQuizActionPerformed
-        //Create a random quiz
-//        Question randomQuiz = new Question(quizsystem.Quiz inQuiz)
-//        randomQuiz.setVisible(true);
+         //Create a random quiz
+        // quizsystem.Quiz random = getRandomQuiz();
+        //QuizPreview randomQuiz = new QuizPreview(random)
+       //randomQuiz.setVisible(true);
         
     }//GEN-LAST:event_btnRandomQuizActionPerformed
 
