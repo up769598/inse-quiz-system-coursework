@@ -11,9 +11,12 @@ package quizsystem;
  */
 public class DatabaseHandler {
 
-    public static String[] getPasswordAndSalt() {
+    public static String[] getPasswordAndSalt(String userID){
         String db_Password = null;
         String db_Salt = null;
+        /*
+        * retreve the hashed password and salt from the database
+        */
         
         
         
@@ -24,8 +27,13 @@ public class DatabaseHandler {
         return passAndSalt;
         
     }
-    
-    
+    public static boolean checkRegestered(){
+        /*
+        run database querie to see if the email adress is registered and retruns boolean
+        */
+        
+        return true;
+    }
     
     
 }

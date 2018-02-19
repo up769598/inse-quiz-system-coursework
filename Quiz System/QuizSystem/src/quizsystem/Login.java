@@ -10,7 +10,7 @@ import javax.crypto.spec.PBEKeySpec;
 
 /**
  *
- * @author 
+ * @author James King
  */
 public class Login {
     
@@ -18,16 +18,23 @@ public class Login {
   private static final int iterations = 10000;
   private static final int keyLength = 256;
     
-    public boolean longin(String email, String password){
+    public String longin(String userID, char[] password){
       String[] db_passwordAndSalt;
-      db_passwordAndSalt = DatabaseHandler.getPasswordAndSalt();
+      db_passwordAndSalt = DatabaseHandler.getPasswordAndSalt(userID);
+      byte[] Salt = db_passwordAndSalt[1].getBytes();
+      byte[] hashPassword = db_passwordAndSalt[0].getBytes();
       
-      
-        return true;
+      if(DatabaseHandler.checkRegestered()){
+        if(isPasswordCorrect(password, Salt, hashPassword)){
+            return "Sucsesfull login";
+        }else{
+            return "Incorect Password";
+        }
+      }else{
+          return "User not registered";
+      }
     }
-     
-
-
+    
   /**
    * Returns a random salt to be used to hash a password.
    *
@@ -71,7 +78,7 @@ public class Login {
    *
    * @return true if the given password and salt match the hashed value, false otherwise
    */
-  public static boolean isExpectedPassword(char[] password, byte[] salt, byte[] expectedHash) {
+  public static boolean isPasswordCorrect(char[] password, byte[] salt, byte[] expectedHash) {
     byte[] pwdHash = hash(password, salt);
     Arrays.fill(password, Character.MIN_VALUE);
     if (pwdHash.length != expectedHash.length) return false;
