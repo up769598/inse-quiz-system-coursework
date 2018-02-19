@@ -275,6 +275,9 @@ public class StudentInterface extends javax.swing.JFrame {
 
     private void btnRandomQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRandomQuizActionPerformed
         //Create a random quiz
+//        Question randomQuiz = new Question(quizsystem.Quiz inQuiz)
+//        randomQuiz.setVisible(true);
+        
     }//GEN-LAST:event_btnRandomQuizActionPerformed
 
     private void btnAdvSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdvSearchActionPerformed
@@ -287,6 +290,9 @@ public class StudentInterface extends javax.swing.JFrame {
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         //Logout and return to the lgoin screen
+        LoginRegister login = new LoginRegister();
+        this.dispose();
+        
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
