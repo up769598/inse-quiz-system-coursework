@@ -25,8 +25,80 @@ public class Question extends javax.swing.JFrame {
      * 
     */
     
-    public void beginTimer(){
-        
+    public void refresh(){
+        setNumQuestion();
+        setAnswers();
+        hideCheckBoxes();
+    }
+    
+    public void setNumQuestion(){
+        lblQuestionNumber.setText(Integer.toString(quiz.getCurrentQuestion())  + " / " + Integer.toString(quiz.getQuestions().length));
+    }
+    
+    public void nextQuestion(){
+        int questionNum = quiz.getCurrentQuestion();
+        quiz.setCurrentQuestion(questionNum++);
+        refresh();
+    }
+    
+    public void prevQuestion(){
+        int questionNum = quiz.getCurrentQuestion();
+        quiz.setCurrentQuestion(questionNum--);
+        refresh();
+    }
+    
+    public void setQuestion(){
+        taQuestion.setText(quiz.getQuestion(quiz.getCurrentQuestion()));
+    }
+    
+    public void setAnswers(){
+        String[] answers = quiz.getAnswers(quiz.getCurrentQuestion());
+        switch(answers.length){
+            case 8:
+                chbAnswer8.setVisible(true);
+                chbAnswer8.setText(answers[7]);
+            case 7:
+                chbAnswer7.setVisible(true);
+                chbAnswer7.setText(answers[6]);
+            case 6:
+                chbAnswer6.setVisible(true);
+                chbAnswer6.setText(answers[5]);
+            case 5:
+                chbAnswer5.setVisible(true);
+                chbAnswer5.setText(answers[4]);
+            case 4:
+                chbAnswer4.setVisible(true);
+                chbAnswer4.setText(answers[3]);
+            case 3:
+                chbAnswer3.setVisible(true);
+                chbAnswer3.setText(answers[2]);
+            case 2:
+                chbAnswer2.setVisible(true);
+                chbAnswer1.setVisible(true);
+                chbAnswer2.setText(answers[1]);
+                chbAnswer1.setText(answers[0]);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    public void hideCheckBoxes(){
+        switch(quiz.getAnswers(quiz.getCurrentQuestion()).length){
+            case 2:
+                chbAnswer3.setVisible(false);
+            case 3:
+                chbAnswer4.setVisible(false);
+            case 4:
+                chbAnswer5.setVisible(false);
+            case 5:
+                chbAnswer6.setVisible(false);
+            case 6:
+                chbAnswer7.setVisible(false);
+            case 7:
+                chbAnswer8.setVisible(false);
+            
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -101,7 +173,7 @@ public class Question extends javax.swing.JFrame {
                     .addComponent(chbAnswer6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(chbAnswer7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(chbAnswer8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(chbAnswer1, javax.swing.GroupLayout.DEFAULT_SIZE, 654, Short.MAX_VALUE))
+                    .addComponent(chbAnswer1, javax.swing.GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlQuestionsLayout.setVerticalGroup(
@@ -169,7 +241,7 @@ public class Question extends javax.swing.JFrame {
                         .addComponent(pnlQuestions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTimer, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                            .addComponent(lblTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnNextQuestion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnPrevQuestion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnFinish, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -204,10 +276,12 @@ public class Question extends javax.swing.JFrame {
 
     private void btnNextQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextQuestionActionPerformed
         //Move onto the next question
+        nextQuestion();
     }//GEN-LAST:event_btnNextQuestionActionPerformed
 
     private void btnPrevQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevQuestionActionPerformed
         //Move back to the previous question
+        prevQuestion();
     }//GEN-LAST:event_btnPrevQuestionActionPerformed
 
     private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
