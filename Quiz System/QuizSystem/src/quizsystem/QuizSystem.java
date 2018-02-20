@@ -13,6 +13,9 @@ public class QuizSystem {
        char[] pass = pa.toCharArray();
        System.out.println(Login.hash(pass, Login.getNextSalt()));
        System.out.println(Login.hash(pass, Login.getNextSalt()));
+       
+       DatabaseHandler db = new DatabaseHandler();
+       
     }
     
 }
