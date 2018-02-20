@@ -295,6 +295,7 @@ public class StudentInterface extends javax.swing.JFrame {
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         //Logout and return to the lgoin screen
         LoginRegister login = new LoginRegister();
+        login.setVisible(true);
         this.dispose();
         
     }//GEN-LAST:event_btnLogoutActionPerformed

@@ -133,7 +133,7 @@ public class LoginRegister extends javax.swing.JFrame {
 
     public void getLoginDetails() {
         String username = getTextInput(tfEmailLogin);
-        String password = String.copyValueOf(getPasswordInput(tfPasswordLogin));
+        char[] password = getPasswordInput(tfPasswordLogin);
     }
 
     @SuppressWarnings("unchecked")

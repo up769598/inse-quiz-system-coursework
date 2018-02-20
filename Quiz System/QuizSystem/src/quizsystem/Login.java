@@ -8,17 +8,13 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-/**
- *
- * @author James King
- */
 public class Login {
     
   private static final Random random = new SecureRandom();
   private static final int iterations = 10000;
   private static final int keyLength = 256;
     
-    public String longin(String userID, char[] password){
+    public String login(String userID, char[] password){
       String[] db_passwordAndSalt;
       db_passwordAndSalt = DatabaseHandler.getPasswordAndSalt(userID);
       byte[] Salt = db_passwordAndSalt[1].getBytes();
