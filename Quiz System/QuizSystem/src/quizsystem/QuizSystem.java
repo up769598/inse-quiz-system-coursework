@@ -1,5 +1,7 @@
 package quizsystem;
 
+import java.sql.SQLException;
+import quizsystem.db.DatabaseHandler;
 import quizsystem.GUI.LoginRegister;
 import quizsystem.GUI.StudentInterface;
 
@@ -14,8 +16,11 @@ public class QuizSystem {
        System.out.println(Login.hash(pass, Login.getNextSalt()));
        System.out.println(Login.hash(pass, Login.getNextSalt()));
        
-       DatabaseHandler db = new DatabaseHandler();
-       
+       try {
+           DatabaseHandler db = new DatabaseHandler();
+       }
+       catch (SQLException ex) {
+           System.out.println(ex);
+       }
     }
-    
 }

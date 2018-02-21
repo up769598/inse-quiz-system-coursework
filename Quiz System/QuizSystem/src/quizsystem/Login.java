@@ -1,5 +1,6 @@
 package quizsystem;
 
+import quizsystem.db.DatabaseHandler;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Random;
@@ -20,7 +21,7 @@ public class Login {
       byte[] Salt = db_passwordAndSalt[1].getBytes();
       byte[] hashPassword = db_passwordAndSalt[0].getBytes();
       
-      if(DatabaseHandler.checkRegestered()){
+      if(DatabaseHandler.isUserRegistered()){
         if(isPasswordCorrect(password, Salt, hashPassword)){
             return "Sucsesfull login";
         }else{
