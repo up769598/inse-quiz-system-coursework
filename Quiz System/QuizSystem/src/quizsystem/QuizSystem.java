@@ -6,8 +6,8 @@ import quizsystem.db.DatabaseHandler;
 public class QuizSystem {
 
     public static void main(String[] args) {
-       //LoginRegister qr = new LoginRegister();
-       //qr.setVisible(true);
+       quizsystem.GUI.LoginRegister qr = new quizsystem.GUI.LoginRegister();
+       qr.setVisible(true);
              
        String pa = "password" ;  
        char[] pass = pa.toCharArray();

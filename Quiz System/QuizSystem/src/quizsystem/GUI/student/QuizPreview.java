@@ -106,6 +106,7 @@ public class QuizPreview extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         //Return to the student interface
+        dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
 

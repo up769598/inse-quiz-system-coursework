@@ -1,6 +1,7 @@
 package quizsystem.GUI;
 
 import java.util.Arrays;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -86,7 +87,7 @@ public class LoginRegister extends javax.swing.JFrame {
     }
 
     public boolean validateUsername(String username) {
-        return username.endsWith("@myport.co.uk") || username.endsWith("@port.co.uk");
+        return username.endsWith("@myport.ac.uk") || username.endsWith("@port.ac.uk");
     }
 
     public String getRegEmail() {
@@ -128,12 +129,18 @@ public class LoginRegister extends javax.swing.JFrame {
             //Create a new student user
         } else {
             //Return an error
+            createMessagePane("Error: Please ensure that all entered data is valid and try again","Error");
         }
     }
 
     public void getLoginDetails() {
         String username = getTextInput(tfEmailLogin);
         char[] password = getPasswordInput(tfPasswordLogin);
+    }
+    
+    public void createMessagePane(String message, String title) {
+        Object[] options = {"Ok"};
+        JOptionPane.showOptionDialog(this, message, title, JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
     }
 
     @SuppressWarnings("unchecked")
@@ -433,6 +440,7 @@ public class LoginRegister extends javax.swing.JFrame {
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         //Register a new user
+        getRegDetails();
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void tfEmailRegisterFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfEmailRegisterFocusLost

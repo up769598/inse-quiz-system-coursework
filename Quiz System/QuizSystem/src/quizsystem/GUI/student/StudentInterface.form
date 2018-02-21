@@ -260,6 +260,8 @@
                           <Component id="btnAdvSearch" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnReviewAnswers" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="btnAttemptAgain" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="srpnlCompQuiz" alignment="0" min="-2" pref="452" max="-2" attributes="0"/>
                       <Component id="lblCompQuizTitle" alignment="0" min="-2" pref="127" max="-2" attributes="0"/>
@@ -279,6 +281,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnAdvSearch" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnReviewAnswers" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnAttemptAgain" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -381,6 +384,11 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExitActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnAttemptAgain">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Attempt Again"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

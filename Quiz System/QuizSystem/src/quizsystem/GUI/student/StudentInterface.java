@@ -36,6 +36,7 @@ public class StudentInterface extends javax.swing.JFrame {
         btnReviewAnswers = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        btnAttemptAgain = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -208,6 +209,8 @@ public class StudentInterface extends javax.swing.JFrame {
             }
         });
 
+        btnAttemptAgain.setText("Attempt Again");
+
         javax.swing.GroupLayout pnlCompQuizLayout = new javax.swing.GroupLayout(pnlCompQuiz);
         pnlCompQuiz.setLayout(pnlCompQuizLayout);
         pnlCompQuizLayout.setHorizontalGroup(
@@ -222,7 +225,9 @@ public class StudentInterface extends javax.swing.JFrame {
                     .addGroup(pnlCompQuizLayout.createSequentialGroup()
                         .addComponent(btnAdvSearch)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnReviewAnswers))
+                        .addComponent(btnReviewAnswers)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnAttemptAgain))
                     .addComponent(srpnlCompQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCompQuizTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -237,7 +242,8 @@ public class StudentInterface extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdvSearch)
-                    .addComponent(btnReviewAnswers))
+                    .addComponent(btnReviewAnswers)
+                    .addComponent(btnAttemptAgain))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogout)
@@ -311,6 +317,7 @@ public class StudentInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdvSearch;
+    private javax.swing.JButton btnAttemptAgain;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnRandomQuiz;
