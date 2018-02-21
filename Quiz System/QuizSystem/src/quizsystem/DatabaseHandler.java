@@ -1,27 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package quizsystem;
 
 import java.sql.*;
 
-/**
- *
- * @author James
- */
 public class DatabaseHandler {
 
     public DatabaseHandler() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://185.27.134.10:3306/INSEQuizSystem", "epiz_21645344", "0f03H2VepYh7");
-//            Statement stmt = con.createStatement();
-//            ResultSet rs = stmt.executeQuery("select * from s");
-//            while (rs.next()) {
-//                System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3));
-//            }
+            Connection con = DriverManager.getConnection("jdbc:mysql://52.91.67.192:3306/inse", "inse", "Wv7q7hG9");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT 1 AS one;");
+            while (rs.next()) {
+                System.out.println(rs.getInt(1));
+            }
             con.close();
         } catch (Exception e) {
             System.out.println(e);
@@ -49,5 +39,4 @@ public class DatabaseHandler {
 
         return true;
     }
-
 }
