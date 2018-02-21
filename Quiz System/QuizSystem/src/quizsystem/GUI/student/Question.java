@@ -1,30 +1,13 @@
-package quizsystem.GUI;
+package quizsystem.GUI.student;
 
-public class Question extends javax.swing.JFrame {
+public class Question extends javax.swing.JDialog{
     quizsystem.Quiz quiz;
-    
-
-    /**
-     * Creates new form Question
-     * @param inQuiz The Quiz being taken
-     */
-    public Question(quizsystem.Quiz inQuiz) {
+   
+    public Question(java.awt.Frame parent, boolean modal, quizsystem.Quiz inQuiz) {
         initComponents();
         quiz = inQuiz;
-        
     }
 
-    /**TO ADD:
-     * Begin Timer
-     * Check Timer
-     * Force quit upon finish timer
-     * move between questions
-     * Calculate num of questions
-     * Set textfields (question, answers, timer, question number)
-     * Auto set checkboxes to invisible/visible
-     * 
-    */
-    
     public void refresh(){
         setNumQuestion();
         setAnswers();
@@ -101,14 +84,15 @@ public class Question extends javax.swing.JFrame {
         }
     }
     
-    @SuppressWarnings("unchecked")
+        @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btngrpAnswers = new javax.swing.ButtonGroup();
         scrpnlQuestion = new javax.swing.JScrollPane();
         taQuestion = new javax.swing.JTextArea();
+        lblTimer = new javax.swing.JLabel();
         lblQuestionNumber = new javax.swing.JLabel();
+        btnNextQuestion = new javax.swing.JButton();
         pnlQuestions = new javax.swing.JPanel();
         chbAnswer1 = new javax.swing.JCheckBox();
         chbAnswer2 = new javax.swing.JCheckBox();
@@ -118,45 +102,44 @@ public class Question extends javax.swing.JFrame {
         chbAnswer6 = new javax.swing.JCheckBox();
         chbAnswer7 = new javax.swing.JCheckBox();
         chbAnswer8 = new javax.swing.JCheckBox();
-        lblTimer = new javax.swing.JLabel();
-        btnNextQuestion = new javax.swing.JButton();
         btnPrevQuestion = new javax.swing.JButton();
         btnFinish = new javax.swing.JButton();
         btnQuit = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         taQuestion.setColumns(20);
         taQuestion.setRows(5);
         taQuestion.setText("(Insert Question Here)");
         scrpnlQuestion.setViewportView(taQuestion);
 
+        lblTimer.setText("Finish Time: (Insert Finish Time)");
+
         lblQuestionNumber.setText("(Question Number) / (Total Number of Questions):");
+
+        btnNextQuestion.setText("Next Question");
+        btnNextQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextQuestionActionPerformed(evt);
+            }
+        });
 
         pnlQuestions.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        btngrpAnswers.add(chbAnswer1);
         chbAnswer1.setText("(Insert Answer Here)");
 
-        btngrpAnswers.add(chbAnswer2);
         chbAnswer2.setText("(Insert Answer Here)");
 
-        btngrpAnswers.add(chbAnswer3);
         chbAnswer3.setText("(Insert Answer Here)");
 
-        btngrpAnswers.add(chbAnswer4);
         chbAnswer4.setText("(Insert Answer Here)");
 
-        btngrpAnswers.add(chbAnswer5);
         chbAnswer5.setText("(Insert Answer Here)");
 
-        btngrpAnswers.add(chbAnswer6);
         chbAnswer6.setText("(Insert Answer Here)");
 
-        btngrpAnswers.add(chbAnswer7);
         chbAnswer7.setText("(Insert Answer Here)");
 
-        btngrpAnswers.add(chbAnswer8);
         chbAnswer8.setText("(Insert Answer Here)");
 
         javax.swing.GroupLayout pnlQuestionsLayout = new javax.swing.GroupLayout(pnlQuestions);
@@ -197,15 +180,6 @@ public class Question extends javax.swing.JFrame {
                 .addComponent(chbAnswer8)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        lblTimer.setText("Finish Time: (Insert Finish Time)");
-
-        btnNextQuestion.setText("Next Question");
-        btnNextQuestion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNextQuestionActionPerformed(evt);
-            }
-        });
 
         btnPrevQuestion.setText("Previous Question");
         btnPrevQuestion.addActionListener(new java.awt.event.ActionListener() {
@@ -252,7 +226,7 @@ public class Question extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblQuestionNumber)
+                .addComponent(lblQuestionNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scrpnlQuestion, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -297,7 +271,6 @@ public class Question extends javax.swing.JFrame {
     private javax.swing.JButton btnNextQuestion;
     private javax.swing.JButton btnPrevQuestion;
     private javax.swing.JButton btnQuit;
-    private javax.swing.ButtonGroup btngrpAnswers;
     private javax.swing.JCheckBox chbAnswer1;
     private javax.swing.JCheckBox chbAnswer2;
     private javax.swing.JCheckBox chbAnswer3;

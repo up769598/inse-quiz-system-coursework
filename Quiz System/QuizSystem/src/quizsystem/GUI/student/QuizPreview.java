@@ -1,15 +1,19 @@
-package quizsystem.GUI;
+package quizsystem.GUI.student;
 
 public class QuizPreview extends javax.swing.JFrame {
         
-    private quizsystem.Quiz quiz;
+    private final quizsystem.Quiz quiz;
+    private final quizsystem.Student student;
 
     /**
      * Creates new form QuizPreview
+     * @param inQuiz Quiz being taken by the student
+     * @param inStudent The student account being accessed
      */
-    public QuizPreview(quizsystem.Quiz inQuiz) {
+    public QuizPreview(quizsystem.Quiz inQuiz, quizsystem.Student inStudent) {
         initComponents();
         quiz = inQuiz;
+        student = inStudent;
         lblName.setText("Name: " + quiz.getName());
         lblLecturerName.setText("Lecturer: " + quiz.getLecturerName());
         lblTime.setText(Float.toString(quiz.getTimelimit()));
@@ -97,6 +101,7 @@ public class QuizPreview extends javax.swing.JFrame {
 
     private void btnTakeQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTakeQuizActionPerformed
         //Continue onto taking the quiz
+        Question question = new Question(this, true, quiz);
     }//GEN-LAST:event_btnTakeQuizActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed

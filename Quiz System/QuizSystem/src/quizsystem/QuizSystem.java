@@ -2,8 +2,6 @@ package quizsystem;
 
 import java.sql.SQLException;
 import quizsystem.db.DatabaseHandler;
-import quizsystem.GUI.LoginRegister;
-import quizsystem.GUI.StudentInterface;
 
 public class QuizSystem {
 

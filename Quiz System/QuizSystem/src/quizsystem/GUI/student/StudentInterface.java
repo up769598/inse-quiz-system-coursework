@@ -1,12 +1,17 @@
-package quizsystem.GUI;
+package quizsystem.GUI.student;
+
+import quizsystem.GUI.LoginRegister;
 
 public class StudentInterface extends javax.swing.JFrame {
-
+    private final quizsystem.Student student;
+    
     /**
      * Creates new form StudentInterface
+     * @param inStudent The student account being accessed
      */
-    public StudentInterface() {
+    public StudentInterface(quizsystem.Student inStudent) {
         initComponents();
+        student = inStudent;
     }
 
         @SuppressWarnings("unchecked")
@@ -272,14 +277,14 @@ public class StudentInterface extends javax.swing.JFrame {
     private void btnSelectQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectQuizActionPerformed
         //Selects the quiz pressed on the table and continues onto taking that quiz
         // quizsystem.Quiz selectedQuiz = getSelectedQuiz(selectedQuiz);
-        //QuizPreview quiz = new QuizPreview(selectedQuiz)
+        //QuizPreview quiz = new QuizPreview(selectedQuiz,student)
        //quiz.setVisible(true);
     }//GEN-LAST:event_btnSelectQuizActionPerformed
 
     private void btnRandomQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRandomQuizActionPerformed
          //Create a random quiz
         // quizsystem.Quiz random = getRandomQuiz();
-        //QuizPreview randomQuiz = new QuizPreview(random)
+        //QuizPreview randomQuiz = new QuizPreview(random,student)
        //randomQuiz.setVisible(true);
         
     }//GEN-LAST:event_btnRandomQuizActionPerformed
@@ -304,42 +309,6 @@ public class StudentInterface extends javax.swing.JFrame {
         //Exit the system
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(StudentInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(StudentInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(StudentInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(StudentInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new StudentInterface().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdvSearch;
     private javax.swing.JButton btnExit;
