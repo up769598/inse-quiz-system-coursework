@@ -7,6 +7,8 @@ public class StudentInterface extends javax.swing.JFrame {
     private final quizsystem.Student student;
     private DefaultTableModel modelSetQuiz;
     private DefaultTableModel modelCompQuiz;
+    private ArrayList<quizsystem.Quiz> setQuiz;
+    private ArrayList<quizsystem.Quiz> compQuiz;
     
     /**
      * Creates new form StudentInterface
@@ -289,6 +291,11 @@ public class StudentInterface extends javax.swing.JFrame {
     private void btnAdvSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdvSearchActionPerformed
         //Advanced Search through completed quizzes
         AdvSearch advSearch = new AdvSearch(this, true);
+        advSearch.setVisible(true);
+        String name = advSearch.getName();
+        String topic = advSearch.getTopic();
+        String lecturer = advSearch.getLecturer();
+        advSearch.dispose();
     }//GEN-LAST:event_btnAdvSearchActionPerformed
 
     private void btnReviewAnswersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewAnswersActionPerformed

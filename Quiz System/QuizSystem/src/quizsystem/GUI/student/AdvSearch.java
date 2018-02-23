@@ -18,6 +18,18 @@ public class AdvSearch extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
+    
+    public String getName(){
+        return tfName.getText();
+    }
+    
+    public String getTopic(){
+        return tfTopic.getText();
+    }
+    
+    public String getLecturer(){
+        return tfSetBy.getText();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,6 +46,8 @@ public class AdvSearch extends javax.swing.JDialog {
         lblTopic = new javax.swing.JLabel();
         tfTopic = new javax.swing.JTextField();
         lblTitle = new javax.swing.JLabel();
+        tfSetBy = new javax.swing.JTextField();
+        lblSetBy = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -51,6 +65,8 @@ public class AdvSearch extends javax.swing.JDialog {
         lblTitle.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lblTitle.setText("Advance Search");
 
+        lblSetBy.setText("Set by");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -61,9 +77,11 @@ public class AdvSearch extends javax.swing.JDialog {
                         .addGap(26, 26, 26)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblName)
-                            .addComponent(lblTopic))
+                            .addComponent(lblTopic)
+                            .addComponent(lblSetBy))
                         .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfSetBy, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfTopic, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSearch)
                             .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -77,7 +95,7 @@ public class AdvSearch extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblName)
                     .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -85,6 +103,10 @@ public class AdvSearch extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTopic)
                     .addComponent(tfTopic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSetBy)
+                    .addComponent(tfSetBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(88, 88, 88)
                 .addComponent(btnSearch)
                 .addGap(26, 26, 26))
@@ -95,8 +117,9 @@ public class AdvSearch extends javax.swing.JDialog {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:#
-        String name = tfName.getText();
-        String topic = tfTopic.getText();
+        //quizsystem.Quiz[] advSearch = search(name,topic,setBy)
+        //Pass this back to reviewquiz array and repopulate the table 
+        this.setVisible(false);
     }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
@@ -144,9 +167,11 @@ public class AdvSearch extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblSetBy;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblTopic;
     private javax.swing.JTextField tfName;
+    private javax.swing.JTextField tfSetBy;
     private javax.swing.JTextField tfTopic;
     // End of variables declaration//GEN-END:variables
 }
