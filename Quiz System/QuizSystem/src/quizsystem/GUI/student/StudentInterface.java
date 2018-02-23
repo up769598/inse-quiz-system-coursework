@@ -1,9 +1,12 @@
 package quizsystem.GUI.student;
 
+import javax.swing.table.DefaultTableModel;
 import quizsystem.GUI.LoginRegister;
 
 public class StudentInterface extends javax.swing.JFrame {
     private final quizsystem.Student student;
+    private DefaultTableModel modelSetQuiz;
+    private DefaultTableModel modelCompQuiz;
     
     /**
      * Creates new form StudentInterface
@@ -12,6 +15,23 @@ public class StudentInterface extends javax.swing.JFrame {
     public StudentInterface(quizsystem.Student inStudent) {
         initComponents();
         student = inStudent;
+        Object[] colSetQuiz = {"Lecturer", "Name", "Time"};
+        modelSetQuiz = new DefaultTableModel(colSetQuiz,0);
+        tblSetQuiz.setModel(modelSetQuiz);
+        
+        Object[] colCompQuiz = {"Lecturer","Name","Time","Mark"};
+        modelCompQuiz = new DefaultTableModel(colCompQuiz,0);
+        tblCompQuiz.setModel(modelCompQuiz);
+    }
+    
+    private void AddSetQuiz(quizsystem.Quiz inQuiz){
+        Object[] data = {inQuiz.getLecturerName(),inQuiz.getName(),inQuiz.getTimelimit()};
+        modelSetQuiz.addRow(data);
+    }
+    
+    private void AddCompQuiz(quizsystem.Quiz inQuiz){
+        Object[] data = {inQuiz.getLecturerName(),inQuiz.getName(),inQuiz.getTimelimit(),0}; //Need to add answer
+        modelCompQuiz.addRow(data);
     }
 
         @SuppressWarnings("unchecked")
@@ -68,30 +88,16 @@ public class StudentInterface extends javax.swing.JFrame {
 
         tblSetQuiz.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Topic", "Lecturer", "Name", "Time"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
-        });
+        ));
         srpnlSetQuiz.setViewportView(tblSetQuiz);
-        if (tblSetQuiz.getColumnModel().getColumnCount() > 0) {
-            tblSetQuiz.getColumnModel().getColumn(0).setResizable(false);
-            tblSetQuiz.getColumnModel().getColumn(1).setResizable(false);
-            tblSetQuiz.getColumnModel().getColumn(2).setResizable(false);
-            tblSetQuiz.getColumnModel().getColumn(3).setResizable(false);
-        }
 
         javax.swing.GroupLayout pnlSetQuizLayout = new javax.swing.GroupLayout(pnlSetQuiz);
         pnlSetQuiz.setLayout(pnlSetQuizLayout);
