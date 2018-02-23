@@ -161,31 +161,16 @@ public class StudentInterface extends javax.swing.JFrame {
 
         tblCompQuiz.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Topic", "Lecturer", "Name", "Time", "Mark"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
-        });
+        ));
         srpnlCompQuiz.setViewportView(tblCompQuiz);
-        if (tblCompQuiz.getColumnModel().getColumnCount() > 0) {
-            tblCompQuiz.getColumnModel().getColumn(0).setResizable(false);
-            tblCompQuiz.getColumnModel().getColumn(1).setResizable(false);
-            tblCompQuiz.getColumnModel().getColumn(2).setResizable(false);
-            tblCompQuiz.getColumnModel().getColumn(3).setResizable(false);
-            tblCompQuiz.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         btnAdvSearch.setText("Advanced Search");
         btnAdvSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -303,6 +288,7 @@ public class StudentInterface extends javax.swing.JFrame {
 
     private void btnAdvSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdvSearchActionPerformed
         //Advanced Search through completed quizzes
+        AdvSearch advSearch = new AdvSearch(this, true);
     }//GEN-LAST:event_btnAdvSearchActionPerformed
 
     private void btnReviewAnswersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewAnswersActionPerformed
