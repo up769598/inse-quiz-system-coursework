@@ -141,7 +141,7 @@ public class DatabaseHandler {
      * @param userID the user ID to check for registration
      * @return a boolean
      */
-    public boolean isUserRegistered(String userID) {
+    public boolean isUserRegistered(String userID) throws SQLException {
         String query = "SELECT usrID FROM users WHERE usrID = ?;";
         List<String> params = Arrays.asList(userID);
         ArrayList<ResultRow> results = this.executeParameterized(query, params);
