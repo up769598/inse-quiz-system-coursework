@@ -140,6 +140,7 @@ public class DatabaseHandler {
      * Check if the specified user ID is already registered.
      * @param userID the user ID to check for registration
      * @return a boolean
+     * @throws SQLException
      */
     public boolean isUserRegistered(String userID) throws SQLException {
         String query = "SELECT usrID FROM users WHERE usrID = ?;";
@@ -147,5 +148,31 @@ public class DatabaseHandler {
         ArrayList<ResultRow> results = this.executeParameterized(query, params);
         
         return results.size() > 0;
+    }
+    
+    /**
+     * Get a list of quizzes, with reference to a particular student, that are in the specified state.
+     * @param userID the student ID to get quizzes for
+     * @param state the state returned quizzes must be in - completed or not
+     * @return a list of result rows
+     * @throws SQLException
+     */
+    // TODO: Make this return a Quiz object when we have enough database structure.
+    public ArrayList<ResultRow> getQuizzesForStudent(String userID, QuizState state) throws SQLException {
+        String query;
+        if (state == QuizState.INCOMPLETE) {
+            query = "SELECT * FROM quizzes AS q LEFT JOIN quiz_completions AS qc ON qc.quiz_id = q.id" +
+                    "AND qc.user_id = ? WHERE qc.id IS NULL;";
+        }
+        else if (state == QuizState.COMPLETED) {
+            query = "SELECT * FROM quizzes AS q INNER JOIN quiz_completions AS qc ON qc.quiz_id = q.id" +
+                    "WHERE qc.user_id = ?";
+        }
+        else {
+            throw new IllegalStateException("That's not even meant to exist.");
+        }
+        
+        List<String> params = Arrays.asList(userID);
+        return this.executeParameterized(query, params);
     }
 }
