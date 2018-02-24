@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.SQLException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
@@ -14,21 +15,34 @@ public class Login {
     private static final int iterations = 10000;
     private static final int keyLength = 256;
     
-    public String login(String userID, char[] password){
-        String[] db_passwordAndSalt;
-        db_passwordAndSalt = DatabaseHandler.getPasswordAndSalt(userID);
-        byte[] Salt = db_passwordAndSalt[1].getBytes();
-        byte[] hashPassword = db_passwordAndSalt[0].getBytes();
+    private DatabaseHandler _handler;
+    
+    public Login(DatabaseHandler handler) {
+        this._handler = handler;
+    }
+    
+    public String login(String userID, char[] password) {
+        try {
+            if (this._handler.isUserRegistered(userID)){
+                String[] db_passwordAndSalt = this._handler.getPasswordAndSalt(userID);
+                byte[] Salt = db_passwordAndSalt[1].getBytes();
+                byte[] hashPassword = db_passwordAndSalt[0].getBytes();
 
-        if (DatabaseHandler.isUserRegistered()){
-            if (isPasswordCorrect(password, Salt, hashPassword)){
-                return "Sucsesfull login";
+                if (isPasswordCorrect(password, Salt, hashPassword)){
+                    return "Successful login";
+                }
+                else {
+                    return "Incorrect Password";
+                }
             }
             else {
-                return "Incorect Password";
+                return "User not registered";
             }
         }
-        else {
+        catch (SQLException ex) {
+            return "Database connection failed";
+        }
+        catch (NullPointerException ex) {
             return "User not registered";
         }
     }
