@@ -1,7 +1,6 @@
 package quizsystem;
 
 public class User {
-    
     private String email;
     private String password;
     private String course;
@@ -35,7 +34,4 @@ public class User {
     public void setCourse(String course) {
         this.course = course;
     }
-    
-    
-    
 }
