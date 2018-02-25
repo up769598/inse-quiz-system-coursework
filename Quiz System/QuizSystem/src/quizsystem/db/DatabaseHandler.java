@@ -123,7 +123,7 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public String[] getPasswordAndSalt(String userID) throws SQLException {
-        String query = "SELECT usrID, password, salt FROM users WHERE usrID = ?;";
+        String query = "SELECT usrID, password, salt FROM users WHERE usrID =" + userID + ";";
         List<String> params = Arrays.asList(userID);
         ArrayList<ResultRow> results = this.executeParameterized(query, params);
         
@@ -174,5 +174,12 @@ public class DatabaseHandler {
         
         List<String> params = Arrays.asList(userID);
         return this.executeParameterized(query, params);
+    }
+
+    public void addUser(String userID, String password, String course) {
+        /*
+        * Used to add new users to the database
+        */
+        
     }
 }

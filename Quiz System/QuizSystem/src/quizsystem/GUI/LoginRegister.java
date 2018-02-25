@@ -1,9 +1,11 @@
 package quizsystem.GUI;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import quizsystem.db.DatabaseHandler;
 
 public class LoginRegister extends javax.swing.JFrame {
 
@@ -116,6 +118,9 @@ public class LoginRegister extends javax.swing.JFrame {
         String email = getRegEmail();
         String password = getRegPassword();
         String course = getRegCourse();
+        String[] userIDtemp = email.split("@");
+        userIDtemp = userIDtemp[0].split("up");
+        String userID = userIDtemp[1];
         if ("Default".equals(email) || "Default".equals(password) || course.equals("Choose Course Here")) {
             valid = false;
         }
@@ -131,6 +136,15 @@ public class LoginRegister extends javax.swing.JFrame {
             //Return an error
             createMessagePane("Error: Please ensure that all entered data is valid and try again","Error");
         }
+        try {
+           DatabaseHandler db = new DatabaseHandler();
+           if(db.isUserRegistered(userID)){
+               db.addUser(userID,password,course);
+           }
+       }
+       catch (SQLException ex) {
+           System.out.println(ex);
+       }
     }
 
     public void getLoginDetails() {
