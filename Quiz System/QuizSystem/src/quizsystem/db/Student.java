@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package quizsystem;
+package quizsystem.db;
+
+import java.sql.SQLException;
 
 /**
  *
  * @author Jack
  */
-public class Student extends User{
-    
-    public Student(String inEmail, String inPassword, String inCourse){
-        super(inEmail,inPassword,inCourse);
-        
+public class Student extends User {
+    public Student(ResultRow row) throws SQLException {
+        super(row);
     }
-    
 }

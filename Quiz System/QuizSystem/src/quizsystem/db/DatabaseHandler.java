@@ -51,7 +51,7 @@ public class DatabaseHandler {
             
             int colCount = meta.getColumnCount();
             while (rs.next()) {
-                ResultRow row = new ResultRow();
+                ResultRow row = new ResultRow(rs, meta);
                 for (int i = 1; i <= colCount; i++) {
                     row.addPair(meta.getColumnLabel(i), rs.getString(i));
                 }
@@ -100,7 +100,7 @@ public class DatabaseHandler {
             
             int colCount = meta.getColumnCount();
             while (rs.next()) {
-                ResultRow row = new ResultRow();
+                ResultRow row = new ResultRow(rs, meta);
                 for (int i = 1; i <= colCount; i++) {
                     row.addPair(meta.getColumnLabel(i), rs.getString(i));
                 }
@@ -123,7 +123,7 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public String[] getPasswordAndSalt(String userID) throws SQLException {
-        String query = "SELECT usrID, password, salt FROM users WHERE usrID = ?;";
+        String query = "SELECT usrID, password, salt FROM users WHERE usrID =" + userID + ";";
         List<String> params = Arrays.asList(userID);
         ArrayList<ResultRow> results = this.executeParameterized(query, params);
         
@@ -174,5 +174,11 @@ public class DatabaseHandler {
         
         List<String> params = Arrays.asList(userID);
         return this.executeParameterized(query, params);
+    }
+    
+    public void addUser(String userID, char[] password, byte[] salt, String course) {
+        /*
+        * Used to add new users to the database
+        */
     }
 }

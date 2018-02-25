@@ -5,17 +5,17 @@ import javax.swing.table.DefaultTableModel;
 import quizsystem.GUI.LoginRegister;
 
 public class StudentInterface extends javax.swing.JFrame {
-    private final quizsystem.Student student;
+    private final quizsystem.db.Student student;
     private DefaultTableModel modelSetQuiz;
     private DefaultTableModel modelCompQuiz;
-    private ArrayList<quizsystem.Quiz> setQuiz;
-    private ArrayList<quizsystem.Quiz> compQuiz;
+    private ArrayList<quizsystem.db.Quiz> setQuiz;
+    private ArrayList<quizsystem.db.Quiz> compQuiz;
     
     /**
      * Creates new form StudentInterface
      * @param inStudent The student account being accessed
      */
-    public StudentInterface(quizsystem.Student inStudent) {
+    public StudentInterface(quizsystem.db.Student inStudent) {
         initComponents();
         student = inStudent;
         Object[] colSetQuiz = {"Lecturer", "Name", "Time"};
@@ -27,12 +27,12 @@ public class StudentInterface extends javax.swing.JFrame {
         tblCompQuiz.setModel(modelCompQuiz);
     }
     
-    private void AddSetQuiz(quizsystem.Quiz inQuiz){
+    private void AddSetQuiz(quizsystem.db.Quiz inQuiz){
         Object[] data = {inQuiz.getLecturerName(),inQuiz.getName(),inQuiz.getTimelimit()};
         modelSetQuiz.addRow(data);
     }
     
-    private void AddCompQuiz(quizsystem.Quiz inQuiz){
+    private void AddCompQuiz(quizsystem.db.Quiz inQuiz){
         Object[] data = {inQuiz.getLecturerName(),inQuiz.getName(),inQuiz.getTimelimit(),0}; //Need to add answer
         modelCompQuiz.addRow(data);
     }
