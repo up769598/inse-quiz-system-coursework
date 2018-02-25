@@ -6,9 +6,23 @@
 package quizsystem.db;
 
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 public class Lecturer extends User {
     private String name;
+    
+    public static Lecturer forQuiz(DatabaseHandler handler, String lecturerID) throws SQLException {
+        String query = "SELECT * FROM users WHERE userType = 'L' AND userID = ? LIMIT 1;";
+        List<String> params = Arrays.asList(lecturerID);
+        List<ResultRow> results = handler.executeParameterized(query, params);
+        if (results.size() >= 1) {
+            return new Lecturer(results.get(0));
+        }
+        else {
+            return null;
+        }
+    }
         
     public Lecturer(ResultRow row) throws SQLException {
         super(row);

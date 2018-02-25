@@ -29,4 +29,8 @@ public class Answer extends Model {
     public String getQuestionID() {
         return this.get("questionID");
     }
+    
+    public String getAnswerText() {
+        return this.get("answer");
+    }
 }

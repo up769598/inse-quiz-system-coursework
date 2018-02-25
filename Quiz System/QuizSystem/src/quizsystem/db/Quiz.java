@@ -8,6 +8,8 @@ import java.util.List;
 public class Quiz extends Model {
     private List<Question> _questions;
     private HashMap<String, List<Answer>> _answers;
+    private Lecturer _lecturer;
+    private int _currentQuestion;
     
     public Quiz(ResultRow row) throws SQLException {
         super(row);
@@ -32,7 +34,52 @@ public class Quiz extends Model {
             
             this._answers.get(questionID).add(answers.get(i));
         }
+        
+        this._lecturer = Lecturer.forQuiz(handler, this.get("lecturerID"));
+        
+        this._currentQuestion = 1;
     }
+    
+    public int getCurrentQuestion() {
+        return this._currentQuestion;
+    }
+    
+    public void setCurrentQuestion(int newQuestion) {
+        this._currentQuestion = newQuestion;
+    }
+    
+    public List<Question> getQuestions() {
+        return this._questions;
+    }
+    
+    public String getQuestion(int questionNumber) {
+        return this._questions.get(questionNumber - 1).getQuestionText();
+    }
+    
+    public String[] getAnswers(int questionNumber) {
+        Question question = this._questions.get(questionNumber - 1);
+        String id = question.getQuestionID();
+        List<Answer> answers = this._answers.get(id);
+        List<String> texts = new ArrayList<>();
+        for (int i = 0; i < answers.size(); i++) {
+            texts.add(answers.get(i).getAnswerText());
+        }
+        return (String[])texts.toArray();
+    }
+    
+    public String getName() {
+        return this.get("name");
+    }
+    
+    public String getLecturerName() {
+        return this._lecturer.getName();
+    }
+    
+    public float getTimeLimit() {
+        String limit = this.get("timeLimit");
+        return Float.parseFloat(limit);
+    }
+    
 //    protected int quizID;
 //    protected String[] questions;
 //
@@ -43,7 +90,7 @@ public class Quiz extends Model {
 //    protected int[] correctAnswerIndex;
 //    protected int length;
 //    protected int score;
-//    protected int currentQuestion;
+//    protected int _currentQuestion;
 //    protected String name;
 //    protected String lecturerName;
 //    protected float timelimit;
@@ -58,7 +105,7 @@ public class Quiz extends Model {
 //        this.correctAnswerIndex = db_CorrectAnswer;
 //        this.quizID = db_QuizID;
 //        this.score = 0;
-//        this.currentQuestion = 0;
+//        this._currentQuestion = 0;
 //        this.name = db_Name;
 //        this.lecturerName = db_LecturerName;
 //        this.timelimit = db_Timelimit;
@@ -117,10 +164,10 @@ public class Quiz extends Model {
 //    }
 //
 //    public int getCurrentQuestion() {
-//        return this.currentQuestion;
+//        return this._currentQuestion;
 //    }
 //
 //    public void setCurrentQuestion(int questionIndex) {
-//        this.currentQuestion = questionIndex;
+//        this._currentQuestion = questionIndex;
 //    }
 }

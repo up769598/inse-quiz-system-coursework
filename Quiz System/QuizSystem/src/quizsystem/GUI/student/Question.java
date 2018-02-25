@@ -15,7 +15,7 @@ public class Question extends javax.swing.JDialog{
     }
     
     public void setNumQuestion(){
-        lblQuestionNumber.setText(Integer.toString(quiz.getCurrentQuestion())  + " / " + Integer.toString(quiz.getQuestions().length));
+        lblQuestionNumber.setText(Integer.toString(quiz.getCurrentQuestion())  + " / " + Integer.toString(quiz.getQuestions().size()));
     }
     
     public void nextQuestion(){

@@ -28,12 +28,12 @@ public class StudentInterface extends javax.swing.JFrame {
     }
     
     private void AddSetQuiz(quizsystem.db.Quiz inQuiz){
-        Object[] data = {inQuiz.getLecturerName(),inQuiz.getName(),inQuiz.getTimelimit()};
+        Object[] data = {inQuiz.getLecturerName(),inQuiz.getName(),inQuiz.getTimeLimit()};
         modelSetQuiz.addRow(data);
     }
     
     private void AddCompQuiz(quizsystem.db.Quiz inQuiz){
-        Object[] data = {inQuiz.getLecturerName(),inQuiz.getName(),inQuiz.getTimelimit(),0}; //Need to add answer
+        Object[] data = {inQuiz.getLecturerName(),inQuiz.getName(),inQuiz.getTimeLimit(),0}; //Need to add answer
         modelCompQuiz.addRow(data);
     }
 

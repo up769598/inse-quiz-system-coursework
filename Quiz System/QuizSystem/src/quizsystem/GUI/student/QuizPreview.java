@@ -16,8 +16,8 @@ public class QuizPreview extends javax.swing.JFrame {
         student = inStudent;
         lblName.setText("Name: " + quiz.getName());
         lblLecturerName.setText("Lecturer: " + quiz.getLecturerName());
-        lblTime.setText(Float.toString(quiz.getTimelimit()));
-        lblNumQuestions.setText("Total Number of Questions: " + Integer.toString(quiz.getQuestions().length));
+        lblTime.setText(Float.toString(quiz.getTimeLimit()));
+        lblNumQuestions.setText("Total Number of Questions: " + Integer.toString(quiz.getQuestions().size()));
     }
    
     @SuppressWarnings("unchecked")
