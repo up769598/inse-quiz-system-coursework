@@ -31,7 +31,7 @@ public class DatabaseHandler {
      * @return an ArrayList of ResultRows as returned by the database driver.
      * @throws SQLException 
      */
-    private ArrayList<ResultRow> execute(String query) throws SQLException {
+    protected ArrayList<ResultRow> execute(String query) throws SQLException {
         return execute(query, ResultSet.CONCUR_READ_ONLY);
     }
     
@@ -42,7 +42,7 @@ public class DatabaseHandler {
      * @return an ArrayList of ResultRows as returned by the database driver.
      * @throws SQLException 
      */
-    private ArrayList<ResultRow> execute(String query, int resultSetConcurrency) throws SQLException {
+    protected ArrayList<ResultRow> execute(String query, int resultSetConcurrency) throws SQLException {
         try {
             Statement stmt = this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, resultSetConcurrency);
             ResultSet rs = stmt.executeQuery(query);
@@ -73,7 +73,7 @@ public class DatabaseHandler {
      * @return an ArrayList of ResultRows as returned by the database driver
      * @throws SQLException 
      */
-    private ArrayList<ResultRow> executeParameterized(String query, List<String> parameters) throws SQLException {
+    protected ArrayList<ResultRow> executeParameterized(String query, List<String> parameters) throws SQLException {
         return this.executeParameterized(query, ResultSet.CONCUR_READ_ONLY, parameters);
     }
     
@@ -85,7 +85,7 @@ public class DatabaseHandler {
      * @return an ArrayList of ResultRows as returned by the database driver
      * @throws SQLException 
      */
-    private ArrayList<ResultRow> executeParameterized(String query, int resultSetConcurrency, List<String> parameters)
+    protected ArrayList<ResultRow> executeParameterized(String query, int resultSetConcurrency, List<String> parameters)
       throws SQLException {
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,

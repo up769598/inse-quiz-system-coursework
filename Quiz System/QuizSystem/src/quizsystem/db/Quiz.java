@@ -1,17 +1,37 @@
 package quizsystem.db;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Quiz extends Model {
-    private List<String> _questions;
-    private HashMap<Integer, List<String>> _answers;
+    private List<Question> _questions;
+    private HashMap<String, List<Answer>> _answers;
     
     public Quiz(ResultRow row) throws SQLException {
         super(row);
         
-        // TODO grab questions & answers, plus any other applicable relations
+        this._answers = new HashMap<>();
+        DatabaseHandler handler = new DatabaseHandler();
+        
+        List<Question> questions = Question.questionsInQuiz(handler, this.get("quizID"));
+        this._questions = questions;
+        List<String> questionIDs = new ArrayList<>();
+        for (int i = 0; i < questions.size(); i++) {
+            questionIDs.add(questions.get(i).getQuestionID());
+        }
+        
+        List<Answer> answers = Answer.answersForQuestions(handler, questionIDs);
+        for (int i = 0; i < answers.size(); i++) {
+            String questionID = answers.get(i).getQuestionID();
+            
+            if (!this._answers.containsKey(questionID)) {
+                this._answers.put(questionID, new ArrayList<>());
+            }
+            
+            this._answers.get(questionID).add(answers.get(i));
+        }
     }
 //    protected int quizID;
 //    protected String[] questions;
