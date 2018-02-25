@@ -16,13 +16,8 @@ public class DatabaseHandler {
      * @throws SQLException 
      */
     public DatabaseHandler() throws SQLException {
-        try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://52.91.67.192:3306/inse", "inse", "Wv7q7hG9");
-            this.connection = con;
-        } catch (SQLException ex) {
-            System.out.println(ex);
-            throw ex; // Re-throw so that calling code (ultimately the UI layer) can handle and display error messages
-        }
+        Connection con = DriverManager.getConnection("jdbc:mysql://52.91.67.192:3306/inse", "inse", "Wv7q7hG9");
+        this.connection = con;
     }
     
     /**
@@ -43,27 +38,21 @@ public class DatabaseHandler {
      * @throws SQLException 
      */
     protected ArrayList<ResultRow> execute(String query, int resultSetConcurrency) throws SQLException {
-        try {
-            Statement stmt = this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, resultSetConcurrency);
-            ResultSet rs = stmt.executeQuery(query);
-            ResultSetMetaData meta = rs.getMetaData();
-            ArrayList<ResultRow> rows = new ArrayList<>();
-            
-            int colCount = meta.getColumnCount();
-            while (rs.next()) {
-                ResultRow row = new ResultRow(rs, meta);
-                for (int i = 1; i <= colCount; i++) {
-                    row.addPair(meta.getColumnLabel(i), rs.getString(i));
-                }
-                rows.add(row);
+        Statement stmt = this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, resultSetConcurrency);
+        ResultSet rs = stmt.executeQuery(query);
+        ResultSetMetaData meta = rs.getMetaData();
+        ArrayList<ResultRow> rows = new ArrayList<>();
+
+        int colCount = meta.getColumnCount();
+        while (rs.next()) {
+            ResultRow row = new ResultRow(rs, meta);
+            for (int i = 1; i <= colCount; i++) {
+                row.addPair(meta.getColumnLabel(i), rs.getString(i));
             }
-            
-            return rows;
+            rows.add(row);
         }
-        catch (SQLException ex) {
-            System.out.println(ex);
-            throw ex;
-        }
+
+        return rows;
     }
     
     /**
@@ -87,32 +76,26 @@ public class DatabaseHandler {
      */
     protected ArrayList<ResultRow> executeParameterized(String query, int resultSetConcurrency, List<String> parameters)
       throws SQLException {
-        try {
-            PreparedStatement stmt = this.connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
-              resultSetConcurrency);
-            for (int i = 0; i < parameters.size(); i++) {
-                stmt.setString(i + 1, parameters.get(i));
-            }
+        PreparedStatement stmt = this.connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
+          resultSetConcurrency);
+        for (int i = 0; i < parameters.size(); i++) {
+            stmt.setString(i + 1, parameters.get(i));
+        }
 
-            ResultSet rs = stmt.executeQuery();
-            ResultSetMetaData meta = rs.getMetaData();
-            ArrayList<ResultRow> rows = new ArrayList<>();
-            
-            int colCount = meta.getColumnCount();
-            while (rs.next()) {
-                ResultRow row = new ResultRow(rs, meta);
-                for (int i = 1; i <= colCount; i++) {
-                    row.addPair(meta.getColumnLabel(i), rs.getString(i));
-                }
-                rows.add(row);
+        ResultSet rs = stmt.executeQuery();
+        ResultSetMetaData meta = rs.getMetaData();
+        ArrayList<ResultRow> rows = new ArrayList<>();
+
+        int colCount = meta.getColumnCount();
+        while (rs.next()) {
+            ResultRow row = new ResultRow(rs, meta);
+            for (int i = 1; i <= colCount; i++) {
+                row.addPair(meta.getColumnLabel(i), rs.getString(i));
             }
-            
-            return rows;
+            rows.add(row);
         }
-        catch (SQLException ex) {
-            System.out.println(ex);
-            throw ex;
-        }
+
+        return rows;
     }
 
     /**
@@ -123,7 +106,7 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public String[] getPasswordAndSalt(String userID) throws SQLException {
-        String query = "SELECT usrID, password, salt FROM users WHERE usrID =" + userID + ";";
+        String query = "SELECT usrID, password, salt FROM users WHERE usrID = ?;";
         List<String> params = Arrays.asList(userID);
         ArrayList<ResultRow> results = this.executeParameterized(query, params);
         

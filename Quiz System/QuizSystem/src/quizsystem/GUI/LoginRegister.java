@@ -149,6 +149,7 @@ public class LoginRegister extends javax.swing.JFrame {
            }
        }
        catch (SQLException ex) {
+           System.out.println("[WARN] LoginRegister.getRegDetails encountered SQLException:");
            System.out.println(ex);
        }
     }

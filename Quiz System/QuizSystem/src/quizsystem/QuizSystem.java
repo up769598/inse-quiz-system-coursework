@@ -14,6 +14,7 @@ public class QuizSystem {
            db.getPasswordAndSalt("769598");
        }
        catch (SQLException ex) {
+           System.out.println("[WARN] QuizSystem.main encountered SQLException:");
            System.out.println(ex);
        }
     }
