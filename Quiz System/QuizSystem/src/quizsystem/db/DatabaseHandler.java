@@ -51,7 +51,7 @@ public class DatabaseHandler {
             
             int colCount = meta.getColumnCount();
             while (rs.next()) {
-                ResultRow row = new ResultRow();
+                ResultRow row = new ResultRow(rs, meta);
                 for (int i = 1; i <= colCount; i++) {
                     row.addPair(meta.getColumnLabel(i), rs.getString(i));
                 }
@@ -100,7 +100,7 @@ public class DatabaseHandler {
             
             int colCount = meta.getColumnCount();
             while (rs.next()) {
-                ResultRow row = new ResultRow();
+                ResultRow row = new ResultRow(rs, meta);
                 for (int i = 1; i <= colCount; i++) {
                     row.addPair(meta.getColumnLabel(i), rs.getString(i));
                 }

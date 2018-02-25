@@ -1,9 +1,9 @@
 package quizsystem.GUI.student;
 
 public class Question extends javax.swing.JDialog{
-    quizsystem.Quiz quiz;
+    quizsystem.db.Quiz quiz;
    
-    public Question(java.awt.Frame parent, boolean modal, quizsystem.Quiz inQuiz) {
+    public Question(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz) {
         initComponents();
         quiz = inQuiz;
     }

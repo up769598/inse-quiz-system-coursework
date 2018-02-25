@@ -1,4 +1,4 @@
-package quizsystem;
+package quizsystem.db;
 
 /**
  *
