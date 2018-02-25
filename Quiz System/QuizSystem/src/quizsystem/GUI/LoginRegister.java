@@ -5,6 +5,7 @@ import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import quizsystem.Login;
 import quizsystem.db.DatabaseHandler;
 
 public class LoginRegister extends javax.swing.JFrame {
@@ -100,13 +101,16 @@ public class LoginRegister extends javax.swing.JFrame {
         return "Default"; //Return the email if correct
     }
 
-    public String getRegPassword() {
-        String password = String.copyValueOf(getPasswordInput(tfPasswordRegister));
-        String cpassword = String.copyValueOf(getPasswordInput(tfCPasswordRegister));
+    public char[] getRegPassword() {
+        char[] password = getPasswordInput(tfPasswordRegister);
+        char[] cpassword = getPasswordInput(tfCPasswordRegister);
         if (validatePasswords()) {
             return password;
         }
-        return "Default";
+        char [] def = null;
+        def[1] = 'd';
+        return def;
+        
     }
 
     public String getRegCourse() {
@@ -116,7 +120,7 @@ public class LoginRegister extends javax.swing.JFrame {
     public void getRegDetails() {
         boolean valid = true;
         String email = getRegEmail();
-        String password = getRegPassword();
+        char[] password = getRegPassword();
         String course = getRegCourse();
         String[] userIDtemp = email.split("@");
         userIDtemp = userIDtemp[0].split("up");
@@ -139,7 +143,9 @@ public class LoginRegister extends javax.swing.JFrame {
         try {
            DatabaseHandler db = new DatabaseHandler();
            if(db.isUserRegistered(userID)){
-               db.addUser(userID,password,course);
+               byte[] salt = Login.getNextSalt();
+               Login.hash(password,salt);
+               db.addUser(userID, password, salt, course);
            }
        }
        catch (SQLException ex) {

@@ -175,11 +175,10 @@ public class DatabaseHandler {
         List<String> params = Arrays.asList(userID);
         return this.executeParameterized(query, params);
     }
-
-    public void addUser(String userID, String password, String course) {
+    
+    public void addUser(String userID, char[] password, byte[] salt, String course) {
         /*
         * Used to add new users to the database
         */
-        
     }
 }
