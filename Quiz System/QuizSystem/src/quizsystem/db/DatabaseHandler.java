@@ -16,7 +16,7 @@ public class DatabaseHandler {
      * @throws SQLException 
      */
     public DatabaseHandler() throws SQLException {
-        Connection con = DriverManager.getConnection("jdbc:mysql://52.91.67.192:3306/inse", "inse", "Wv7q7hG9");
+        Connection con = DriverManager.getConnection("jdbc:mysql://52.91.67.192:3306/Quiz", "inse", "Wv7q7hG9");
         this.connection = con;
     }
     
@@ -27,7 +27,7 @@ public class DatabaseHandler {
      * @throws SQLException 
      */
     protected ArrayList<ResultRow> execute(String query) throws SQLException {
-        return execute(query, ResultSet.CONCUR_READ_ONLY);
+        return execute(query, ResultSet.CONCUR_UPDATABLE);
     }
     
     /**
@@ -63,7 +63,7 @@ public class DatabaseHandler {
      * @throws SQLException 
      */
     protected ArrayList<ResultRow> executeParameterized(String query, List<String> parameters) throws SQLException {
-        return this.executeParameterized(query, ResultSet.CONCUR_READ_ONLY, parameters);
+        return this.executeParameterized(query, ResultSet.CONCUR_UPDATABLE, parameters);
     }
     
     /**
@@ -126,7 +126,7 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public boolean isUserRegistered(String userID) throws SQLException {
-        String query = "SELECT usrID FROM users WHERE usrID = ?;";
+        String query = "SELECT usrID FROM Users WHERE usrID = ?;";
         List<String> params = Arrays.asList(userID);
         ArrayList<ResultRow> results = this.executeParameterized(query, params);
         
@@ -144,12 +144,12 @@ public class DatabaseHandler {
     public ArrayList<ResultRow> getQuizzesForStudent(String userID, QuizState state) throws SQLException {
         String query;
         if (state == QuizState.INCOMPLETE) {
-            query = "SELECT * FROM quizzes AS q LEFT JOIN quiz_completions AS qc ON qc.quiz_id = q.id" +
-                    "AND qc.user_id = ? WHERE qc.id IS NULL;";
+            query = "SELECT * FROM Quiz AS q LEFT JOIN QuizCompletion AS qc ON qc.quizID = q.quizID" +
+                    "AND qc.usrID = ? WHERE qc.quizID IS NULL;";
         }
         else if (state == QuizState.COMPLETED) {
-            query = "SELECT * FROM quizzes AS q INNER JOIN quiz_completions AS qc ON qc.quiz_id = q.id" +
-                    "WHERE qc.user_id = ?";
+            query = "SELECT * FROM Quiz AS q INNER JOIN QuizCompletion AS qc ON qc.quizID = q.quizID" +
+                    "WHERE qc.usrID = ?";
         }
         else {
             throw new IllegalStateException("That's not even meant to exist.");

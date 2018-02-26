@@ -13,7 +13,7 @@ public class Lecturer extends User {
     private String name;
     
     public static Lecturer forQuiz(DatabaseHandler handler, String lecturerID) throws SQLException {
-        String query = "SELECT * FROM users WHERE userType = 'L' AND userID = ? LIMIT 1;";
+        String query = "SELECT * FROM Users WHERE usrType = 'L' AND usrID = ? LIMIT 1;";
         List<String> params = Arrays.asList(lecturerID);
         List<ResultRow> results = handler.executeParameterized(query, params);
         if (results.size() >= 1) {
