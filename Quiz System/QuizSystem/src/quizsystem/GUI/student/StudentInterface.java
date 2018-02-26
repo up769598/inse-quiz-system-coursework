@@ -3,41 +3,148 @@ package quizsystem.GUI.student;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import quizsystem.GUI.LoginRegister;
+import quizsystem.db.Quiz;
 
 public class StudentInterface extends javax.swing.JFrame {
-    private final quizsystem.db.Student student;
+
     private DefaultTableModel modelSetQuiz;
     private DefaultTableModel modelCompQuiz;
     private ArrayList<quizsystem.db.Quiz> setQuiz;
     private ArrayList<quizsystem.db.Quiz> compQuiz;
-    
+
     /**
      * Creates new form StudentInterface
-     * @param inStudent The student account being accessed
      */
-    public StudentInterface(quizsystem.db.Student inStudent) {
+    public StudentInterface() {
         initComponents();
-        student = inStudent;
+        compQuiz = new ArrayList<>();
+        setQuiz = new ArrayList<>();
+
         Object[] colSetQuiz = {"Lecturer", "Name", "Time"};
-        modelSetQuiz = new DefaultTableModel(colSetQuiz,0);
+        modelSetQuiz = new DefaultTableModel(colSetQuiz, 0);
         tblSetQuiz.setModel(modelSetQuiz);
-        
-        Object[] colCompQuiz = {"Lecturer","Name","Time","Mark"};
-        modelCompQuiz = new DefaultTableModel(colCompQuiz,0);
+
+        Object[] colCompQuiz = {"Lecturer", "Name", "Time", "Mark"};
+        modelCompQuiz = new DefaultTableModel(colCompQuiz, 0);
         tblCompQuiz.setModel(modelCompQuiz);
     }
-    
-    private void AddSetQuiz(quizsystem.db.Quiz inQuiz){
-        Object[] data = {inQuiz.getLecturerName(),inQuiz.getName(),inQuiz.getTimeLimit()};
+
+    /**
+     * Appends data from a quiz onto a new row on the set quiz table
+     *
+     * @param inQuiz The Quiz to be appended onto the set quiz table
+     */
+    private void addSetQuiz(quizsystem.db.Quiz inQuiz) {
+        Object[] data = {inQuiz.getLecturerName(), inQuiz.getName(), inQuiz.getTimeLimit()};
         modelSetQuiz.addRow(data);
     }
-    
-    private void AddCompQuiz(quizsystem.db.Quiz inQuiz){
-        Object[] data = {inQuiz.getLecturerName(),inQuiz.getName(),inQuiz.getTimeLimit(),0}; //Need to add answer
+
+    /**
+     * Appends data from a quiz onto a new row on the complete quiz table
+     *
+     * @param inQuiz The Quiz to be appended onto the complete quiz table
+     */
+    private void addCompQuiz(quizsystem.db.Quiz inQuiz) {
+        Object[] data = {inQuiz.getLecturerName(), inQuiz.getName(), inQuiz.getTimeLimit(), 0}; //Need to add answer
         modelCompQuiz.addRow(data);
     }
 
-        @SuppressWarnings("unchecked")
+    /**
+     * Clears the set quiz table of all data
+     */
+    private void clearSetQuizTable() {
+        modelSetQuiz.setRowCount(0);
+    }
+
+    /**
+     * Clears the the completed quiz table of all data
+     */
+    private void clearCompQuizTable() {
+        modelCompQuiz.setRowCount(0);
+    }
+
+    /**
+     * Adds data from all quizzes within a passed list of quizzes to the set
+     * quiz table
+     *
+     * @param inSetQuiz Arraylist of all quizzes to be added to the table
+     */
+    private void displaySetQuizzes(ArrayList<quizsystem.db.Quiz> inSetQuiz) {
+        clearSetQuizTable();
+        inSetQuiz.forEach((quiz) -> {
+            addSetQuiz(quiz);
+        });
+    }
+
+    /**
+     * Adds data from all quizzes within a passed list of quizzes to the
+     * completed quiz table
+     *
+     * @param inCompQuiz ArrayList of all quizzes to be added to the table
+     */
+    private void displayCompQuizzes(ArrayList<quizsystem.db.Quiz> inCompQuiz) {
+        clearCompQuizTable();
+        inCompQuiz.forEach((quiz) -> {
+            addCompQuiz(quiz);
+        });
+    }
+
+    /**
+     * Searches the list of completed quizzes for quizzes that match search terms then display results on gui
+     * @param name Name of the quiz to search by
+     * @param lectName Name of the quiz creating lecturer to search by
+     */
+    public void searchCompQuiz(String name, String lectName) {
+        ArrayList<quizsystem.db.Quiz> searchList1 = searchByName(name,compQuiz);
+        ArrayList<quizsystem.db.Quiz> searchList2 = searchByName(lectName,setQuiz);
+        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        searchList1.stream().filter((quiz) -> (searchList2.contains(quiz))).forEachOrdered((quiz) -> {
+            tempList.add(quiz);
+        });
+        if(!tempList.isEmpty()){
+            displayCompQuizzes(tempList);
+        } else {
+            //create a message box saying that no results were found
+        }
+    }
+    
+    /**
+     * Searches through a list of quizzes to find quizzes that have names that contain the search term
+     * @param name Name of the quiz used as the search term
+     * @param quizList List of quizzes to search through
+     * @return List of quizzes with names containing the search term
+     */
+    public ArrayList<quizsystem.db.Quiz> searchByName(String name, ArrayList<quizsystem.db.Quiz> quizList){
+        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        if (!name.equals("Default")) {
+            for (Quiz quiz : quizList) {
+                if (quiz.getName().contains(name)) {
+                    tempList.add(quiz);
+                }
+            }
+        }
+        return tempList;
+    }
+    
+    /**
+     * Searches through a list of quizzes to find quizzes that have lecturer names that contain the search term
+     * @param lectName Name of the quiz creator lecturer used as a search term
+     * @param quizList List of quizzes to search through
+     * @return List of quizzes with lecturer names containing the search term
+     */
+    public ArrayList<quizsystem.db.Quiz> searchByLectName(String lectName, ArrayList<quizsystem.db.Quiz> quizList){
+        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        if (!lectName.equals("Default")) {
+            for (Quiz quiz : quizList) {
+                if (quiz.getLecturerName().contains(lectName)) {
+                    tempList.add(quiz);
+                }
+            }
+        }
+        return tempList;
+    }
+
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -116,7 +223,7 @@ public class StudentInterface extends javax.swing.JFrame {
                         .addGroup(pnlSetQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(srpnlSetQuiz, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
                             .addGroup(pnlSetQuizLayout.createSequentialGroup()
-                                .addComponent(lblSetQuizTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblSetQuizTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -126,8 +233,8 @@ public class StudentInterface extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblSetQuizTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(srpnlSetQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(srpnlSetQuiz, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSelectQuiz)
                 .addContainerGap())
         );
@@ -145,22 +252,22 @@ public class StudentInterface extends javax.swing.JFrame {
         pnlRandom.setLayout(pnlRandomLayout);
         pnlRandomLayout.setHorizontalGroup(
             pnlRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRandomLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnlRandomLayout.createSequentialGroup()
+                .addGap(145, 145, 145)
                 .addComponent(btnRandomQuiz)
-                .addGap(180, 180, 180))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlRandomLayout.setVerticalGroup(
             pnlRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRandomLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnlRandomLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
                 .addComponent(btnRandomQuiz)
-                .addGap(37, 37, 37))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlCompQuiz.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lblCompQuizTitle.setText("Review Completed quizzes");
+        lblCompQuizTitle.setText("Review Completed Quizzes");
 
         tblCompQuiz.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -212,19 +319,24 @@ public class StudentInterface extends javax.swing.JFrame {
             .addGroup(pnlCompQuizLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(srpnlCompQuiz)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCompQuizLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlCompQuizLayout.createSequentialGroup()
+                                .addComponent(btnLogout)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnExit))
+                            .addGroup(pnlCompQuizLayout.createSequentialGroup()
+                                .addComponent(btnAdvSearch)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnReviewAnswers)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnAttemptAgain))))
                     .addGroup(pnlCompQuizLayout.createSequentialGroup()
-                        .addComponent(btnLogout)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnExit))
-                    .addGroup(pnlCompQuizLayout.createSequentialGroup()
-                        .addComponent(btnAdvSearch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnReviewAnswers)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAttemptAgain))
-                    .addComponent(srpnlCompQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCompQuizTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lblCompQuizTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         pnlCompQuizLayout.setVerticalGroup(
             pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,8 +344,8 @@ public class StudentInterface extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblCompQuizTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(srpnlCompQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
+                .addComponent(srpnlCompQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdvSearch)
                     .addComponent(btnReviewAnswers)
@@ -265,9 +377,9 @@ public class StudentInterface extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(pnlCompQuiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnlSetQuiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pnlRandom, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(pnlSetQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pnlRandom, javax.swing.GroupLayout.PREFERRED_SIZE, 58, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -278,15 +390,15 @@ public class StudentInterface extends javax.swing.JFrame {
         //Selects the quiz pressed on the table and continues onto taking that quiz
         // quizsystem.Quiz selectedQuiz = getSelectedQuiz(selectedQuiz);
         //QuizPreview quiz = new QuizPreview(selectedQuiz,student)
-       //quiz.setVisible(true);
+        //quiz.setVisible(true);
     }//GEN-LAST:event_btnSelectQuizActionPerformed
 
     private void btnRandomQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRandomQuizActionPerformed
-         //Create a random quiz
+        //Create a random quiz
         // quizsystem.Quiz random = getRandomQuiz();
         //QuizPreview randomQuiz = new QuizPreview(random,student)
-       //randomQuiz.setVisible(true);
-        
+        //randomQuiz.setVisible(true);
+
     }//GEN-LAST:event_btnRandomQuizActionPerformed
 
     private void btnAdvSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdvSearchActionPerformed
@@ -308,7 +420,7 @@ public class StudentInterface extends javax.swing.JFrame {
         LoginRegister login = new LoginRegister();
         login.setVisible(true);
         this.dispose();
-        
+
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
