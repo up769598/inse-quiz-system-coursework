@@ -126,7 +126,7 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public boolean isUserRegistered(String userID) throws SQLException {
-        String query = "SELECT usrID FROM users WHERE usrID = " + userID +  ";";
+        String query = "SELECT usrID FROM users WHERE usrID = ?;";
         List<String> params = Arrays.asList(userID);
         ArrayList<ResultRow> results = this.executeParameterized(query, params);
         
