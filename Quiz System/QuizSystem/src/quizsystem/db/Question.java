@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Question extends Model {
     public static List<Question> questionsInQuiz(DatabaseHandler handler, String quizID) throws SQLException {
-        String query = "SELECT * FROM questions WHERE quizID = ?;";
+        String query = "SELECT * FROM Question WHERE quizID = ?;";
         List<String> params = Arrays.asList(quizID);
         List<ResultRow> results = handler.executeParameterized(query, params);
         List<Question> questions = new ArrayList<>();
