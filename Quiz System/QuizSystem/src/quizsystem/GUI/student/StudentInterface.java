@@ -1,6 +1,7 @@
 package quizsystem.GUI.student;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import quizsystem.GUI.LoginRegister;
 import quizsystem.db.Quiz;
@@ -11,14 +12,18 @@ public class StudentInterface extends javax.swing.JFrame {
     private DefaultTableModel modelCompQuiz;
     private ArrayList<quizsystem.db.Quiz> setQuiz;
     private ArrayList<quizsystem.db.Quiz> compQuiz;
+    private ArrayList<quizsystem.db.Quiz> searchQuiz;
+    private boolean searched;
 
     /**
-     * Creates new form StudentInterface
+     * Creates new form StudentInterface, initialises the ArrayLists and sets up the model for the two gui tables.
      */
     public StudentInterface() {
         initComponents();
         compQuiz = new ArrayList<>();
         setQuiz = new ArrayList<>();
+        searchQuiz = new ArrayList<>();
+        searched = false;
 
         Object[] colSetQuiz = {"Lecturer", "Name", "Time"};
         modelSetQuiz = new DefaultTableModel(colSetQuiz, 0);
@@ -50,14 +55,14 @@ public class StudentInterface extends javax.swing.JFrame {
     }
 
     /**
-     * Clears the set quiz table of all data
+     * Clears the set quiz table of all data.
      */
     private void clearSetQuizTable() {
         modelSetQuiz.setRowCount(0);
     }
 
     /**
-     * Clears the the completed quiz table of all data
+     * Clears the the completed quiz table of all data.
      */
     private void clearCompQuizTable() {
         modelCompQuiz.setRowCount(0);
@@ -90,31 +95,39 @@ public class StudentInterface extends javax.swing.JFrame {
     }
 
     /**
-     * Searches the list of completed quizzes for quizzes that match search terms then display results on gui
+     * Searches the list of completed quizzes for quizzes that match search
+     * terms then display results on gui
+     *
      * @param name Name of the quiz to search by
      * @param lectName Name of the quiz creating lecturer to search by
      */
     public void searchCompQuiz(String name, String lectName) {
-        ArrayList<quizsystem.db.Quiz> searchList1 = searchByName(name,compQuiz);
-        ArrayList<quizsystem.db.Quiz> searchList2 = searchByName(lectName,setQuiz);
-        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        searchQuiz.clear();
+        ArrayList<quizsystem.db.Quiz> searchList1 = searchByName(name, compQuiz);
+        ArrayList<quizsystem.db.Quiz> searchList2 = searchByName(lectName, setQuiz);
         searchList1.stream().filter((quiz) -> (searchList2.contains(quiz))).forEachOrdered((quiz) -> {
-            tempList.add(quiz);
+            searchQuiz.add(quiz);
         });
-        if(!tempList.isEmpty()){
-            displayCompQuizzes(tempList);
+        if (!searchQuiz.isEmpty()) {
+            //display the new quizzes
+            searched = true;
+            displayCompQuizzes(searchQuiz);
         } else {
             //create a message box saying that no results were found
+            Object[] options = {"Ok"};
+            JOptionPane.showOptionDialog(this, "No results found", "", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
         }
     }
-    
+
     /**
-     * Searches through a list of quizzes to find quizzes that have names that contain the search term
+     * Searches through a list of quizzes to find quizzes that have names that
+     * contain the search term
+     *
      * @param name Name of the quiz used as the search term
      * @param quizList List of quizzes to search through
      * @return List of quizzes with names containing the search term
      */
-    public ArrayList<quizsystem.db.Quiz> searchByName(String name, ArrayList<quizsystem.db.Quiz> quizList){
+    public ArrayList<quizsystem.db.Quiz> searchByName(String name, ArrayList<quizsystem.db.Quiz> quizList) {
         ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
         if (!name.equals("Default")) {
             for (Quiz quiz : quizList) {
@@ -125,14 +138,16 @@ public class StudentInterface extends javax.swing.JFrame {
         }
         return tempList;
     }
-    
+
     /**
-     * Searches through a list of quizzes to find quizzes that have lecturer names that contain the search term
+     * Searches through a list of quizzes to find quizzes that have lecturer
+     * names that contain the search term
+     *
      * @param lectName Name of the quiz creator lecturer used as a search term
      * @param quizList List of quizzes to search through
      * @return List of quizzes with lecturer names containing the search term
      */
-    public ArrayList<quizsystem.db.Quiz> searchByLectName(String lectName, ArrayList<quizsystem.db.Quiz> quizList){
+    public ArrayList<quizsystem.db.Quiz> searchByLectName(String lectName, ArrayList<quizsystem.db.Quiz> quizList) {
         ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
         if (!lectName.equals("Default")) {
             for (Quiz quiz : quizList) {
@@ -143,7 +158,42 @@ public class StudentInterface extends javax.swing.JFrame {
         }
         return tempList;
     }
+    
+    /**
+     * Clear the table of all quizzes found in the advanced search and reset the table to display all completed quizzes.
+     */
+    public void clearSearch(){
+        searched = false;
+        displayCompQuizzes(compQuiz);
+    }
 
+    /**
+     * Create a new advanced search window and upon window close, display results of search to the completed quiz table.
+     */
+    public void advSearch(){
+        AdvSearch advSearch = new AdvSearch(this, true);
+        advSearch.setVisible(true);
+        searchCompQuiz(advSearch.getName(),advSearch.getLecturer());
+        advSearch.dispose();
+    }
+    
+    /**
+     * Log out of the system and return to the Login/Register GUI
+     */
+    public void Logout(){
+        LoginRegister login = new LoginRegister();
+        login.setVisible(true);
+        this.dispose();
+    }
+
+    /**
+     * Get the quiz selected by the user and load the quiz preview window to allow the user to take the quiz.
+     */
+    public void takeQuiz(){
+        quizsystem.db.Quiz quiz = setQuiz.get(tblSetQuiz.getSelectedRow());
+        quizsystem.GUI.student.QuizPreview qp = new quizsystem.GUI.student.QuizPreview(quiz);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -164,9 +214,10 @@ public class StudentInterface extends javax.swing.JFrame {
         tblCompQuiz = new javax.swing.JTable();
         btnAdvSearch = new javax.swing.JButton();
         btnReviewAnswers = new javax.swing.JButton();
+        btnAttemptAgain = new javax.swing.JButton();
+        btnClearSearch = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
-        btnAttemptAgain = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -296,6 +347,50 @@ public class StudentInterface extends javax.swing.JFrame {
             }
         });
 
+        btnAttemptAgain.setText("Attempt Again");
+
+        btnClearSearch.setText("Clear Search");
+
+        javax.swing.GroupLayout pnlCompQuizLayout = new javax.swing.GroupLayout(pnlCompQuiz);
+        pnlCompQuiz.setLayout(pnlCompQuizLayout);
+        pnlCompQuizLayout.setHorizontalGroup(
+            pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCompQuizLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(srpnlCompQuiz)
+                    .addGroup(pnlCompQuizLayout.createSequentialGroup()
+                        .addComponent(lblCompQuizTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCompQuizLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAdvSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnClearSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(178, 178, 178)
+                        .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAttemptAgain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnReviewAnswers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        pnlCompQuizLayout.setVerticalGroup(
+            pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCompQuizLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblCompQuizTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(srpnlCompQuiz)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdvSearch)
+                    .addComponent(btnReviewAnswers))
+                .addGap(18, 18, 18)
+                .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAttemptAgain)
+                    .addComponent(btnClearSearch))
+                .addGap(20, 20, 20))
+        );
+
         btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -310,53 +405,6 @@ public class StudentInterface extends javax.swing.JFrame {
             }
         });
 
-        btnAttemptAgain.setText("Attempt Again");
-
-        javax.swing.GroupLayout pnlCompQuizLayout = new javax.swing.GroupLayout(pnlCompQuiz);
-        pnlCompQuiz.setLayout(pnlCompQuizLayout);
-        pnlCompQuizLayout.setHorizontalGroup(
-            pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCompQuizLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(srpnlCompQuiz)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCompQuizLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlCompQuizLayout.createSequentialGroup()
-                                .addComponent(btnLogout)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnExit))
-                            .addGroup(pnlCompQuizLayout.createSequentialGroup()
-                                .addComponent(btnAdvSearch)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnReviewAnswers)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnAttemptAgain))))
-                    .addGroup(pnlCompQuizLayout.createSequentialGroup()
-                        .addComponent(lblCompQuizTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        pnlCompQuizLayout.setVerticalGroup(
-            pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCompQuizLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblCompQuizTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(srpnlCompQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdvSearch)
-                    .addComponent(btnReviewAnswers)
-                    .addComponent(btnAttemptAgain))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLogout)
-                    .addComponent(btnExit))
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -364,9 +412,14 @@ public class StudentInterface extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlSetQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlRandom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(pnlSetQuiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pnlRandom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnLogout)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnExit)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(pnlCompQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -379,7 +432,12 @@ public class StudentInterface extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlSetQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(pnlRandom, javax.swing.GroupLayout.PREFERRED_SIZE, 58, Short.MAX_VALUE)))
+                        .addComponent(pnlRandom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnLogout)
+                            .addComponent(btnExit))
+                        .addGap(0, 4, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -402,13 +460,7 @@ public class StudentInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRandomQuizActionPerformed
 
     private void btnAdvSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdvSearchActionPerformed
-        //Advanced Search through completed quizzes
-        AdvSearch advSearch = new AdvSearch(this, true);
-        advSearch.setVisible(true);
-        String name = advSearch.getName();
-        String topic = advSearch.getTopic();
-        String lecturer = advSearch.getLecturer();
-        advSearch.dispose();
+        advSearch();
     }//GEN-LAST:event_btnAdvSearchActionPerformed
 
     private void btnReviewAnswersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewAnswersActionPerformed
@@ -416,11 +468,7 @@ public class StudentInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReviewAnswersActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        //Logout and return to the lgoin screen
-        LoginRegister login = new LoginRegister();
-        login.setVisible(true);
-        this.dispose();
-
+        Logout();        
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
@@ -430,6 +478,7 @@ public class StudentInterface extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdvSearch;
     private javax.swing.JButton btnAttemptAgain;
+    private javax.swing.JButton btnClearSearch;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnRandomQuiz;

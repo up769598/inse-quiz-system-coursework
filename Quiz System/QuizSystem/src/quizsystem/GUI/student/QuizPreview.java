@@ -3,17 +3,17 @@ package quizsystem.GUI.student;
 public class QuizPreview extends javax.swing.JFrame {
         
     private final quizsystem.db.Quiz quiz;
-    private final quizsystem.db.Student student;
+    //private final quizsystem.db.Student student;
 
     /**
      * Creates new form QuizPreview
      * @param inQuiz Quiz being taken by the student
      * @param inStudent The student account being accessed
      */
-    public QuizPreview(quizsystem.db.Quiz inQuiz, quizsystem.db.Student inStudent) {
+    public QuizPreview(quizsystem.db.Quiz inQuiz) {
         initComponents();
         quiz = inQuiz;
-        student = inStudent;
+        //student = inStudent;
         lblName.setText("Name: " + quiz.getName());
         lblLecturerName.setText("Lecturer: " + quiz.getLecturerName());
         lblTime.setText(Float.toString(quiz.getTimeLimit()));
