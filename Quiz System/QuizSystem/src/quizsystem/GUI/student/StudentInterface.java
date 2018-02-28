@@ -101,10 +101,12 @@ public class StudentInterface extends javax.swing.JFrame {
      * @param name Name of the quiz to search by
      * @param lectName Name of the quiz creating lecturer to search by
      */
-    public void searchCompQuiz(String name, String lectName) {
+    public void searchCompQuiz(String name, String lectName,String topic) {
         searchQuiz.clear();
         ArrayList<quizsystem.db.Quiz> searchList1 = searchByName(name, compQuiz);
-        ArrayList<quizsystem.db.Quiz> searchList2 = searchByName(lectName, setQuiz);
+        // changed from searchbyname to seachByLectName 
+        ArrayList<quizsystem.db.Quiz> searchList2 = searchByLectName(lectName, setQuiz);
+        ArrayList<quizsystem.db.Quiz> searchList3 = searchByTopic(topic,compQuiz);
         searchList1.stream().filter((quiz) -> (searchList2.contains(quiz))).forEachOrdered((quiz) -> {
             searchQuiz.add(quiz);
         });
@@ -159,6 +161,18 @@ public class StudentInterface extends javax.swing.JFrame {
         return tempList;
     }
     
+    public ArrayList<quizsystem.db.Quiz> searchByTopic(String topic,ArrayList<quizsystem.db.Quiz> quizList){
+        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        if(!topic.equals("Default")){
+             for (Quiz quiz : quizList) {
+                 if(quiz.getTopic().contains(topic)){
+                     tempList.add(quiz);
+                 }
+             }
+        }
+        return tempList;
+    }
+    
     /**
      * Clear the table of all quizzes found in the advanced search and reset the table to display all completed quizzes.
      */
@@ -173,7 +187,7 @@ public class StudentInterface extends javax.swing.JFrame {
     public void advSearch(){
         AdvSearch advSearch = new AdvSearch(this, true);
         advSearch.setVisible(true);
-        searchCompQuiz(advSearch.getName(),advSearch.getLecturer());
+        searchCompQuiz(advSearch.getName(),advSearch.getLecturer(),advSearch.getTopic());
         advSearch.dispose();
     }
     
@@ -381,9 +395,9 @@ public class StudentInterface extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(srpnlCompQuiz)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdvSearch)
-                    .addComponent(btnReviewAnswers))
+                .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnReviewAnswers)
+                    .addComponent(btnAdvSearch))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAttemptAgain)
@@ -437,7 +451,7 @@ public class StudentInterface extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnLogout)
                             .addComponent(btnExit))
-                        .addGap(0, 4, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
