@@ -5,17 +5,34 @@
  */
 package quizsystem.GUI.lecturer;
 
+
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import quizsystem.GUI.LoginRegister;
+import quizsystem.db.Quiz;
+
+
+
 /**
  *
  * @author Jack
  */
 public class LecturerInterface extends javax.swing.JFrame {
 
-    /**
-     * Creates new form LecturerInterface
-     */
+        private DefaultTableModel modelSetQuiz;
+        private DefaultTableModel modelCompQuiz;
+        private ArrayList<quizsystem.db.Quiz> setQuiz;
+        private ArrayList<quizsystem.db.Quiz> compQuiz;
+        private ArrayList<quizsystem.db.Quiz> searchQuiz;
+        private boolean searched;
     public LecturerInterface() {
-        initComponents();
+         initComponents();
+         compQuiz = new ArrayList<>();
+         setQuiz = new ArrayList<>();
+         searchQuiz = new ArrayList<>();
+         searched = false;
+         
     }
 
     /**
@@ -40,6 +57,7 @@ public class LecturerInterface extends javax.swing.JFrame {
         btReviewSubmisson = new javax.swing.JButton();
         btAdvanceSearch = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        btLogout = new javax.swing.JButton();
         btEditQuiz = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -112,6 +130,13 @@ public class LecturerInterface extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Review Quiz Submissions / Edit");
 
+        btLogout.setText("Log Out");
+        btLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -130,7 +155,10 @@ public class LecturerInterface extends javax.swing.JFrame {
                             .addGap(23, 23, 23)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(137, 137, 137)
+                        .addComponent(btLogout)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -143,7 +171,9 @@ public class LecturerInterface extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btReviewSubmisson)
                     .addComponent(btAdvanceSearch))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btLogout)
+                .addContainerGap())
         );
 
         btEditQuiz.setText("Edit Quiz");
@@ -193,6 +223,10 @@ public class LecturerInterface extends javax.swing.JFrame {
         advSearch();
     }//GEN-LAST:event_btAdvanceSearchActionPerformed
 
+    private void btLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLogoutActionPerformed
+        Logout();
+    }//GEN-LAST:event_btLogoutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -228,18 +262,82 @@ public class LecturerInterface extends javax.swing.JFrame {
         });
     }
     
+    public void Logout(){
+        LoginRegister login = new LoginRegister();
+        login.setVisible(true);
+        this.dispose();
+    } 
+    
+    public void searchCompQuiz(String name, String lectName,String topic) {
+        searchQuiz.clear();
+        ArrayList<quizsystem.db.Quiz> searchList1 = searchByName(name, compQuiz);
+        // changed from searchbyname to seachByLectName 
+        ArrayList<quizsystem.db.Quiz> searchList2 = searchByLectName(lectName, setQuiz);
+        ArrayList<quizsystem.db.Quiz> searchList3 = searchByTopic(topic,compQuiz);
+        searchList1.stream().filter((quiz) -> (searchList2.contains(quiz))).forEachOrdered((quiz) -> {
+            searchQuiz.add(quiz);
+        });
+        if (!searchQuiz.isEmpty()) {
+            //display the new quizzes
+            searched = true;
+            //displayCompQuizzes(searchQuiz);
+        } else {
+            //create a message box saying that no results were found
+            Object[] options = {"Ok"};
+            JOptionPane.showOptionDialog(this, "No results found", "", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        }
+    }
+    
+    
      public void advSearch(){
         AdvSearch advSearch = new AdvSearch(this, true);
         advSearch.setVisible(true);
         //searchCompQuiz(advSearch.getName(),advSearch.getLecturer(),advSearch.getTopic());
         advSearch.dispose();
     }
+      public ArrayList<quizsystem.db.Quiz> searchByName(String name, ArrayList<quizsystem.db.Quiz> quizList) {
+        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        if (!name.equals("Default")) {
+            for (Quiz quiz : quizList) {
+                if (quiz.getName().contains(name)) {
+                    tempList.add(quiz);
+                }
+            }
+        }
+        return tempList;
+    }
+      public ArrayList<quizsystem.db.Quiz> searchByLectName(String lectName, ArrayList<quizsystem.db.Quiz> quizList) {
+        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        if (!lectName.equals("Default")) {
+            for (Quiz quiz : quizList) {
+                if (quiz.getLecturerName().contains(lectName)) {
+                    tempList.add(quiz);
+                }
+            }
+        }
+        return tempList;
+    }
+    
+    public ArrayList<quizsystem.db.Quiz> searchByTopic(String topic,ArrayList<quizsystem.db.Quiz> quizList){
+        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        if(!topic.equals("Default")){
+             for (Quiz quiz : quizList) {
+                 if(quiz.getTopic().contains(topic)){
+                     tempList.add(quiz);
+                 }
+             }
+        }
+        return tempList;
+    }
+    
+      
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAdvanceSearch;
     private javax.swing.JButton btCreateQuiz;
     private javax.swing.JButton btEditQuiz;
     private javax.swing.JButton btEditQuiz1;
+    private javax.swing.JButton btLogout;
     private javax.swing.JButton btReviewSubmisson;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
