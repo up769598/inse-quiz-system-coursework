@@ -444,7 +444,15 @@ public class LoginRegister extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
-            Login.login(this.getUserName(),this.getPassword());
+            
+            if (Login.login(this.getUserName(),this.getPassword()) =="Successful login"){
+                quizsystem.GUI.student.StudentInterface stu = new quizsystem.GUI.student.StudentInterface();
+                this.setVisible(false);
+                stu.setVisible(true);
+            }else{
+              String error = Login.login(this.getUserName(),this.getPassword());
+              // use error to create an error mesage popup
+            }
         } catch (SQLException ex) {
             Logger.getLogger(LoginRegister.class.getName()).log(Level.SEVERE, null, ex);
         }
