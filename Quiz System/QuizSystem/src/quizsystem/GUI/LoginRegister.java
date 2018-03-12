@@ -444,13 +444,13 @@ public class LoginRegister extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
-            
-            if (Login.login(this.getUserName(),this.getPassword()) =="Successful login"){
+            String error = Login.login(this.getUserName(),this.getPassword());
+            if (error.equals("Successful login")){
                 quizsystem.GUI.student.StudentInterface stu = new quizsystem.GUI.student.StudentInterface();
                 this.setVisible(false);
                 stu.setVisible(true);
             }else{
-              String error = Login.login(this.getUserName(),this.getPassword());
+              createMessagePane(error,"Error");
               // use error to create an error mesage popup
             }
         } catch (SQLException ex) {
