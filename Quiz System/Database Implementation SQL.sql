@@ -1,57 +1,46 @@
-#author up813128
-create database Quiz
+CREATE DATABASE IF NOT EXISTS QuizSystem;
 
---login
--- create Table Lecturer (lectID int autoincrement, fName varchar(50), lName varchar(50), Course varchar(30));
--- Create Table Student(studID int autoincrement, );
-
-
- CREATE TABLE Users (
-    usrID varchar(10) NOT NULL,
-    usrType varchar(1) NOT NULL,
+CREATE TABLE Users (
+    usrID varchar(10) not null,
+    usrType varchar(1) not null,
     fName varchar(50),
-	lName varchar(50),
-	password BLOB,
-  salt BLOB,
-	course varchar(30),
+    lName varchar(50),
+    password text not null,
+    salt text not null,
+    course varchar(30),
     PRIMARY KEY (usrID),
-);
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-
- CREATE TABLE QuizCompletion (
-	quizID int NOT NULL,
+CREATE TABLE QuizCompletions (
+    quizID int NOT NULL,
     usrID varchar(10) NOT NULL,
-    usrType varchar(1) NOT NULL,
-    fName varchar(50),
-	lName varchar(50)
     PRIMARY KEY (quizID, usrID),
-	FOREIGN KEY (usrID) REFERENCES Users(usrID)
-);
+    FOREIGN KEY (usrID) REFERENCES Users(usrID)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+CREATE TABLE Quizzes (
+    quizID int not null,
+    usrID varchar(10) not null,
+    PRIMARY KEY (quizID),
+    FOREIGN KEY (usrID) REFERENCES Users(usrID)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
- CREATE TABLE Quiz (
-	quizID int NOT NULL,
-    usrID varchar(10) NOT NULL,
-    usrType varchar(1) NOT NULL,
-    fName varchar(50),
-	lName varchar(50)
-    PRIMARY KEY (quizID, usrID),
-	FOREIGN KEY (usrID) REFERENCES Users(usrID)
-);
+CREATE TABLE Questions (
+    questionID int autoincrement,
+    quizID int not null,
+    category varchar(50),
+    title varchar(50),
+    question text not null,
+    PRIMARY KEY (questionID),
+    FOREIGN KEY (usrID) REFERENCES Users(usrID),
+    FOREIGN KEY (quizID) REFERENCES Quizzes(quizID)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
- CREATE TABLE Question (
-	questionID int autoincrement,
-	usrIDID Category varchar(50),
-	Title varchar(50),
-	Question BLOB
-	FOREIGN KEY (usrID) REFERENCES Users(usrID)
-);
+CREATE TABLE Answers (
+    answerID int autoincrement,
+    category varchar(50),
+    questionID int not null,
+    PRIMARY KEY (answerID),
+    FOREIGN KEY (questionID) REFERENCES Questions(questionID)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
- CREATE TABLE Answer (
-	answerID int autoincrement,
-	Category varchar(50)
-);
-
-
- --the user ID dose not need to be auto increment as we will use the student ID. set it to var char as if we
- --put lectures in they use names as ID also Password and salt needed to be added to the users table salt is varchar
