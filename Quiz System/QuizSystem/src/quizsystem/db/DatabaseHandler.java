@@ -106,7 +106,7 @@ public class DatabaseHandler {
      * @throws SQLException
      */
     public String[] getPasswordAndSalt(String userID) throws SQLException {
-        String query = "SELECT usrID, password, salt FROM users WHERE usrID = ?;";
+        String query = "SELECT usrID, password, salt FROM Users WHERE usrID = ?;";
         List<String> params = Arrays.asList(userID);
         ArrayList<ResultRow> results = this.executeParameterized(query, params);
         
@@ -144,11 +144,11 @@ public class DatabaseHandler {
     public ArrayList<ResultRow> getQuizzesForStudent(String userID, QuizState state) throws SQLException {
         String query;
         if (state == QuizState.INCOMPLETE) {
-            query = "SELECT * FROM Quiz AS q LEFT JOIN QuizCompletion AS qc ON qc.quizID = q.quizID" +
+            query = "SELECT * FROM Quizzes AS q LEFT JOIN QuizCompletions AS qc ON qc.quizID = q.quizID" +
                     "AND qc.usrID = ? WHERE qc.quizID IS NULL;";
         }
         else if (state == QuizState.COMPLETED) {
-            query = "SELECT * FROM Quiz AS q INNER JOIN QuizCompletion AS qc ON qc.quizID = q.quizID" +
+            query = "SELECT * FROM Quizzes AS q INNER JOIN QuizCompletions AS qc ON qc.quizID = q.quizID" +
                     "WHERE qc.usrID = ?";
         }
         else {
