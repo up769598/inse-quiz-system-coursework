@@ -153,7 +153,6 @@ public class LoginRegister extends javax.swing.JFrame {
             //Return an error
             createMessagePane("Error: Please ensure that all entered data is valid and try again","Error");
         }
-
     }
 
     public String getUserName() {
@@ -444,11 +443,22 @@ public class LoginRegister extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
-            String error = Login.login(this.getUserName(),this.getPassword());
+            String username = getUserName();
+            char[] password = getPassword();
+            String error = Login.login(username,password);
             if (error.equals("Successful login")){
-                quizsystem.GUI.student.StudentInterface stu = new quizsystem.GUI.student.StudentInterface();
-                this.setVisible(false);
-                stu.setVisible(true);
+                if(username.endsWith("@port.ac.uk")){
+                    //load lecturer GUI
+                    quizsystem.GUI.lecturer.LecturerInterface lu = new quizsystem.GUI.lecturer.LecturerInterface(username);
+                    lu.setVisible(true);
+                    dispose();
+                } else {
+                    //load student GUI
+                    quizsystem.GUI.student.StudentInterface stu = new quizsystem.GUI.student.StudentInterface(username);
+                    stu.setVisible(true);
+                    dispose();
+                }
+                
             }else{
               createMessagePane(error,"Error");
               // use error to create an error mesage popup

@@ -14,17 +14,20 @@ public class StudentInterface extends javax.swing.JFrame {
     private final ArrayList<quizsystem.db.Quiz> compQuiz;
     private final ArrayList<quizsystem.db.Quiz> searchQuiz;
     private boolean searched;
+    private final String username;
 
     /**
      * Creates new form StudentInterface, initialises the ArrayLists and sets up
      * the model for the two gui tables.
+     * @param inUsername The username of the student who is logged in
      */
-    public StudentInterface() {
+    public StudentInterface(String inUsername) {
         initComponents();
         compQuiz = new ArrayList<>();
         setQuiz = new ArrayList<>();
         searchQuiz = new ArrayList<>();
         searched = false;
+        username = inUsername;
 
         Object[] colSetQuiz = {"Lecturer", "Name", "Time"};
         modelSetQuiz = new DefaultTableModel(colSetQuiz, 0);
