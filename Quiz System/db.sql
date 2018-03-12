@@ -1,26 +1,28 @@
 CREATE DATABASE IF NOT EXISTS QuizSystem;
 
+USE QuizSystem;
+
 CREATE TABLE Users (
-    usrID varchar(10) not null auto_increment,
+    usrID int not null auto_increment,
     usrType varchar(1) not null,
     fName varchar(50),
     lName varchar(50),
     password text not null,
     salt text not null,
     course varchar(30),
-    PRIMARY KEY (usrID),
+    PRIMARY KEY (usrID)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 CREATE TABLE Quizzes (
-    quizID int not null,
-    usrID varchar(10) not null,
+    quizID int not null auto_increment,
+    usrID int not null,
     PRIMARY KEY (quizID),
     CONSTRAINT fk_quizzes_users FOREIGN KEY (usrID) REFERENCES Users(usrID)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 CREATE TABLE QuizCompletions (
     quizID int not null auto_increment,
-    usrID varchar(10) not null,
+    usrID int not null,
     PRIMARY KEY (quizID, usrID),
     CONSTRAINT fk_quizcompletions_users FOREIGN KEY (usrID) REFERENCES Users(usrID),
     CONSTRAINT fk_quizcompletions_quizzes FOREIGN KEY (quizID) REFERENCES Quizzes(quizID)
@@ -29,7 +31,7 @@ CREATE TABLE QuizCompletions (
 CREATE TABLE Questions (
     questionID int not null auto_increment,
     quizID int not null,
-    userID int not null,
+    usrID int not null,
     category varchar(50),
     title varchar(50),
     question text not null,
@@ -39,10 +41,9 @@ CREATE TABLE Questions (
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 CREATE TABLE Answers (
-    answerID int autoincrement,
+    answerID int not null auto_increment,
     category varchar(50),
     questionID int not null,
     PRIMARY KEY (answerID),
     CONSTRAINT fk_answers_questions FOREIGN KEY (questionID) REFERENCES Questions(questionID)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
