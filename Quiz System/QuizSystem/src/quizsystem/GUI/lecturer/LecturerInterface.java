@@ -516,11 +516,13 @@ public class LecturerInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReviewAnswersActionPerformed
 
     private void btnCreateQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateQuizActionPerformed
-        // TODO add your handling code here:
+        CreateQuiz cq = new CreateQuiz();
+        cq.setVisible(true);
     }//GEN-LAST:event_btnCreateQuizActionPerformed
 
     private void btnEditQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditQuizActionPerformed
-        // TODO add your handling code here:
+        Quiz quiz = getDraftQuiz();
+        
     }//GEN-LAST:event_btnEditQuizActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
