@@ -1,5 +1,6 @@
 package quizsystem;
 
+import java.io.UnsupportedEncodingException;
 import quizsystem.db.DatabaseHandler;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -24,13 +25,13 @@ public class Login {
         this._handler = handler;
     }
 
-    public static String login(String email, char[] password) throws SQLException {
+    public static String login(String email, String password) throws SQLException {
         DatabaseHandler db = new DatabaseHandler();
         try {
             if (db.isUserRegistered(email)){
                 String[] db_passwordAndSalt = db.getPasswordAndSalt(email);
-                byte[] Salt = db_passwordAndSalt[1].getBytes();
-                byte[] hashPassword = db_passwordAndSalt[0].getBytes();
+                String Salt = db_passwordAndSalt[1];
+                String hashPassword = db_passwordAndSalt[0];
 
                 if (isPasswordCorrect(password, Salt, hashPassword)){
                     return "Successful login";
@@ -56,10 +57,16 @@ public class Login {
      *
      * @return a 16 bytes random salt
      */
-    public static byte[] getNextSalt() {
+    public static String getNextSalt() {
         byte[] salt = new byte[16];
         random.nextBytes(salt);
-        return salt;
+        try {
+            return new String(salt, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex) {
+            System.out.println("System doesn't support UTF8... what is this, 1980?");
+            return null;
+        }
     }
 
     /**
@@ -71,18 +78,20 @@ public class Login {
      *
      * @return the hashed password with a pinch of salt
      */
-    public static byte[] hash(char[] password, byte[] salt) {
-        PBEKeySpec key = new PBEKeySpec(password, salt, iterations, keyLength);
-        Arrays.fill(password, Character.MIN_VALUE);
+    public static String hash(String password, String salt) {
+        PBEKeySpec key = null;
         try {
+            key = new PBEKeySpec(password.toCharArray(), salt.getBytes("UTF-8"), iterations, keyLength);
             SecretKeyFactory sKey = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            return sKey.generateSecret(key).getEncoded();
+            return new String(sKey.generateSecret(key).getEncoded(), "UTF-8");
         }
-        catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+        catch (NoSuchAlgorithmException | InvalidKeySpecException | UnsupportedEncodingException e) {
             throw new AssertionError("Error while hashing a password: " + e.getMessage(), e);
         }
         finally {
-            key.clearPassword();
+            if (key != null) {
+                key.clearPassword();
+            }
         }
     }
 
@@ -96,13 +105,8 @@ public class Login {
      *
      * @return true if the given password and salt match the hashed value, false otherwise
      */
-    public static boolean isPasswordCorrect(char[] password, byte[] salt, byte[] expectedHash) {
-        byte[] pwdHash = hash(password, salt);
-        Arrays.fill(password, Character.MIN_VALUE);
-        if (pwdHash.length != expectedHash.length) return false;
-        for (int i = 0; i < pwdHash.length; i++) {
-            if (pwdHash[i] != expectedHash[i]) return false;
-        }
-        return true;
+    public static boolean isPasswordCorrect(String password, String salt, String expectedHash) {
+        String pwdHash = hash(password, salt);
+        return pwdHash.equals(expectedHash);
     }
 }

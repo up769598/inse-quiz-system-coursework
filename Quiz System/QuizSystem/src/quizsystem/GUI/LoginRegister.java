@@ -46,50 +46,25 @@ public class LoginRegister extends javax.swing.JFrame {
      * array of characters. If the password field is empty, a null variable is
      * returned.
      */
-    public char[] getPasswordInput(JPasswordField inputBox) {
-        char[] passwordIn = null;
+    public String getPasswordInput(JPasswordField inputBox) {
         try {
-            passwordIn = inputBox.getPassword();
-        } catch (NullPointerException ex) {
-            //Password fields are empty
+            return new String(inputBox.getPassword());
         }
-        return passwordIn;
+        catch (NullPointerException ex) {
+            return null;
+        }
     }
 
     /**
      * Compare two passwords to confirm they match and that the passwords
      * conform to having at least 1 number
      *
-     * @param password1 The first password to be validated
-     * @param password2 The second password to be validated
      * @return A boolean to indicate whether the two passwords are valid.
      */
     public boolean validatePasswords() {
-        char[] password1 = getPasswordInput(tfPasswordRegister);
-        char[] password2 = getPasswordInput(tfCPasswordRegister);
-        boolean valid = true; //Presume valid until proven invalid
-        if (Arrays.equals(password1, password2)) {
-            //Passwords Match
-            if (password1.length >= 8) {
-                //Password must have at least 8 characters
-                boolean checkNum = false;
-                for (char i : password1) {
-                    if (Character.isDigit(i)) {
-                        checkNum = true;
-                    }
-                }
-                if (!checkNum) {
-                    //At least 1 number is not present in the password
-                    valid = false;
-                }
-            } else {
-                valid = false;
-            }
-        } else {
-            //Passwords do not match
-            valid = false;
-        }
-        return valid;
+        String password1 = getPasswordInput(tfPasswordRegister);
+        String password2 = getPasswordInput(tfCPasswordRegister);
+        return password1.equals(password2) && password1.length() >= 8 && password1.matches(".*\\d+.*");
     }
 
     public boolean validateUsername(String username) {
@@ -104,9 +79,9 @@ public class LoginRegister extends javax.swing.JFrame {
         return "Default"; //Return the email if correct
     }
 
-    public char[] getRegPassword() {
-        char[] password = getPasswordInput(tfPasswordRegister);
-        char[] cpassword = getPasswordInput(tfCPasswordRegister);
+    public String getRegPassword() {
+        String password = getPasswordInput(tfPasswordRegister);
+        String cpassword = getPasswordInput(tfCPasswordRegister);
         if (validatePasswords()) {
             return password;
         }
@@ -123,7 +98,7 @@ public class LoginRegister extends javax.swing.JFrame {
         
         boolean valid = true;
         String email = getRegEmail();
-        char[] password = getRegPassword();
+        String password = getRegPassword();
         String course = getRegCourse();
 
         if ("Default".equals(email) || password == null || course.equals("Choose Course Here")) {
@@ -136,9 +111,9 @@ public class LoginRegister extends javax.swing.JFrame {
             try {
                 DatabaseHandler db = new DatabaseHandler();
                 if (!db.isUserRegistered(email)){
-                    byte[] salt = Login.getNextSalt();
-                    byte[] hashedPassword = Login.hash(password,salt);
-                    db.addUser(userType, email, new String(hashedPassword, "UTF-8"), new String(salt, "UTF-8"), course);
+                    String salt = Login.getNextSalt();
+                    String hashedPassword = Login.hash(password, salt);
+                    db.addUser(userType, email, hashedPassword, salt, course);
                     createMessagePane("Your account has been created.", "Success");
                 }
                 else {
@@ -149,9 +124,6 @@ public class LoginRegister extends javax.swing.JFrame {
                 System.out.println("[WARN] LoginRegister.getRegDetails encountered SQLException:");
                 System.out.println(ex);
             }
-            catch (UnsupportedEncodingException ex) {
-                createMessagePane("An error occurred while checking your details. Please try again.", "Error");
-            }
         } else {
             createMessagePane("Error: Please ensure that all entered data is valid and try again","Error");
         }
@@ -161,7 +133,7 @@ public class LoginRegister extends javax.swing.JFrame {
        return getTextInput(tfEmailLogin);
     }
     
-    public char[] getPassword(){
+    public String getPassword(){
         return getPasswordInput(tfPasswordLogin);
     }
     
@@ -446,8 +418,8 @@ public class LoginRegister extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         try {
             String username = getUserName();
-            char[] password = getPassword();
-            String error = Login.login(username,password);
+            String password = getPassword();
+            String error = Login.login(username, password);
             if (error.equals("Successful login")){
                 if(username.endsWith("@port.ac.uk")){
                     //load lecturer GUI
