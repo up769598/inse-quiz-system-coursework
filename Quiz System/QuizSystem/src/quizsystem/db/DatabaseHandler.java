@@ -16,7 +16,7 @@ public class DatabaseHandler {
      * @throws SQLException 
      */
     public DatabaseHandler() throws SQLException {
-        Connection con = DriverManager.getConnection("jdbc:mysql://52.91.67.192:3306/Quiz", "inse", "Wv7q7hG9");
+        Connection con = DriverManager.getConnection("jdbc:mysql://52.91.67.192:3306/QuizSystem", "inse", "Wv7q7hG9");
         this.connection = con;
     }
     
