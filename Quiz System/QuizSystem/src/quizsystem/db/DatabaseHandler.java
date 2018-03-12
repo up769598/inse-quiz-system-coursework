@@ -100,14 +100,14 @@ public class DatabaseHandler {
 
     /**
      * Get the password and salt for a specified user ID.
-     * @param userID a string containing the user ID whose details are being requested
+     * @param email a string containing the email address for the user whose details are being requested
      * @return If the user exists, a String[2] - password comes first, followed by salt. If the user does not exist,
      *         will return null.
      * @throws SQLException
      */
-    public String[] getPasswordAndSalt(String userID) throws SQLException {
-        String query = "SELECT usrID, password, salt FROM Users WHERE usrID = ?;";
-        List<String> params = Arrays.asList(userID);
+    public String[] getPasswordAndSalt(String email) throws SQLException {
+        String query = "SELECT usrID, password, salt FROM Users WHERE email = ?;";
+        List<String> params = Arrays.asList(email);
         ArrayList<ResultRow> results = this.executeParameterized(query, params);
         
         if (results.size() >= 1) {
@@ -121,13 +121,13 @@ public class DatabaseHandler {
 
     /**
      * Check if the specified user ID is already registered.
-     * @param userID the user ID to check for registration
+     * @param email the email address to check for registration
      * @return a boolean
      * @throws SQLException
      */
-    public boolean isUserRegistered(String userID) throws SQLException {
-        String query = "SELECT usrID FROM Users WHERE usrID = ?;";
-        List<String> params = Arrays.asList(userID);
+    public boolean isUserRegistered(String email) throws SQLException {
+        String query = "SELECT usrID FROM Users WHERE email = ?;";
+        List<String> params = Arrays.asList(email);
         ArrayList<ResultRow> results = this.executeParameterized(query, params);
         
         return results.size() > 0;
@@ -159,10 +159,10 @@ public class DatabaseHandler {
         return this.executeParameterized(query, params);
     }
     
-    public void addUser(String userID, char[] password, byte[] salt, String course) {
+    public void addUser(String userType, String email, String password, String salt, String course) {
         /*
         * Used to add new users to the database
         */
+        System.out.println(String.format("%s %s %s %s %s", userType, email, password, salt, course));
     }
-    
 }

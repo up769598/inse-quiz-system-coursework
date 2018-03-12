@@ -1,5 +1,6 @@
 package quizsystem.GUI;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -109,48 +110,49 @@ public class LoginRegister extends javax.swing.JFrame {
         if (validatePasswords()) {
             return password;
         }
-        char [] def = null;
-        def[1] = 'd';
-        return def;
         
+        return null;
     }
 
     public String getRegCourse() {
         return (String) cboCourseRegister.getSelectedItem();
     }
 
-    public void getRegDetails() {
+    public void registerNewUser() {
+        System.out.println("registerNewUser");
+        
         boolean valid = true;
         String email = getRegEmail();
         char[] password = getRegPassword();
         String course = getRegCourse();
-        String[] userIDtemp = email.split("@");
-        userIDtemp = userIDtemp[0].split("up");
-        String userID = userIDtemp[1];
-        if ("Default".equals(email) || "Default".equals(password) || course.equals("Choose Course Here")) {
+
+        if ("Default".equals(email) || password == null || course.equals("Choose Course Here")) {
             valid = false;
         }
-        boolean lecturer = false;
-        if (email.endsWith("@port.ac.uk")) {
-            lecturer = true;
-        }
-        if (valid && lecturer) {
-            //Create a new lecturer user
-        } else if(valid) {
-                    try {
-           DatabaseHandler db = new DatabaseHandler();
-           if(db.isUserRegistered(userID)){
-               byte[] salt = Login.getNextSalt();
-               Login.hash(password,salt);
-               db.addUser(userID, password, salt, course);
-           }
-       }
-       catch (SQLException ex) {
-           System.out.println("[WARN] LoginRegister.getRegDetails encountered SQLException:");
-           System.out.println(ex);
-       }
+        boolean lecturer = email.endsWith("@port.ac.uk");
+        String userType = lecturer ? "L" : "S";
+
+        if (valid) {
+            try {
+                DatabaseHandler db = new DatabaseHandler();
+                if (!db.isUserRegistered(email)){
+                    byte[] salt = Login.getNextSalt();
+                    byte[] hashedPassword = Login.hash(password,salt);
+                    db.addUser(userType, email, new String(hashedPassword, "UTF-8"), new String(salt, "UTF-8"), course);
+                    createMessagePane("Your account has been created.", "Success");
+                }
+                else {
+                    createMessagePane("There is already an account for this email address - please login instead.", "Already Registered");
+                }
+            }
+            catch (SQLException ex) {
+                System.out.println("[WARN] LoginRegister.getRegDetails encountered SQLException:");
+                System.out.println(ex);
+            }
+            catch (UnsupportedEncodingException ex) {
+                createMessagePane("An error occurred while checking your details. Please try again.", "Error");
+            }
         } else {
-            //Return an error
             createMessagePane("Error: Please ensure that all entered data is valid and try again","Error");
         }
     }
@@ -489,7 +491,7 @@ public class LoginRegister extends javax.swing.JFrame {
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
         //Register a new user
-        getRegDetails();
+        registerNewUser();
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     private void tfEmailRegisterFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfEmailRegisterFocusLost

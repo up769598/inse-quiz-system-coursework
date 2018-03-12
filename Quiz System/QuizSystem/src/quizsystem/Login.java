@@ -23,17 +23,12 @@ public class Login {
     public Login(DatabaseHandler handler) {
         this._handler = handler;
     }
-    
 
-    
-    
-    
-    
-    public static String login(String userID, char[] password) throws SQLException {
+    public static String login(String email, char[] password) throws SQLException {
         DatabaseHandler db = new DatabaseHandler();
         try {
-            if (db.isUserRegistered(userID)){
-                String[] db_passwordAndSalt = db.getPasswordAndSalt(userID);
+            if (db.isUserRegistered(email)){
+                String[] db_passwordAndSalt = db.getPasswordAndSalt(email);
                 byte[] Salt = db_passwordAndSalt[1].getBytes();
                 byte[] hashPassword = db_passwordAndSalt[0].getBytes();
 
