@@ -15,6 +15,7 @@ public class ResultRow {
     public ResultRow(ResultSet parent, ResultSetMetaData meta) {
         this.parentSet = parent;
         this.meta = meta;
+        this.columns = new HashMap<>();
     }
     
     public boolean supportsConcurrentUpdate() {
