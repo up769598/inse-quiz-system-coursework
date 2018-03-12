@@ -1,42 +1,72 @@
 package quizsystem.GUI.student;
 
-public class Question extends javax.swing.JDialog{
+public class TakeQuiz extends javax.swing.JDialog {
+
     quizsystem.db.Quiz quiz;
-   
-    public Question(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz) {
+    Integer[] selAnswers = new Integer[quiz.getQuestions().size()];
+    int selectedAnswer = 0;
+
+    /**
+     *
+     * @param parent The parent JFrame that this JDialog is created from. 
+     * @param modal 
+     * @param inQuiz The Quiz that the user is taking 
+     */
+    public TakeQuiz(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz) {
         initComponents();
         quiz = inQuiz;
     }
 
-    public void refresh(){
+    /**
+     * Resets the GUI, refreshing the list of answers, the question and the question number.
+     */
+    public void refresh() {
+        setQuestion();
         setNumQuestion();
         setAnswers();
         hideCheckBoxes();
     }
-    
-    public void setNumQuestion(){
-        lblQuestionNumber.setText(Integer.toString(quiz.getCurrentQuestion())  + " / " + Integer.toString(quiz.getQuestions().size()));
+
+    /**
+     * Sets the question number to appear on the GUI.
+     */
+    public void setNumQuestion() {
+        lblQuestionNumber.setText(Integer.toString(quiz.getCurrentQuestion()) + " / " + Integer.toString(quiz.getQuestions().size()));
     }
-    
-    public void nextQuestion(){
+
+    /**
+     * Saves the chosen answer, proceeds the quiz onto the next question and refreshes the GUI.
+     */
+    public void nextQuestion() {
+        selectAnswer();
         int questionNum = quiz.getCurrentQuestion();
         quiz.setCurrentQuestion(questionNum++);
         refresh();
     }
-    
-    public void prevQuestion(){
+
+    /**
+     * Saves the chosen answer, proceeds the quiz onto the previous question and refreshes the GUI.
+     */
+    public void prevQuestion() {
+        selectAnswer();
         int questionNum = quiz.getCurrentQuestion();
         quiz.setCurrentQuestion(questionNum--);
         refresh();
     }
-    
-    public void setQuestion(){
+
+    /**
+     * Sets the question to appear on the GUI.
+     */
+    public void setQuestion() {
         taQuestion.setText(quiz.getQuestion(quiz.getCurrentQuestion()));
     }
-    
-    public void setAnswers(){
+
+    /**
+     * Sets the labels attached to each checkbox to show each possible answer for the question.
+     */
+    public void setAnswers() {
         String[] answers = quiz.getAnswers(quiz.getCurrentQuestion());
-        switch(answers.length){
+        switch (answers.length) {
             case 8:
                 chbAnswer8.setVisible(true);
                 chbAnswer8.setText(answers[7]);
@@ -65,9 +95,12 @@ public class Question extends javax.swing.JDialog{
                 break;
         }
     }
-    
-    public void hideCheckBoxes(){
-        switch(quiz.getAnswers(quiz.getCurrentQuestion()).length){
+
+    /**
+     * Hides the checkboxes for questions without the full 8 answers.
+     */
+    public void hideCheckBoxes() {
+        switch (quiz.getAnswers(quiz.getCurrentQuestion()).length) {
             case 2:
                 chbAnswer3.setVisible(false);
             case 3:
@@ -80,14 +113,29 @@ public class Question extends javax.swing.JDialog{
                 chbAnswer7.setVisible(false);
             case 7:
                 chbAnswer8.setVisible(false);
-            
+
         }
     }
+
+    /**
+     * Saves the selected answer into an array.
+     */
+    public void selectAnswer() {
+        selAnswers[quiz.getCurrentQuestion()] = selectedAnswer;
+    }
     
-        @SuppressWarnings("unchecked")
+    /**
+     * Record the complete collection of given answers ready to be written to the database.
+     */
+    public void saveAnswers(){
+        //Save answers and write them to the database
+    }
+
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        bgpChosenAnswer = new javax.swing.ButtonGroup();
         scrpnlQuestion = new javax.swing.JScrollPane();
         taQuestion = new javax.swing.JTextArea();
         lblTimer = new javax.swing.JLabel();
@@ -126,21 +174,69 @@ public class Question extends javax.swing.JDialog{
 
         pnlQuestions.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        bgpChosenAnswer.add(chbAnswer1);
         chbAnswer1.setText("(Insert Answer Here)");
+        chbAnswer1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbAnswer1ActionPerformed(evt);
+            }
+        });
 
+        bgpChosenAnswer.add(chbAnswer2);
         chbAnswer2.setText("(Insert Answer Here)");
+        chbAnswer2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbAnswer2ActionPerformed(evt);
+            }
+        });
 
+        bgpChosenAnswer.add(chbAnswer3);
         chbAnswer3.setText("(Insert Answer Here)");
+        chbAnswer3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbAnswer3ActionPerformed(evt);
+            }
+        });
 
+        bgpChosenAnswer.add(chbAnswer4);
         chbAnswer4.setText("(Insert Answer Here)");
+        chbAnswer4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbAnswer4ActionPerformed(evt);
+            }
+        });
 
+        bgpChosenAnswer.add(chbAnswer5);
         chbAnswer5.setText("(Insert Answer Here)");
+        chbAnswer5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbAnswer5ActionPerformed(evt);
+            }
+        });
 
+        bgpChosenAnswer.add(chbAnswer6);
         chbAnswer6.setText("(Insert Answer Here)");
+        chbAnswer6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbAnswer6ActionPerformed(evt);
+            }
+        });
 
+        bgpChosenAnswer.add(chbAnswer7);
         chbAnswer7.setText("(Insert Answer Here)");
+        chbAnswer7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbAnswer7ActionPerformed(evt);
+            }
+        });
 
+        bgpChosenAnswer.add(chbAnswer8);
         chbAnswer8.setText("(Insert Answer Here)");
+        chbAnswer8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbAnswer8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlQuestionsLayout = new javax.swing.GroupLayout(pnlQuestions);
         pnlQuestions.setLayout(pnlQuestionsLayout);
@@ -260,13 +356,47 @@ public class Question extends javax.swing.JDialog{
 
     private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
         //Finish and submit answers
+        selectAnswer();
     }//GEN-LAST:event_btnFinishActionPerformed
 
     private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
         //Quit and go back to quiz preview
     }//GEN-LAST:event_btnQuitActionPerformed
 
+    private void chbAnswer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAnswer1ActionPerformed
+        selectedAnswer = 1;
+    }//GEN-LAST:event_chbAnswer1ActionPerformed
+
+    private void chbAnswer2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAnswer2ActionPerformed
+        selectedAnswer = 2;
+    }//GEN-LAST:event_chbAnswer2ActionPerformed
+
+    private void chbAnswer3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAnswer3ActionPerformed
+        selectedAnswer = 3;
+    }//GEN-LAST:event_chbAnswer3ActionPerformed
+
+    private void chbAnswer4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAnswer4ActionPerformed
+        selectedAnswer = 4;
+    }//GEN-LAST:event_chbAnswer4ActionPerformed
+
+    private void chbAnswer5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAnswer5ActionPerformed
+        selectedAnswer = 5;
+    }//GEN-LAST:event_chbAnswer5ActionPerformed
+
+    private void chbAnswer6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAnswer6ActionPerformed
+        selectedAnswer = 6;
+    }//GEN-LAST:event_chbAnswer6ActionPerformed
+
+    private void chbAnswer7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAnswer7ActionPerformed
+        selectedAnswer = 7;
+    }//GEN-LAST:event_chbAnswer7ActionPerformed
+
+    private void chbAnswer8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAnswer8ActionPerformed
+        selectedAnswer = 8;
+    }//GEN-LAST:event_chbAnswer8ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bgpChosenAnswer;
     private javax.swing.JButton btnFinish;
     private javax.swing.JButton btnNextQuestion;
     private javax.swing.JButton btnPrevQuestion;

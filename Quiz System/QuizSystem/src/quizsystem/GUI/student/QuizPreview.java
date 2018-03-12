@@ -8,7 +8,6 @@ public class QuizPreview extends javax.swing.JFrame {
     /**
      * Creates new form QuizPreview
      * @param inQuiz Quiz being taken by the student
-     * @param inStudent The student account being accessed
      */
     public QuizPreview(quizsystem.db.Quiz inQuiz) {
         initComponents();
@@ -101,7 +100,8 @@ public class QuizPreview extends javax.swing.JFrame {
 
     private void btnTakeQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTakeQuizActionPerformed
         //Continue onto taking the quiz
-        Question question = new Question(this, true, quiz);
+        TakeQuiz tq = new TakeQuiz(this, true, quiz);
+        tq.setVisible(true);
     }//GEN-LAST:event_btnTakeQuizActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
