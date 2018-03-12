@@ -15,9 +15,9 @@ public class LecturerInterface extends javax.swing.JFrame {
 
     private DefaultTableModel modelSetQuiz;
     private DefaultTableModel modelCompQuiz;
-    private ArrayList<quizsystem.db.Quiz> setQuiz;
-    private ArrayList<quizsystem.db.Quiz> compQuiz;
-    private ArrayList<quizsystem.db.Quiz> searchQuiz;
+    private final ArrayList<quizsystem.db.Quiz> draftQuiz;
+    private final ArrayList<quizsystem.db.Quiz> compQuiz;
+    private final ArrayList<quizsystem.db.Quiz> searchQuiz;
     private boolean searched;
     private final String username;
 
@@ -28,80 +28,22 @@ public class LecturerInterface extends javax.swing.JFrame {
     public LecturerInterface(String inUsername) {
         initComponents();
         compQuiz = new ArrayList<>();
-        setQuiz = new ArrayList<>();
+        draftQuiz = new ArrayList<>();
         searchQuiz = new ArrayList<>();
         searched = false;
         username = inUsername;
     }
 
-    public void Logout() {
+    public void logout() {
         LoginRegister login = new LoginRegister();
         login.setVisible(true);
         this.dispose();
     }
 
-    public void searchCompQuiz(String name, String lectName, String topic) {
-        searchQuiz.clear();
-        ArrayList<quizsystem.db.Quiz> searchList1 = searchByName(name, compQuiz);
-        // changed from searchbyname to seachByLectName 
-        ArrayList<quizsystem.db.Quiz> searchList2 = searchByLectName(lectName, setQuiz);
-        ArrayList<quizsystem.db.Quiz> searchList3 = searchByTopic(topic, compQuiz);
-        searchList1.stream().filter((quiz) -> (searchList2.contains(quiz))).forEachOrdered((quiz) -> {
-            searchQuiz.add(quiz);
-        });
-        if (!searchQuiz.isEmpty()) {
-            //display the new quizzes
-            searched = true;
-            //displayCompQuizzes(searchQuiz);
-        } else {
-            //create a message box saying that no results were found
-            Object[] options = {"Ok"};
-            JOptionPane.showOptionDialog(this, "No results found", "", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-        }
+    public void withdrawQuiz(){
+        
     }
 
-    public void advSearch() {
-        AdvSearch advSearch = new AdvSearch(this, true);
-        advSearch.setVisible(true);
-        //searchCompQuiz(advSearch.getName(),advSearch.getLecturer(),advSearch.getTopic());
-        advSearch.dispose();
-    }
-
-    public ArrayList<quizsystem.db.Quiz> searchByName(String name, ArrayList<quizsystem.db.Quiz> quizList) {
-        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
-        if (!name.equals("Default")) {
-            for (Quiz quiz : quizList) {
-                if (quiz.getName().contains(name)) {
-                    tempList.add(quiz);
-                }
-            }
-        }
-        return tempList;
-    }
-
-    public ArrayList<quizsystem.db.Quiz> searchByLectName(String lectName, ArrayList<quizsystem.db.Quiz> quizList) {
-        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
-        if (!lectName.equals("Default")) {
-            for (Quiz quiz : quizList) {
-                if (quiz.getLecturerName().contains(lectName)) {
-                    tempList.add(quiz);
-                }
-            }
-        }
-        return tempList;
-    }
-
-    public ArrayList<quizsystem.db.Quiz> searchByTopic(String topic, ArrayList<quizsystem.db.Quiz> quizList) {
-        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
-        if (!topic.equals("Default")) {
-            for (Quiz quiz : quizList) {
-                if (quiz.getTopic().contains(topic)) {
-                    tempList.add(quiz);
-                }
-            }
-        }
-        return tempList;
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -109,19 +51,22 @@ public class LecturerInterface extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        btCreateQuiz = new javax.swing.JButton();
-        btEditQuiz1 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
+        pnlSelectQuiz = new javax.swing.JPanel();
+        btnWithdrawQuiz = new javax.swing.JButton();
+        lblSelQuizTitle = new javax.swing.JLabel();
+        btnReviewAnswers = new javax.swing.JButton();
+        btnAdvSearch = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        btReviewSubmisson = new javax.swing.JButton();
-        btAdvanceSearch = new javax.swing.JButton();
+        pnlMiscOperations = new javax.swing.JPanel();
+        btnLogout = new javax.swing.JButton();
+        btnExit = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblDraftQuizzes = new javax.swing.JTable();
+        btnCreateQuiz = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        btLogout = new javax.swing.JButton();
-        btEditQuiz = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -138,42 +83,29 @@ public class LecturerInterface extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btCreateQuiz.setText("Create Quiz");
+        pnlSelectQuiz.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        btEditQuiz1.setText("Withdraw Quiz");
-
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {}
-            },
-            new String [] {
-
+        btnWithdrawQuiz.setText("Revert to Draft");
+        btnWithdrawQuiz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnWithdrawQuizActionPerformed(evt);
             }
-        ));
-        jScrollPane3.setViewportView(jTable3);
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(70, Short.MAX_VALUE))
-        );
+        lblSelQuizTitle.setText("Review Created Quizzes");
+
+        btnReviewAnswers.setText("Review Submission");
+
+        btnAdvSearch.setText("Advanced Search");
+        btnAdvSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdvSearchActionPerformed(evt);
+            }
+        });
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {}
+
             },
             new String [] {
 
@@ -181,130 +113,196 @@ public class LecturerInterface extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        btReviewSubmisson.setText("Review Submission");
-
-        btAdvanceSearch.setText("Advance Search");
-        btAdvanceSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAdvanceSearchActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Review Quiz Submissions / Edit");
-
-        btLogout.setText("Log Out");
-        btLogout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btLogoutActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGap(20, 20, 20)
-                            .addComponent(btAdvanceSearch)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btReviewSubmisson)
-                            .addGap(23, 23, 23)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(btLogout)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        javax.swing.GroupLayout pnlSelectQuizLayout = new javax.swing.GroupLayout(pnlSelectQuiz);
+        pnlSelectQuiz.setLayout(pnlSelectQuizLayout);
+        pnlSelectQuizLayout.setHorizontalGroup(
+            pnlSelectQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSelectQuizLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlSelectQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlSelectQuizLayout.createSequentialGroup()
+                        .addComponent(lblSelQuizTitle)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlSelectQuizLayout.createSequentialGroup()
+                        .addComponent(btnWithdrawQuiz)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnReviewAnswers)
+                        .addGap(37, 37, 37)
+                        .addComponent(btnAdvSearch))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSelectQuizLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1)
+        pnlSelectQuizLayout.setVerticalGroup(
+            pnlSelectQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSelectQuizLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblSelQuizTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btReviewSubmisson)
-                    .addComponent(btAdvanceSearch))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btLogout)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(pnlSelectQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnWithdrawQuiz)
+                    .addComponent(btnReviewAnswers)
+                    .addComponent(btnAdvSearch))
                 .addContainerGap())
         );
 
-        btEditQuiz.setText("Edit Quiz");
+        pnlMiscOperations.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        btnLogout.setText("Log Out");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
+        btnExit.setText("Exit");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlMiscOperationsLayout = new javax.swing.GroupLayout(pnlMiscOperations);
+        pnlMiscOperations.setLayout(pnlMiscOperationsLayout);
+        pnlMiscOperationsLayout.setHorizontalGroup(
+            pnlMiscOperationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMiscOperationsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnLogout)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnExit)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlMiscOperationsLayout.setVerticalGroup(
+            pnlMiscOperationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMiscOperationsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlMiscOperationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLogout)
+                    .addComponent(btnExit))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        tblDraftQuizzes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane3.setViewportView(tblDraftQuizzes);
+
+        btnCreateQuiz.setText("Create Quiz");
+
+        jLabel1.setText("Draft Quizzes");
+
+        jButton1.setText("Edit Quiz");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnCreateQuiz)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCreateQuiz)
+                    .addComponent(jButton1))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlMiscOperations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(btEditQuiz)
-                        .addGap(18, 18, 18)
-                        .addComponent(btEditQuiz1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addComponent(btCreateQuiz)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(pnlSelectQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btCreateQuiz)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btEditQuiz1)
-                            .addComponent(btEditQuiz))
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlSelectQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlMiscOperations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btAdvanceSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdvanceSearchActionPerformed
-        advSearch();
-    }//GEN-LAST:event_btAdvanceSearchActionPerformed
+    private void btnAdvSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdvSearchActionPerformed
 
-    private void btLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLogoutActionPerformed
-        Logout();
-    }//GEN-LAST:event_btLogoutActionPerformed
+    }//GEN-LAST:event_btnAdvSearchActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        logout();
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnWithdrawQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawQuizActionPerformed
+        
+    }//GEN-LAST:event_btnWithdrawQuizActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btAdvanceSearch;
-    private javax.swing.JButton btCreateQuiz;
-    private javax.swing.JButton btEditQuiz;
-    private javax.swing.JButton btEditQuiz1;
-    private javax.swing.JButton btLogout;
-    private javax.swing.JButton btReviewSubmisson;
+    private javax.swing.JButton btnAdvSearch;
+    private javax.swing.JButton btnCreateQuiz;
+    private javax.swing.JButton btnExit;
+    private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnReviewAnswers;
+    private javax.swing.JButton btnWithdrawQuiz;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
+    private javax.swing.JLabel lblSelQuizTitle;
+    private javax.swing.JPanel pnlMiscOperations;
+    private javax.swing.JPanel pnlSelectQuiz;
+    private javax.swing.JTable tblDraftQuizzes;
     // End of variables declaration//GEN-END:variables
 }
