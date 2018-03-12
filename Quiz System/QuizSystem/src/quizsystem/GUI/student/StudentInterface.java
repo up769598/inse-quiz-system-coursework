@@ -104,11 +104,11 @@ public class StudentInterface extends javax.swing.JFrame {
      *
      * @param name Name of the quiz to search by
      * @param lectName Name of the quiz creating lecturer to search by
+     * @param topic The topic of the quiz
      */
     public void searchCompQuiz(String name, String lectName, String topic) {
         searchQuiz.clear();
         ArrayList<quizsystem.db.Quiz> searchList1 = searchByName(name, compQuiz);
-        // changed from searchbyname to seachByLectName 
         ArrayList<quizsystem.db.Quiz> searchList2 = searchByLectName(lectName, setQuiz);
         ArrayList<quizsystem.db.Quiz> searchList3 = searchByTopic(topic, compQuiz);
         searchList1.stream().filter((quiz) -> (searchList2.contains(quiz))).forEachOrdered((quiz) -> {

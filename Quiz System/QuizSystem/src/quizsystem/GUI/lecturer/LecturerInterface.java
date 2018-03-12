@@ -13,25 +13,34 @@ import quizsystem.db.Quiz;
 
 public class LecturerInterface extends javax.swing.JFrame {
 
-    private DefaultTableModel modelSetQuiz;
+    private DefaultTableModel modelDraftQuiz;
     private DefaultTableModel modelCompQuiz;
     private final ArrayList<quizsystem.db.Quiz> draftQuiz;
-    private final ArrayList<quizsystem.db.Quiz> compQuiz;
+    private final ArrayList<quizsystem.db.Quiz> quizzes;
     private final ArrayList<quizsystem.db.Quiz> searchQuiz;
     private boolean searched;
     private final String username;
 
     /**
      * Create a new Lecturer Interface GUI Window
+     *
      * @param inUsername username of the logged in lecturer
      */
     public LecturerInterface(String inUsername) {
         initComponents();
-        compQuiz = new ArrayList<>();
+        quizzes = new ArrayList<>();
         draftQuiz = new ArrayList<>();
         searchQuiz = new ArrayList<>();
         searched = false;
         username = inUsername;
+        
+        Object[] colQuiz = {"Lecturer", "Name", "Time"};
+        modelSetQuiz = new DefaultTableModel(colSetQuiz, 0);
+        tblSetQuiz.setModel(modelSetQuiz);
+
+        Object[] colCompQuiz = {"Lecturer", "Name", "Time", "Mark"};
+        modelCompQuiz = new DefaultTableModel(colCompQuiz, 0);
+        tblCompQuiz.setModel(modelCompQuiz);
     }
 
     public void logout() {
@@ -40,10 +49,73 @@ public class LecturerInterface extends javax.swing.JFrame {
         this.dispose();
     }
 
-    public void withdrawQuiz(){
-        
+    /**
+     * Searches the list of completed quizzes for quizzes that match search
+     * terms then display results on gui
+     *
+     * @param name Name of the quiz to search by
+     * @param lectName Name of the quiz creating lecturer to search by
+     * @param topic The topic of the quiz
+     */
+    public void searchCompQuiz(String name, String lectName, String topic) {
+        searchQuiz.clear();
+        ArrayList<quizsystem.db.Quiz> searchList1 = searchByName(name, quizzes);
+        ArrayList<quizsystem.db.Quiz> searchList2 = searchByLectName(lectName, quizzes);
+        ArrayList<quizsystem.db.Quiz> searchList3 = searchByTopic(topic, quizzes);
+        searchList1.stream().filter((quiz) -> (searchList2.contains(quiz))).forEachOrdered((quiz) -> {
+            searchQuiz.add(quiz);
+        });
+        if (!searchQuiz.isEmpty()) {
+            //display the new quizzes
+            searched = true;
+            //displayCompQuizzes(searchQuiz);
+        } else {
+            //create a message box saying that no results were found
+            Object[] options = {"Ok"};
+            JOptionPane.showOptionDialog(this, "No results found", "", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        }
     }
 
+    public void advSearch() {
+        AdvSearch advSearch = new AdvSearch(this, true);
+        advSearch.setVisible(true);
+        //searchCompQuiz(advSearch.getName(),advSearch.getLecturer(),advSearch.getTopic());
+        advSearch.dispose();
+    }
+
+    public ArrayList<quizsystem.db.Quiz> searchByName(String name, ArrayList<quizsystem.db.Quiz> quizList) {
+        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        if (!name.equals("Default")) {
+            quizList.stream().filter((quiz) -> (quiz.getName().contains(name))).forEachOrdered((quiz) -> {
+                tempList.add(quiz);
+            });
+        }
+        return tempList;
+    }
+
+    public ArrayList<quizsystem.db.Quiz> searchByLectName(String lectName, ArrayList<quizsystem.db.Quiz> quizList) {
+        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        if (!lectName.equals("Default")) {
+            quizList.stream().filter((quiz) -> (quiz.getLecturerName().contains(lectName))).forEachOrdered((quiz) -> {
+                tempList.add(quiz);
+            });
+        }
+        return tempList;
+    }
+
+    public ArrayList<quizsystem.db.Quiz> searchByTopic(String topic, ArrayList<quizsystem.db.Quiz> quizList) {
+        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+        if (!topic.equals("Default")) {
+            quizList.stream().filter((quiz) -> (quiz.getTopic().contains(topic))).forEachOrdered((quiz) -> {
+                tempList.add(quiz);
+            });
+        }
+        return tempList;
+    }
+
+    public void withdrawQuiz() {
+
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -270,7 +342,7 @@ public class LecturerInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdvSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdvSearchActionPerformed
-
+        advSearch();
     }//GEN-LAST:event_btnAdvSearchActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -282,7 +354,9 @@ public class LecturerInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnWithdrawQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawQuizActionPerformed
-        
+        if (JOptionPane.showConfirmDialog(null, "Are you sure you want to withdraw this quiz? All data surrounding quiz attempts will be lost", "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            //Withdraw the quiz
+        }
     }//GEN-LAST:event_btnWithdrawQuizActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
