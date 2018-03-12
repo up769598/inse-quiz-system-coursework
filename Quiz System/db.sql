@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS QuizSystem;
 
 CREATE TABLE Users (
-    usrID varchar(10) not null,
+    usrID varchar(10) not null auto_increment,
     usrType varchar(1) not null,
     fName varchar(50),
     lName varchar(50),
@@ -11,29 +11,31 @@ CREATE TABLE Users (
     PRIMARY KEY (usrID),
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-CREATE TABLE QuizCompletions (
-    quizID int NOT NULL,
-    usrID varchar(10) NOT NULL,
-    PRIMARY KEY (quizID, usrID),
-    FOREIGN KEY (usrID) REFERENCES Users(usrID)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-
 CREATE TABLE Quizzes (
     quizID int not null,
     usrID varchar(10) not null,
     PRIMARY KEY (quizID),
-    FOREIGN KEY (usrID) REFERENCES Users(usrID)
+    CONSTRAINT fk_quizzes_users FOREIGN KEY (usrID) REFERENCES Users(usrID)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+CREATE TABLE QuizCompletions (
+    quizID int not null auto_increment,
+    usrID varchar(10) not null,
+    PRIMARY KEY (quizID, usrID),
+    CONSTRAINT fk_quizcompletions_users FOREIGN KEY (usrID) REFERENCES Users(usrID),
+    CONSTRAINT fk_quizcompletions_quizzes FOREIGN KEY (quizID) REFERENCES Quizzes(quizID)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 CREATE TABLE Questions (
-    questionID int autoincrement,
+    questionID int not null auto_increment,
     quizID int not null,
+    userID int not null,
     category varchar(50),
     title varchar(50),
     question text not null,
     PRIMARY KEY (questionID),
-    FOREIGN KEY (usrID) REFERENCES Users(usrID),
-    FOREIGN KEY (quizID) REFERENCES Quizzes(quizID)
+    CONSTRAINT fk_questions_users FOREIGN KEY (usrID) REFERENCES Users(usrID),
+    CONSTRAINT fk_questions_quizzes FOREIGN KEY (quizID) REFERENCES Quizzes(quizID)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 CREATE TABLE Answers (
@@ -41,6 +43,6 @@ CREATE TABLE Answers (
     category varchar(50),
     questionID int not null,
     PRIMARY KEY (answerID),
-    FOREIGN KEY (questionID) REFERENCES Questions(questionID)
+    CONSTRAINT fk_answers_questions FOREIGN KEY (questionID) REFERENCES Questions(questionID)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
