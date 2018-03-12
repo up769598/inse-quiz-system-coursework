@@ -112,6 +112,7 @@ public class LoginRegister extends javax.swing.JFrame {
                 DatabaseHandler db = new DatabaseHandler();
                 if (!db.isUserRegistered(email)){
                     String salt = Login.getNextSalt();
+                    System.out.println("Registered salt " + salt);
                     String hashedPassword = Login.hash(password, salt);
                     db.addUser(userType, email, hashedPassword, salt, course);
                     createMessagePane("Your account has been created.", "Success");

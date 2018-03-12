@@ -13,7 +13,7 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class Login {
     private static final Random random = new SecureRandom();
-    private static final int iterations = 10000;
+    private static final int iterations = 4096;
     private static final int keyLength = 256;
 
     public Login(){    
@@ -30,10 +30,11 @@ public class Login {
         try {
             if (db.isUserRegistered(email)){
                 String[] db_passwordAndSalt = db.getPasswordAndSalt(email);
-                String Salt = db_passwordAndSalt[1];
+                String salt = db_passwordAndSalt[1];
                 String hashPassword = db_passwordAndSalt[0];
+                System.out.println("Login salt" + salt);
 
-                if (isPasswordCorrect(password, Salt, hashPassword)){
+                if (isPasswordCorrect(password, salt, hashPassword)){
                     return "Successful login";
                 }
                 else {
@@ -61,10 +62,10 @@ public class Login {
         byte[] salt = new byte[16];
         random.nextBytes(salt);
         try {
-            return new String(salt, "UTF-8");
+            return new String(salt, "US-ASCII");
         }
         catch (UnsupportedEncodingException ex) {
-            System.out.println("System doesn't support UTF8... what is this, 1980?");
+            System.out.println("System doesn't support US-ASCII... what is this, 1960?");
             return null;
         }
     }
@@ -81,9 +82,9 @@ public class Login {
     public static String hash(String password, String salt) {
         PBEKeySpec key = null;
         try {
-            key = new PBEKeySpec(password.toCharArray(), salt.getBytes("UTF-8"), iterations, keyLength);
+            key = new PBEKeySpec(password.toCharArray(), salt.getBytes("US-ASCII"), iterations, keyLength);
             SecretKeyFactory sKey = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            return new String(sKey.generateSecret(key).getEncoded(), "UTF-8");
+            return new String(sKey.generateSecret(key).getEncoded(), "US-ASCII");
         }
         catch (NoSuchAlgorithmException | InvalidKeySpecException | UnsupportedEncodingException e) {
             throw new AssertionError("Error while hashing a password: " + e.getMessage(), e);
