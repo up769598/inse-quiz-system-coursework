@@ -5,12 +5,14 @@ USE QuizSystem;
 CREATE TABLE Users (
     usrID int not null auto_increment,
     usrType varchar(1) not null,
+    email varchar(255) not null,
     fName varchar(50),
     lName varchar(50),
     password text not null,
     salt text not null,
     course varchar(30),
-    PRIMARY KEY (usrID)
+    PRIMARY KEY (usrID),
+    INDEX index_users_email (email)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 CREATE TABLE Quizzes (
