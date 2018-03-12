@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package quizsystem.GUI.lecturer;
 
 import java.util.ArrayList;
@@ -43,6 +38,10 @@ public class LecturerInterface extends javax.swing.JFrame {
         tblDraftQuiz.setModel(modelDraftQuiz);
     }
     
+    /**
+     * Loads the draft quizzes made by the lecturer into an arraylist.
+     * @return The arraylist containing all quizzes in a draft state created by the logged-in lecturer
+     */
     public ArrayList<quizsystem.db.Quiz> loadDraftQuizzes(){
         //Get all quizzes made by the lecturer that are still in their draft phase
         //add results to the draft quiz arraylist
@@ -50,6 +49,10 @@ public class LecturerInterface extends javax.swing.JFrame {
         return quiz;
     }
     
+    /**
+     * Loads all non-draft quizzes made by the lecturer into an arraylist 
+     * @return The arraylist containing all quizzes in a non-draft state created by the logged-in lecturer
+     */
     public ArrayList<quizsystem.db.Quiz> loadQuizzes(){
         //Get all quizzes made by the lecturer that are NOT in their draft phase and potentially have results attached to them
         //Add results to the quizzes arraylist
@@ -57,6 +60,9 @@ public class LecturerInterface extends javax.swing.JFrame {
         return quiz;
     }
     
+    /**
+     * Logs out of the interface and reloads the Login/Registration GUI
+     */
     public void logout() {
         LoginRegister login = new LoginRegister();
         login.setVisible(true);
@@ -226,6 +232,28 @@ public class LecturerInterface extends javax.swing.JFrame {
         displayDraftQuizzes(draftQuiz);
         displayQuizzes(quizzes);
     }
+    
+    /**
+     * Return the quiz selected in the draft quiz table
+     * @return The Quiz selected
+     */
+    public quizsystem.db.Quiz getDraftQuiz() {
+        return draftQuiz.get(tblDraftQuiz.getSelectedRow());
+    }
+
+    /**
+     * Return the quiz selected in the quiz table
+     * @return The Quiz Selected
+     */
+    public quizsystem.db.Quiz getQuiz() {
+        Quiz quiz;
+        if (searched) {
+            quiz = searchQuiz.get(tblQuiz.getSelectedRow());
+        } else {
+            quiz = quizzes.get(tblQuiz.getSelectedRow());
+        }
+        return quiz;
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -277,6 +305,11 @@ public class LecturerInterface extends javax.swing.JFrame {
         lblSelQuizTitle.setText("Review Created Quizzes");
 
         btnReviewAnswers.setText("Review Submission");
+        btnReviewAnswers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReviewAnswersActionPerformed(evt);
+            }
+        });
 
         btnAdvSearch.setText("Advanced Search");
         btnAdvSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -381,10 +414,20 @@ public class LecturerInterface extends javax.swing.JFrame {
         scrpnlDraftQuiz.setViewportView(tblDraftQuiz);
 
         btnCreateQuiz.setText("Create Quiz");
+        btnCreateQuiz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateQuizActionPerformed(evt);
+            }
+        });
 
         lblDraftQuizTitle.setText("Draft Quizzes");
 
         btnEditQuiz.setText("Edit Quiz");
+        btnEditQuiz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditQuizActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlDraftQuizLayout = new javax.swing.GroupLayout(pnlDraftQuiz);
         pnlDraftQuiz.setLayout(pnlDraftQuizLayout);
@@ -465,6 +508,20 @@ public class LecturerInterface extends javax.swing.JFrame {
             //Withdraw the quiz
         }
     }//GEN-LAST:event_btnWithdrawQuizActionPerformed
+
+    private void btnReviewAnswersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewAnswersActionPerformed
+        Quiz quiz = getQuiz();
+        SelectResult sr = new SelectResult(quiz);
+        sr.setVisible(true);
+    }//GEN-LAST:event_btnReviewAnswersActionPerformed
+
+    private void btnCreateQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateQuizActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCreateQuizActionPerformed
+
+    private void btnEditQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditQuizActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditQuizActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdvSearch;

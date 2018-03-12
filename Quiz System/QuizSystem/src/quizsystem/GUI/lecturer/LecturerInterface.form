@@ -148,6 +148,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Review Submission"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReviewAnswersActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnAdvSearch">
           <Properties>
@@ -310,6 +313,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Create Quiz"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCreateQuizActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblDraftQuizTitle">
           <Properties>
@@ -320,6 +326,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Edit Quiz"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditQuizActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
