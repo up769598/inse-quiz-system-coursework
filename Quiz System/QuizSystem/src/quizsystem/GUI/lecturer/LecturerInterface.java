@@ -13,11 +13,11 @@ import quizsystem.db.Quiz;
 
 public class LecturerInterface extends javax.swing.JFrame {
 
-    private final DefaultTableModel modelDraftQuiz;
-    private final DefaultTableModel modelQuiz;
-    private  ArrayList<quizsystem.db.Quiz> draftQuiz;
-    private  ArrayList<quizsystem.db.Quiz> quizzes;
-    private  ArrayList<quizsystem.db.Quiz> searchQuiz;
+    private DefaultTableModel modelDraftQuiz;
+    private DefaultTableModel modelCompQuiz;
+    private final ArrayList<quizsystem.db.Quiz> draftQuiz;
+    private final ArrayList<quizsystem.db.Quiz> quizzes;
+    private final ArrayList<quizsystem.db.Quiz> searchQuiz;
     private boolean searched;
     private final String username;
 
@@ -33,30 +33,16 @@ public class LecturerInterface extends javax.swing.JFrame {
         searchQuiz = new ArrayList<>();
         searched = false;
         username = inUsername;
+        
+        Object[] colQuiz = {"Lecturer", "Name", "Time"};
+        modelSetQuiz = new DefaultTableModel(colSetQuiz, 0);
+        tblSetQuiz.setModel(modelSetQuiz);
 
-        Object[] colQuiz = {"Lecturer", "Name", "Time", "Avg Mark"};
-        modelQuiz = new DefaultTableModel(colQuiz, 0);
-        tblQuiz.setModel(modelQuiz);
+        Object[] colCompQuiz = {"Lecturer", "Name", "Time", "Mark"};
+        modelCompQuiz = new DefaultTableModel(colCompQuiz, 0);
+        tblCompQuiz.setModel(modelCompQuiz);
+    }
 
-        Object[] colDraftQuiz = {"Name", "Number of Questions"};
-        modelDraftQuiz = new DefaultTableModel(colDraftQuiz, 0);
-        tblDraftQuiz.setModel(modelDraftQuiz);
-    }
-    
-    public ArrayList<quizsystem.db.Quiz> loadDraftQuizzes(){
-        //Get all quizzes made by the lecturer that are still in their draft phase
-        //add results to the draft quiz arraylist
-        ArrayList<Quiz> quiz = new ArrayList<>();
-        return quiz;
-    }
-    
-    public ArrayList<quizsystem.db.Quiz> loadQuizzes(){
-        //Get all quizzes made by the lecturer that are NOT in their draft phase and potentially have results attached to them
-        //Add results to the quizzes arraylist
-        ArrayList<Quiz> quiz = new ArrayList<>();
-        return quiz;
-    }
-    
     public void logout() {
         LoginRegister login = new LoginRegister();
         login.setVisible(true);
@@ -64,74 +50,14 @@ public class LecturerInterface extends javax.swing.JFrame {
     }
 
     /**
-     * Clears the draft quiz table of all data.
-     */
-    private void clearDraftQuizTable() {
-        modelDraftQuiz.setRowCount(0);
-    }
-
-    /**
-     * Clears the quiz table of all data.
-     */
-    private void clearQuizTable() {
-        modelQuiz.setRowCount(0);
-    }
-
-    /**
-     * Appends data from a quiz onto a new row on the draft quiz table
-     *
-     * @param inQuiz The Quiz to be appended onto the draft quiz table
-     */
-    private void addDraftQuiz(quizsystem.db.Quiz inQuiz) {
-        Object[] data = {inQuiz.getName(), inQuiz.getQuestions().size()};
-        modelDraftQuiz.addRow(data);
-    }
-
-    /**
-     * Appends data from a quiz onto a new row on the quiz table
-     *
-     * @param inQuiz The Quiz to be appended onto the quiz table
-     */
-    private void addQuiz(quizsystem.db.Quiz inQuiz) {
-        Object[] data = {inQuiz.getLecturerName(), inQuiz.getName(), inQuiz.getTimeLimit(), 0}; //Add average mark
-        modelQuiz.addRow(data);
-    }
-
-    /**
-     * Adds data from all quizzes within a passed list of quizzes to the draft
-     * quiz table
-     *
-     * @param inDraftQuiz Arraylist of all quizzes to be added to the table
-     */
-    private void displayDraftQuizzes(ArrayList<quizsystem.db.Quiz> inDraftQuiz) {
-        clearDraftQuizTable();
-        inDraftQuiz.forEach((quiz) -> {
-            addDraftQuiz(quiz);
-        });
-    }
-
-    /**
-     * Adds data from all quizzes within a passed list of quizzes to the quiz
-     * table
-     *
-     * @param inQuiz ArrayList of all quizzes to be added to the table
-     */
-    private void displayQuizzes(ArrayList<quizsystem.db.Quiz> inQuiz) {
-        clearQuizTable();
-        inQuiz.forEach((quiz) -> {
-            addQuiz(quiz);
-        });
-    }
-
-    /**
      * Searches the list of completed quizzes for quizzes that match search
-     * terms then display results on GUI
+     * terms then display results on gui
      *
      * @param name Name of the quiz to search by
      * @param lectName Name of the quiz creating lecturer to search by
      * @param topic The topic of the quiz
      */
-    public void searchQuiz(String name, String lectName, String topic) {
+    public void searchCompQuiz(String name, String lectName, String topic) {
         searchQuiz.clear();
         ArrayList<quizsystem.db.Quiz> searchList1 = searchByName(name, quizzes);
         ArrayList<quizsystem.db.Quiz> searchList2 = searchByLectName(lectName, quizzes);
@@ -150,24 +76,13 @@ public class LecturerInterface extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Search through the list of quizzes and find matching quizzes.
-     */
     public void advSearch() {
         AdvSearch advSearch = new AdvSearch(this, true);
         advSearch.setVisible(true);
-        searchQuiz(advSearch.getName(), advSearch.getLecturer(), advSearch.getTopic());
+        //searchCompQuiz(advSearch.getName(),advSearch.getLecturer(),advSearch.getTopic());
         advSearch.dispose();
     }
 
-    /**
-     * Search through each quiz in a list and filter any quizzes with names that
-     * contain a search keyword
-     *
-     * @param name The name of the quiz to search by
-     * @param quizList The full list of quizzes to search through
-     * @return The list of quizzes with names that contain that keyword
-     */
     public ArrayList<quizsystem.db.Quiz> searchByName(String name, ArrayList<quizsystem.db.Quiz> quizList) {
         ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
         if (!name.equals("Default")) {
@@ -178,14 +93,6 @@ public class LecturerInterface extends javax.swing.JFrame {
         return tempList;
     }
 
-    /**
-     * Search through each quiz in a list and filter any quizzes with lecturer
-     * names that contain a search keyword
-     *
-     * @param lectName The name of the lecturer to search by
-     * @param quizList The full list of quizzes to search through
-     * @return The list of quizzes with lecturer names that contain that keyword
-     */
     public ArrayList<quizsystem.db.Quiz> searchByLectName(String lectName, ArrayList<quizsystem.db.Quiz> quizList) {
         ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
         if (!lectName.equals("Default")) {
@@ -196,14 +103,6 @@ public class LecturerInterface extends javax.swing.JFrame {
         return tempList;
     }
 
-    /**
-     * Search through each quiz in a list and filter any quizzes with topics
-     * that contain a search keyword
-     *
-     * @param topic The topic of the quiz to search by
-     * @param quizList The full list of quizzes to search through
-     * @return The list of quizzes with topics that contain that keyword
-     */
     public ArrayList<quizsystem.db.Quiz> searchByTopic(String topic, ArrayList<quizsystem.db.Quiz> quizList) {
         ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
         if (!topic.equals("Default")) {
@@ -214,17 +113,8 @@ public class LecturerInterface extends javax.swing.JFrame {
         return tempList;
     }
 
-    /**
-     * Withdraw a quiz, revert it back to its draft version and delete all
-     * attempt data appended to it.
-     */
     public void withdrawQuiz() {
-        //revert quiz to draft
-        //write to db
-        draftQuiz = loadDraftQuizzes();
-        quizzes = loadQuizzes();
-        displayDraftQuizzes(draftQuiz);
-        displayQuizzes(quizzes);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -238,17 +128,17 @@ public class LecturerInterface extends javax.swing.JFrame {
         lblSelQuizTitle = new javax.swing.JLabel();
         btnReviewAnswers = new javax.swing.JButton();
         btnAdvSearch = new javax.swing.JButton();
-        scrpnlQuiz = new javax.swing.JScrollPane();
-        tblQuiz = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         pnlMiscOperations = new javax.swing.JPanel();
         btnLogout = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
-        pnlDraftQuiz = new javax.swing.JPanel();
-        scrpnlDraftQuiz = new javax.swing.JScrollPane();
-        tblDraftQuiz = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblDraftQuizzes = new javax.swing.JTable();
         btnCreateQuiz = new javax.swing.JButton();
-        lblDraftQuizTitle = new javax.swing.JLabel();
-        btnEditQuiz = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -285,7 +175,7 @@ public class LecturerInterface extends javax.swing.JFrame {
             }
         });
 
-        tblQuiz.setModel(new javax.swing.table.DefaultTableModel(
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -293,7 +183,7 @@ public class LecturerInterface extends javax.swing.JFrame {
 
             }
         ));
-        scrpnlQuiz.setViewportView(tblQuiz);
+        jScrollPane2.setViewportView(jTable2);
 
         javax.swing.GroupLayout pnlSelectQuizLayout = new javax.swing.GroupLayout(pnlSelectQuiz);
         pnlSelectQuiz.setLayout(pnlSelectQuizLayout);
@@ -313,7 +203,7 @@ public class LecturerInterface extends javax.swing.JFrame {
                         .addComponent(btnAdvSearch))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSelectQuizLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(scrpnlQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         pnlSelectQuizLayout.setVerticalGroup(
@@ -322,7 +212,7 @@ public class LecturerInterface extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblSelQuizTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrpnlQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(pnlSelectQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnWithdrawQuiz)
@@ -368,9 +258,9 @@ public class LecturerInterface extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlDraftQuiz.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        tblDraftQuiz.setModel(new javax.swing.table.DefaultTableModel(
+        tblDraftQuizzes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -378,43 +268,46 @@ public class LecturerInterface extends javax.swing.JFrame {
 
             }
         ));
-        scrpnlDraftQuiz.setViewportView(tblDraftQuiz);
+        jScrollPane3.setViewportView(tblDraftQuizzes);
 
         btnCreateQuiz.setText("Create Quiz");
 
-        lblDraftQuizTitle.setText("Draft Quizzes");
+        jLabel1.setText("Draft Quizzes");
 
-        btnEditQuiz.setText("Edit Quiz");
+        jButton1.setText("Edit Quiz");
 
-        javax.swing.GroupLayout pnlDraftQuizLayout = new javax.swing.GroupLayout(pnlDraftQuiz);
-        pnlDraftQuiz.setLayout(pnlDraftQuizLayout);
-        pnlDraftQuizLayout.setHorizontalGroup(
-            pnlDraftQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDraftQuizLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlDraftQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrpnlDraftQuiz)
-                    .addGroup(pnlDraftQuizLayout.createSequentialGroup()
-                        .addGroup(pnlDraftQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblDraftQuizTitle)
-                            .addGroup(pnlDraftQuizLayout.createSequentialGroup()
-                                .addComponent(btnCreateQuiz)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnEditQuiz)))
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-        );
-        pnlDraftQuizLayout.setVerticalGroup(
-            pnlDraftQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDraftQuizLayout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblDraftQuizTitle)
+                .addComponent(btnCreateQuiz)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(scrpnlDraftQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
-                .addGroup(pnlDraftQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCreateQuiz)
-                    .addComponent(btnEditQuiz))
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -429,7 +322,7 @@ public class LecturerInterface extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlSelectQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlDraftQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -439,7 +332,7 @@ public class LecturerInterface extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(pnlSelectQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlDraftQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlMiscOperations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -469,21 +362,21 @@ public class LecturerInterface extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdvSearch;
     private javax.swing.JButton btnCreateQuiz;
-    private javax.swing.JButton btnEditQuiz;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnReviewAnswers;
     private javax.swing.JButton btnWithdrawQuiz;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel lblDraftQuizTitle;
+    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblSelQuizTitle;
-    private javax.swing.JPanel pnlDraftQuiz;
     private javax.swing.JPanel pnlMiscOperations;
     private javax.swing.JPanel pnlSelectQuiz;
-    private javax.swing.JScrollPane scrpnlDraftQuiz;
-    private javax.swing.JScrollPane scrpnlQuiz;
-    private javax.swing.JTable tblDraftQuiz;
-    private javax.swing.JTable tblQuiz;
+    private javax.swing.JTable tblDraftQuizzes;
     // End of variables declaration//GEN-END:variables
 }

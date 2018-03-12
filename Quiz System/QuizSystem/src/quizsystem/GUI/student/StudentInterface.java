@@ -19,7 +19,6 @@ public class StudentInterface extends javax.swing.JFrame {
     /**
      * Creates new form StudentInterface, initialises the ArrayLists and sets up
      * the model for the two gui tables.
-     *
      * @param inUsername The username of the student who is logged in
      */
     public StudentInterface(String inUsername) {
@@ -37,21 +36,8 @@ public class StudentInterface extends javax.swing.JFrame {
         Object[] colCompQuiz = {"Lecturer", "Name", "Time", "Mark"};
         modelCompQuiz = new DefaultTableModel(colCompQuiz, 0);
         tblCompQuiz.setModel(modelCompQuiz);
-
-        displaySetQuizzes(setQuiz);
-        displayCompQuizzes(compQuiz);
     }
 
-    public void loadSetQuizzes(){
-        //Get all quizzes from the database that are able to be taken by the student but have not yet completed
-        //Load the results in the setQuiz arraylist
-    }
-    
-    public void loadCompQuizzes(){
-        //Get all quizzes from the database that have results attached to them
-        //Load the results into the compQuiz arraylist
-    }
-    
     /**
      * Appends data from a quiz onto a new row on the set quiz table
      *
@@ -235,10 +221,10 @@ public class StudentInterface extends javax.swing.JFrame {
 
     public quizsystem.db.Quiz getCompQuiz() {
         Quiz quiz;
-        if (searched) {
-            quiz = searchQuiz.get(tblCompQuiz.getSelectedRow());
+        if(searched){
+            quiz = searchQuiz.get(tblCompQuiz.getSelectedRow()); 
         } else {
-            quiz = compQuiz.get(tblCompQuiz.getSelectedRow());
+            quiz = compQuiz.get(tblCompQuiz.getSelectedRow()); 
         }
         return quiz;
     }
@@ -516,7 +502,7 @@ public class StudentInterface extends javax.swing.JFrame {
     private void btnReviewAnswersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewAnswersActionPerformed
         //Review answers given for that completed quiz
         Quiz quiz = getCompQuiz();
-        StudentReviewAnswers sra = new StudentReviewAnswers(this, true, quiz);
+        StudentReviewAnswers sra = new StudentReviewAnswers(this,true,quiz);
         sra.setVisible(true);
     }//GEN-LAST:event_btnReviewAnswersActionPerformed
 
