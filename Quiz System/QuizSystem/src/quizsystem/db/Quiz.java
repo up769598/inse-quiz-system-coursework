@@ -75,6 +75,10 @@ public class Quiz extends Model {
         return this._lecturer.getName();
     }
     
+    public String getTopic(){
+        return this.get("topic");
+    }
+    
     public float getTimeLimit() {
         String limit = this.get("timeLimit");
         return Float.parseFloat(limit);

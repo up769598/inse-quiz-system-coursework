@@ -164,4 +164,5 @@ public class DatabaseHandler {
         * Used to add new users to the database
         */
     }
+    
 }

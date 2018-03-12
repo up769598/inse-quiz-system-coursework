@@ -2,6 +2,8 @@ package quizsystem.GUI;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -135,12 +137,7 @@ public class LoginRegister extends javax.swing.JFrame {
         if (valid && lecturer) {
             //Create a new lecturer user
         } else if(valid) {
-            //Create a new student user
-        } else {
-            //Return an error
-            createMessagePane("Error: Please ensure that all entered data is valid and try again","Error");
-        }
-        try {
+                    try {
            DatabaseHandler db = new DatabaseHandler();
            if(db.isUserRegistered(userID)){
                byte[] salt = Login.getNextSalt();
@@ -152,11 +149,19 @@ public class LoginRegister extends javax.swing.JFrame {
            System.out.println("[WARN] LoginRegister.getRegDetails encountered SQLException:");
            System.out.println(ex);
        }
+        } else {
+            //Return an error
+            createMessagePane("Error: Please ensure that all entered data is valid and try again","Error");
+        }
+
     }
 
-    public void getLoginDetails() {
-        String username = getTextInput(tfEmailLogin);
-        char[] password = getPasswordInput(tfPasswordLogin);
+    public String getUserName() {
+       return getTextInput(tfEmailLogin);
+    }
+    
+    public char[] getPassword(){
+        return getPasswordInput(tfPasswordLogin);
     }
     
     public void createMessagePane(String message, String title) {
@@ -438,7 +443,20 @@ public class LoginRegister extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        //Login the User
+        try {
+            String error = Login.login(this.getUserName(),this.getPassword());
+            if (error.equals("Successful login")){
+                quizsystem.GUI.student.StudentInterface stu = new quizsystem.GUI.student.StudentInterface();
+                this.setVisible(false);
+                stu.setVisible(true);
+            }else{
+              createMessagePane(error,"Error");
+              // use error to create an error mesage popup
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginRegister.class.getName()).log(Level.SEVERE, null, ex);
+        }
+  
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void tfPasswordRegisterFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tfPasswordRegisterFocusLost

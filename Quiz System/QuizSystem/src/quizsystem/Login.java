@@ -14,17 +14,26 @@ public class Login {
     private static final Random random = new SecureRandom();
     private static final int iterations = 10000;
     private static final int keyLength = 256;
-    
+
+    public Login(){    
+    }    
+
     private DatabaseHandler _handler;
     
     public Login(DatabaseHandler handler) {
         this._handler = handler;
     }
     
-    public String login(String userID, char[] password) {
+
+    
+    
+    
+    
+    public static String login(String userID, char[] password) throws SQLException {
+        DatabaseHandler db = new DatabaseHandler();
         try {
-            if (this._handler.isUserRegistered(userID)){
-                String[] db_passwordAndSalt = this._handler.getPasswordAndSalt(userID);
+            if (db.isUserRegistered(userID)){
+                String[] db_passwordAndSalt = db.getPasswordAndSalt(userID);
                 byte[] Salt = db_passwordAndSalt[1].getBytes();
                 byte[] hashPassword = db_passwordAndSalt[0].getBytes();
 
