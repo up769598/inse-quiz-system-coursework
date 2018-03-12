@@ -3,14 +3,21 @@ package quizsystem.GUI.lecturer;
 import quizsystem.db.Quiz;
 
 public class CreateQuiz extends javax.swing.JFrame {
+    
+    private Quiz quiz;
 
     public CreateQuiz() {
         initComponents();
     }
     
-    public CreateQuiz(Quiz quiz){
+    public CreateQuiz(Quiz inQuiz){
         initComponents();
         //Load whats already complete into GUI
+        quiz = inQuiz;
+        sldTime.setValue((int) quiz.getTimeLimit());
+        tfName.setText(quiz.getName());
+        tfNumQuestions.setText(Integer.toString(quiz.getQuestions().size()));
+        
     }
 
     public String getQuizName() {
@@ -50,14 +57,14 @@ public class CreateQuiz extends javax.swing.JFrame {
         btnAddAnswer = new javax.swing.JButton();
         btnDeleteLastAnswer = new javax.swing.JButton();
         pnlAnswers = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
+        tfAnswer1 = new javax.swing.JTextField();
+        tfAnswer2 = new javax.swing.JTextField();
+        tfAnswer3 = new javax.swing.JTextField();
+        tfAnswer4 = new javax.swing.JTextField();
+        tfAnswer5 = new javax.swing.JTextField();
+        tfAnswer6 = new javax.swing.JTextField();
+        tfAnswer7 = new javax.swing.JTextField();
+        tfAnswer8 = new javax.swing.JTextField();
         lblCorrectAnswer = new javax.swing.JLabel();
         btnSaveSubmit = new javax.swing.JButton();
         btnSaveDraft = new javax.swing.JButton();
@@ -154,21 +161,21 @@ public class CreateQuiz extends javax.swing.JFrame {
 
         pnlAnswers.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTextField1.setText("<Insert Answer Here>");
+        tfAnswer1.setText("<Insert Answer Here>");
 
-        jTextField2.setText("<Insert Answer Here>");
+        tfAnswer2.setText("<Insert Answer Here>");
 
-        jTextField3.setText("<Insert Answer Here>");
+        tfAnswer3.setText("<Insert Answer Here>");
 
-        jTextField4.setText("<Insert Answer Here>");
+        tfAnswer4.setText("<Insert Answer Here>");
 
-        jTextField5.setText("<Insert Answer Here>");
+        tfAnswer5.setText("<Insert Answer Here>");
 
-        jTextField6.setText("<Insert Answer Here>");
+        tfAnswer6.setText("<Insert Answer Here>");
 
-        jTextField7.setText("<Insert Answer Here>");
+        tfAnswer7.setText("<Insert Answer Here>");
 
-        jTextField8.setText("<Insert Answer Here>");
+        tfAnswer8.setText("<Insert Answer Here>");
 
         javax.swing.GroupLayout pnlAnswersLayout = new javax.swing.GroupLayout(pnlAnswers);
         pnlAnswers.setLayout(pnlAnswersLayout);
@@ -177,35 +184,35 @@ public class CreateQuiz extends javax.swing.JFrame {
             .addGroup(pnlAnswersLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlAnswersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField3)
-                    .addComponent(jTextField4)
-                    .addComponent(jTextField5)
-                    .addComponent(jTextField6)
-                    .addComponent(jTextField7)
-                    .addComponent(jTextField8))
+                    .addComponent(tfAnswer1)
+                    .addComponent(tfAnswer2)
+                    .addComponent(tfAnswer3)
+                    .addComponent(tfAnswer4)
+                    .addComponent(tfAnswer5)
+                    .addComponent(tfAnswer6)
+                    .addComponent(tfAnswer7)
+                    .addComponent(tfAnswer8))
                 .addContainerGap())
         );
         pnlAnswersLayout.setVerticalGroup(
             pnlAnswersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlAnswersLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tfAnswer1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tfAnswer2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tfAnswer3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tfAnswer4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tfAnswer5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tfAnswer6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tfAnswer7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tfAnswer8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(45, Short.MAX_VALUE))
         );
 
@@ -355,14 +362,6 @@ public class CreateQuiz extends javax.swing.JFrame {
     private javax.swing.JButton btnSaveDraft;
     private javax.swing.JButton btnSaveSubmit;
     private javax.swing.JCheckBox chbTimer;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JLabel lblCorrectAnswer;
     private javax.swing.JLabel lblName;
     private javax.swing.JLabel lblNumQuestions;
@@ -374,6 +373,14 @@ public class CreateQuiz extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrpnlQuestion;
     private javax.swing.JSlider sldTime;
     private javax.swing.JTextArea taQuestion;
+    private javax.swing.JTextField tfAnswer1;
+    private javax.swing.JTextField tfAnswer2;
+    private javax.swing.JTextField tfAnswer3;
+    private javax.swing.JTextField tfAnswer4;
+    private javax.swing.JTextField tfAnswer5;
+    private javax.swing.JTextField tfAnswer6;
+    private javax.swing.JTextField tfAnswer7;
+    private javax.swing.JTextField tfAnswer8;
     private javax.swing.JTextField tfName;
     private javax.swing.JTextField tfNumQuestions;
     // End of variables declaration//GEN-END:variables
