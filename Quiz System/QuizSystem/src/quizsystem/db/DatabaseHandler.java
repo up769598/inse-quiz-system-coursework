@@ -97,6 +97,23 @@ public class DatabaseHandler {
 
         return rows;
     }
+    
+    /**
+     * Execute a safely-parameterized SQL manipulation statement.
+     * @param query the raw SQL to execute, with parameters indicated by ?
+     * @param parameters a list of parameters to insert at their respective placeholders
+     * @return an ArrayList of ResultRows as returned by the database driver
+     * @throws SQLException 
+     */
+    protected boolean executeManipulator(String query, List<String> parameters)
+      throws SQLException {
+        PreparedStatement stmt = this.connection.prepareStatement(query);
+        for (int i = 0; i < parameters.size(); i++) {
+            stmt.setString(i + 1, parameters.get(i));
+        }
+
+        return stmt.execute();
+    }
 
     /**
      * Get the password and salt for a specified user ID.
@@ -159,10 +176,10 @@ public class DatabaseHandler {
         return this.executeParameterized(query, params);
     }
     
-    public void addUser(String userType, String email, String password, String salt, String course) {
-        /*
-        * Used to add new users to the database
-        */
-        System.out.println(String.format("%s %s %s %s %s", userType, email, password, salt, course));
+    public void addUser(String userType, String email, String password, String salt, String course)
+      throws SQLException {
+        String query = "INSERT INTO Users (usrType, email, password, salt, course) VALUES (?, ?, ?, ?, ?);";
+        List<String> params = Arrays.asList(userType, email, password, salt, course);
+        this.executeManipulator(query, params);
     }
 }
