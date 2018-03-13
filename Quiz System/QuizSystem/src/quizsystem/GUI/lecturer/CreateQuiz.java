@@ -92,6 +92,8 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     public void save() {
         saveQuestion();
         saveAnswers();
+        sortAnswers();
+        refresh();
     }
 
     public void saveQuestion() {
@@ -186,6 +188,22 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
             valid = false;
         }
         return valid;
+    }
+    
+    public void sortAnswers(){
+        boolean sorted = false;
+        while(!sorted){
+            sorted = true;
+            for(int i=0;i<7;i++){
+                if(answers[currentQuestion][i] == null && answers[currentQuestion][i+1] != null){
+                    String temp = answers[currentQuestion][i];
+                    answers[currentQuestion][i] = answers[currentQuestion][i+1];
+                    answers[currentQuestion][i+1] = temp;
+                    sorted = false;
+                }
+            }
+            
+        }
     }
 
     @SuppressWarnings("unchecked")
