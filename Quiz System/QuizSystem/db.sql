@@ -20,6 +20,7 @@ CREATE TABLE Quizzes (
     usrID int not null,
     timeLimit decimal(7,2),
     topic text,
+    draft tinyint(1) not null default 1,
     name varchar(255),
     PRIMARY KEY (quizID),
     CONSTRAINT fk_quizzes_users FOREIGN KEY (usrID) REFERENCES Users(usrID)
@@ -49,6 +50,8 @@ CREATE TABLE Answers (
     answerID int not null auto_increment,
     category varchar(50),
     questionID int not null,
+    answer text,
+    correct tinyint(1) not null default 0,
     PRIMARY KEY (answerID),
     CONSTRAINT fk_answers_questions FOREIGN KEY (questionID) REFERENCES Questions(questionID)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
