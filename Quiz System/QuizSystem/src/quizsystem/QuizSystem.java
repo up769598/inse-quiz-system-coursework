@@ -2,7 +2,6 @@ package quizsystem;
 
 import java.sql.SQLException;
 import java.util.List;
-import quizsystem.db.AttemptAnswer;
 import quizsystem.db.DatabaseHandler;
 import quizsystem.db.Quiz;
 import quizsystem.db.QuizState;

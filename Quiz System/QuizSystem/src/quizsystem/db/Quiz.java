@@ -83,4 +83,8 @@ public class Quiz extends Model {
         String limit = this.get("timeLimit");
         return Float.parseFloat(limit);
     }
+    
+    public boolean isDraft() {
+        return this.get("draft").equals("1");
+    }
 }
