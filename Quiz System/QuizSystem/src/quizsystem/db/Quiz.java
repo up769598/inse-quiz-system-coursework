@@ -108,6 +108,11 @@ public class Quiz extends Model {
     public static Quiz create(HashMap<String, String> attributes) throws SQLException {
         List<String> reselectors = Model.calculateReselectors(Arrays.asList("quizID", "usrID", "timeLimit",
           "topic", "draft"), attributes.keySet());
+        
+        if (attributes.containsKey("draft")) {
+            attributes.put("draft", (attributes.get("draft").equals("true") ? "1" : "0"));
+        }
+        
         ResultRow row = Model.create("Quizzes", attributes, reselectors, "quizID");
         return row == null ? null : new Quiz(row);
     }

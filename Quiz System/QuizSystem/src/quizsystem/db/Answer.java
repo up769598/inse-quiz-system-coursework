@@ -55,6 +55,11 @@ public class Answer extends Model {
     public static Answer create(HashMap<String, String> attributes) throws SQLException {
         List<String> reselectors = Model.calculateReselectors(Arrays.asList("answerID", "category", "questionID",
           "answer", "correct"), attributes.keySet());
+        
+        if (attributes.containsKey("correct")) {
+            attributes.put("correct", (attributes.get("correct").equals("true") ? "1" : "0"));
+        }
+        
         ResultRow row = Model.create("Answers", attributes, reselectors, "answerID");
         return row == null ? null : new Answer(row);
     }
