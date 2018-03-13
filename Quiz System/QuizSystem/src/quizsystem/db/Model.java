@@ -15,6 +15,7 @@ public class Model {
      * @throws SQLException 
      */
     public Model(ResultRow row) throws SQLException {
+        this._values = new HashMap<>();
         List<String> names = row.getColumnNames();
         for (int i = 0; i < row.getColumnCount(); i++) {
             String name = names.get(i);

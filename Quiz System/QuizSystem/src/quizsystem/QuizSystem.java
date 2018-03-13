@@ -14,7 +14,7 @@ public class QuizSystem {
        try {
            DatabaseHandler db = new DatabaseHandler();
            String[] pas = db.getPasswordAndSalt("up769598@myport.ac.uk");
-           List<AttemptAnswer> aa = db.getQuizAttempt("1", "1");
+           List<AttemptAnswer> aa = db.getQuizAttempt("1", "5");
            System.out.println("");
        }
        catch (SQLException ex) {
