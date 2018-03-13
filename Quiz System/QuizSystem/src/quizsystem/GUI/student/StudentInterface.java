@@ -1,17 +1,22 @@
 package quizsystem.GUI.student;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import quizsystem.GUI.LoginRegister;
+import quizsystem.db.AttemptAnswer;
+import quizsystem.db.DatabaseHandler;
 import quizsystem.db.Quiz;
+import quizsystem.db.QuizState;
 
 public class StudentInterface extends javax.swing.JFrame {
 
     private final DefaultTableModel modelSetQuiz;
     private final DefaultTableModel modelCompQuiz;
-    private final ArrayList<quizsystem.db.Quiz> setQuiz;
-    private final ArrayList<quizsystem.db.Quiz> compQuiz;
+    private ArrayList<quizsystem.db.Quiz> setQuiz;
+    private ArrayList<quizsystem.db.Quiz> compQuiz;
     private final ArrayList<quizsystem.db.Quiz> searchQuiz;
     private boolean searched;
     private final String username;
@@ -24,8 +29,8 @@ public class StudentInterface extends javax.swing.JFrame {
      */
     public StudentInterface(String inUsername) {
         initComponents();
-        compQuiz = new ArrayList<>();
-        setQuiz = new ArrayList<>();
+        loadSetQuizzes();
+        loadCompQuizzes();
         searchQuiz = new ArrayList<>();
         searched = false;
         username = inUsername;
@@ -39,19 +44,33 @@ public class StudentInterface extends javax.swing.JFrame {
         tblCompQuiz.setModel(modelCompQuiz);
 
         displaySetQuizzes(setQuiz);
-        displayCompQuizzes(compQuiz);
+        //displayCompQuizzes(compQuiz);
     }
 
-    public void loadSetQuizzes(){
+    public void loadSetQuizzes() {
         //Get all quizzes from the database that are able to be taken by the student but have not yet completed
         //Load the results in the setQuiz arraylist
+        try {
+            DatabaseHandler db = new DatabaseHandler();
+            setQuiz = db.getQuizzesForStudent(username, QuizState.INCOMPLETE);
+        } catch (SQLException ex) {
+            System.out.println("[WARN] QuizSystem.GUI.student.StudentInterface encountered SQLException:");
+            System.out.println(ex);
+        }
     }
-    
-    public void loadCompQuizzes(){
+
+    public void loadCompQuizzes() {
         //Get all quizzes from the database that have results attached to them
         //Load the results into the compQuiz arraylist
+        try {
+            DatabaseHandler db = new DatabaseHandler();
+            compQuiz = db.getQuizzesForStudent(username, QuizState.COMPLETED);
+        } catch (SQLException ex) {
+            System.out.println("[WARN] QuizSystem.GUI.student.StudentInterface encountered SQLException:");
+            System.out.println(ex);
+        }
     }
-    
+
     /**
      * Appends data from a quiz onto a new row on the set quiz table
      *
@@ -94,9 +113,11 @@ public class StudentInterface extends javax.swing.JFrame {
      */
     private void displaySetQuizzes(ArrayList<quizsystem.db.Quiz> inSetQuiz) {
         clearSetQuizTable();
-        inSetQuiz.forEach((quiz) -> {
-            addSetQuiz(quiz);
-        });
+        if (!inSetQuiz.isEmpty()) {
+            inSetQuiz.forEach((quiz) -> {
+                addSetQuiz(quiz);
+            });
+        }
     }
 
     /**
