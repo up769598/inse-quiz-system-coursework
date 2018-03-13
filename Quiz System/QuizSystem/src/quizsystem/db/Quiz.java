@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Quiz extends Model {
-    private List<Question> _questions;
-    private HashMap<String, List<Answer>> _answers;
-    private Lecturer _lecturer;
+    private final List<Question> _questions;
+    private final HashMap<String, List<Answer>> _answers;
+    private final Lecturer _lecturer;
     private int _currentQuestion;
     
     public Quiz(ResultRow row) throws SQLException {

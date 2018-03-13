@@ -5,5 +5,6 @@ package quizsystem.db;
  */
 public enum QuizState {
     INCOMPLETE,
-    COMPLETED
+    COMPLETED,
+    STARTED
 }

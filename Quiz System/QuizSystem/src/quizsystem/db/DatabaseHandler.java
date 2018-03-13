@@ -154,32 +154,91 @@ public class DatabaseHandler {
      * Get a list of quizzes, with reference to a particular student, that are in the specified state.
      * @param userID the student ID to get quizzes for
      * @param state the state returned quizzes must be in - completed or not
-     * @return a list of result rows
+     * @return a list of quizzes
      * @throws SQLException
      */
-    // TODO: Make this return a Quiz object when we have enough database structure.
-    public ArrayList<ResultRow> getQuizzesForStudent(String userID, QuizState state) throws SQLException {
+    public ArrayList<Quiz> getQuizzesForStudent(String userID, QuizState state) throws SQLException {
         String query;
-        if (state == QuizState.INCOMPLETE) {
-            query = "SELECT * FROM Quizzes AS q LEFT JOIN QuizCompletions AS qc ON qc.quizID = q.quizID" +
-                    "AND qc.usrID = ? WHERE qc.quizID IS NULL;";
-        }
-        else if (state == QuizState.COMPLETED) {
-            query = "SELECT * FROM Quizzes AS q INNER JOIN QuizCompletions AS qc ON qc.quizID = q.quizID" +
-                    "WHERE qc.usrID = ?";
-        }
-        else {
+        if (state == null) {
             throw new IllegalStateException("That's not even meant to exist.");
+        }
+        else switch (state) {
+            case INCOMPLETE:
+                query = "SELECT * FROM Quizzes AS q LEFT JOIN QuizCompletions AS qc ON qc.quizID = q.quizID " +
+                  "AND qc.usrID = ? WHERE qc.quizID IS NULL;";
+                break;
+            case COMPLETED:
+                query = "SELECT * FROM Quizzes AS q INNER JOIN QuizCompletions AS qc ON qc.quizID = q.quizID " +
+                  "WHERE qc.usrID = ?";
+                break;
+            case STARTED:
+                query = "SELECT * FROM Quizzes WHERE quizID IN (SELECT DISTINCT quizID FROM AttemptAnswers " +
+                  "WHERE usrID = ?);";
+            default:
+                throw new IllegalStateException("That's not even meant to exist.");
         }
         
         List<String> params = Arrays.asList(userID);
-        return this.executeParameterized(query, params);
+        ArrayList<ResultRow> rows = this.executeParameterized(query, params);
+        ArrayList<Quiz> quizzes = new ArrayList<>();
+        
+        for (int i = 0; i < rows.size(); i++) {
+            quizzes.add(new Quiz(rows.get(i)));
+        }
+        return quizzes;
     }
     
-    public void addUser(String userType, String email, String password, String salt, String course)
+    /**
+     * Creates a user row using the specified data and adds it to the database.
+     * @param userType L or S, for lecturer or student
+     * @param email    an email address for the user
+     * @param password a pre-hashed password
+     * @param salt     the salt used to hash the password
+     * @param course   the name of the course the user is on
+     * @return         a User record for the created user
+     * @throws SQLException 
+     */
+    public User addUser(String userType, String email, String password, String salt, String course)
       throws SQLException {
         String query = "INSERT INTO Users (usrType, email, password, salt, course) VALUES (?, ?, ?, ?, ?);";
         List<String> params = Arrays.asList(userType, email, password, salt, course);
         this.executeManipulator(query, params);
+        
+        String reselectQuery = "SELECT * FROM Users WHERE email = ?;";
+        List<String> reselectParams = Arrays.asList(email);
+        ArrayList<ResultRow> rows = this.executeParameterized(reselectQuery, reselectParams);
+        if (rows.size() > 0) {
+            if (userType.equals("S")) {
+                return new Student(rows.get(0));
+            }
+            else if (userType.equals("L")) {
+                return new Lecturer(rows.get(0));
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    
+    /**
+     * Given a quiz and user ID, get the current state of the user's attempt at the specified quiz.
+     * @param quizID the quiz ID to query for
+     * @param usrID  the user whose attempt to find
+     * @return       a List of AttemptAnswer objects, in questionID order
+     * @throws SQLException 
+     */
+    public List<AttemptAnswer> getQuizAttempt(String quizID, String usrID) throws SQLException {
+        String query = "SELECT * FROM AttemptAnswers WHERE quizID = ? AND usrID = ? ORDER BY questionID ASC;";
+        List<String> params = Arrays.asList(quizID, usrID);
+        ArrayList<ResultRow> rows = this.executeParameterized(query, params);
+        
+        List<AttemptAnswer> attempts = new ArrayList<>();
+        for (int i = 0; i < rows.size(); i++) {
+            attempts.add(new AttemptAnswer(rows.get(i)));
+        }
+        return attempts;
     }
 }
