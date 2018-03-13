@@ -2,8 +2,11 @@ package quizsystem.db;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Quiz extends Model {
     private final List<Question> _questions;
@@ -86,5 +89,12 @@ public class Quiz extends Model {
     
     public boolean isDraft() {
         return this.get("draft").equals("1");
+    }
+    
+    public static Quiz create(HashMap<String, String> attributes) throws SQLException {
+        List<String> reselectors = Model.calculateReselectors(Arrays.asList("quizID", "usrID", "timeLimit",
+          "topic", "draft"), attributes.keySet());
+        ResultRow row = Model.create("Quizzes", attributes, reselectors, "quizID");
+        return row == null ? null : new Quiz(row);
     }
 }

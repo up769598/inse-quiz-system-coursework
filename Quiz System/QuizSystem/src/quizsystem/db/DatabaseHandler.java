@@ -4,20 +4,40 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Handles connections to the quiz database and converting database data into usable native types.
  */
 public class DatabaseHandler {
-    private Connection connection;
+    private static Connection _connection = null;
+    
+    public static String join(List<String> list, String joiner) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i));
+            if (i < list.size() - 1) {
+                sb.append(joiner);
+            }
+        }
+        return sb.toString();
+    }
+    
+    public static String join(Set<String> set, String joiner) {
+        List<String> list = new ArrayList<>();
+        list.addAll(set);
+        return join(list, joiner);
+    }
 
     /**
      * Construct a new DatabaseHandler instance that can be used for SQL-independent database querying.
      * @throws SQLException 
      */
     public DatabaseHandler() throws SQLException {
-        Connection con = DriverManager.getConnection("jdbc:mysql://52.91.67.192:3306/QuizSystem", "inse", "Wv7q7hG9");
-        this.connection = con;
+        if (_connection == null) {
+            Connection con = DriverManager.getConnection("jdbc:mysql://52.91.67.192:3306/QuizSystem", "inse", "Wv7q7hG9");
+            _connection = con;
+        }
     }
     
     /**
@@ -38,7 +58,7 @@ public class DatabaseHandler {
      * @throws SQLException 
      */
     protected ArrayList<ResultRow> execute(String query, int resultSetConcurrency) throws SQLException {
-        Statement stmt = this.connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, resultSetConcurrency);
+        Statement stmt = _connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, resultSetConcurrency);
         ResultSet rs = stmt.executeQuery(query);
         ResultSetMetaData meta = rs.getMetaData();
         ArrayList<ResultRow> rows = new ArrayList<>();
@@ -76,7 +96,7 @@ public class DatabaseHandler {
      */
     protected ArrayList<ResultRow> executeParameterized(String query, int resultSetConcurrency, List<String> parameters)
       throws SQLException {
-        PreparedStatement stmt = this.connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
+        PreparedStatement stmt = _connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
           resultSetConcurrency);
         for (int i = 0; i < parameters.size(); i++) {
             stmt.setString(i + 1, parameters.get(i));
@@ -107,7 +127,7 @@ public class DatabaseHandler {
      */
     protected boolean executeManipulator(String query, List<String> parameters)
       throws SQLException {
-        PreparedStatement stmt = this.connection.prepareStatement(query);
+        PreparedStatement stmt = _connection.prepareStatement(query);
         for (int i = 0; i < parameters.size(); i++) {
             stmt.setString(i + 1, parameters.get(i));
         }

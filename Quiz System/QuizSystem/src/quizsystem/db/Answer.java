@@ -3,6 +3,7 @@ package quizsystem.db;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Answer extends Model {
@@ -36,5 +37,12 @@ public class Answer extends Model {
     
     public String getAnswerText() {
         return this.get("answer");
+    }
+    
+    public static Answer create(HashMap<String, String> attributes) throws SQLException {
+        List<String> reselectors = Model.calculateReselectors(Arrays.asList("answerID", "category", "questionID",
+          "answer", "correct"), attributes.keySet());
+        ResultRow row = Model.create("Answers", attributes, reselectors, "answerID");
+        return row == null ? null : new Answer(row);
     }
 }
