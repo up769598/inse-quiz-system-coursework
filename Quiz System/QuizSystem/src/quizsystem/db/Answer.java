@@ -8,6 +8,10 @@ import java.util.List;
 public class Answer extends Model {
     public static List<Answer> answersForQuestions(DatabaseHandler handler, List<String> questionIDs)
       throws SQLException {
+        if (questionIDs.size() <= 0) {
+            return new ArrayList<>();
+        }
+        
         String[] placeholders = new String[questionIDs.size()];
         Arrays.fill(placeholders, "?");
         String inClause = Arrays.toString(placeholders).replace('[', '(').replace(']', ')');

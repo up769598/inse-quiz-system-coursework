@@ -164,7 +164,7 @@ public class DatabaseHandler {
         }
         else switch (state) {
             case INCOMPLETE:
-                query = "SELECT * FROM Quizzes AS q LEFT JOIN QuizCompletions AS qc ON qc.quizID = q.quizID " +
+                query = "SELECT q.* FROM Quizzes AS q LEFT JOIN QuizCompletions AS qc ON qc.quizID = q.quizID " +
                   "AND qc.usrID = ? WHERE qc.quizID IS NULL;";
                 break;
             case COMPLETED:
