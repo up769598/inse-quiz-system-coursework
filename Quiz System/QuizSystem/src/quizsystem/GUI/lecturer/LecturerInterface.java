@@ -516,7 +516,7 @@ public class LecturerInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReviewAnswersActionPerformed
 
     private void btnCreateQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateQuizActionPerformed
-        CreateQuiz cq = new CreateQuiz();
+        CreateQuiz cq = new CreateQuiz(username);
         cq.setVisible(true);
     }//GEN-LAST:event_btnCreateQuizActionPerformed
 

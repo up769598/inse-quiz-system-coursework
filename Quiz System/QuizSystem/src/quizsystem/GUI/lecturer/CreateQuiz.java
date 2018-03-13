@@ -2,6 +2,8 @@ package quizsystem.GUI.lecturer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.HashMap;
 import javax.swing.JTextField;
 import quizsystem.db.Quiz;
 
@@ -13,20 +15,28 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     private Integer[] correctAnswers = new Integer[30];
     private int currentQuestion = 0;
     private int numQuestions = 5;
+    private String username;
 
-    public CreateQuiz() {
+    public CreateQuiz(String inUsername) {
         initComponents();
+        username = inUsername;
     }
 
-    public CreateQuiz(Quiz inQuiz) {
+    public CreateQuiz(Quiz inQuiz, String inUsername) {
         initComponents();
         //Load whats already complete into GUI
         quiz = inQuiz;
+        username = inUsername;
         sldTime.setValue((int) quiz.getTimeLimit());
         tfName.setText(quiz.getName());
         numQuestions = quiz.getQuestions().size();
     }
 
+    /**
+     * Attempts to get the Quiz name from the GUI.
+     * 
+     * @return The Quiz name if recovered successfully from the GUI, otherwise "Default"
+     */
     public String getQuizName() {
         String name = "Default";
         try {
@@ -37,24 +47,25 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         return name;
     }
 
-    public void createQuiz() {
-        boolean valid = true;
-        String name = getQuizName();
-        if (name.length() <= 0 && name.length() > 30 && !"Default".equals(name)) {
-            valid = false;
-        }
-    }
-
+    /**
+     * Refreshes all the fields on the GUI to display the latest information about the current question.
+     */
     public void refresh() {
         setQuestion();
         setAnswers();
         setQuestionNum();
     }
 
+    /**
+     * Sets the question text area to display the saved question.
+     */
     public void setQuestion() {
         taQuestion.setText(questions[currentQuestion]);
     }
 
+    /**
+     * Set the saved answers into each of the answer text fields. 
+     */
     public void setAnswers() {
         for (int i = 0; i < 8; i++) {
             String answer = answers[currentQuestion][i];
@@ -89,6 +100,9 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         }
     }
 
+    /**
+     * Saves entered question and answer data from the GUI.
+     */
     public void save() {
         saveQuestion();
         saveAnswers();
@@ -96,6 +110,9 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         refresh();
     }
 
+    /**
+     * Saves the question entered into the question text area in the questions array or a default message if there is no entered question.
+     */
     public void saveQuestion() {
         try {
             questions[currentQuestion] = taQuestion.getText();
@@ -105,6 +122,9 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         }
     }
 
+    /**
+     * Saves the answer from each answer text field into the answers array.
+     */
     public void saveAnswers() {
         getAnswer(tfAnswer1, 0);
         getAnswer(tfAnswer2, 1);
@@ -116,6 +136,9 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         getAnswer(tfAnswer8, 7);
     }
     
+    /**
+     * Adds an action listener to each of the radio buttons and assigns its action command.
+     */
     public void initialiseRadioButtons(){
         rbAnswer1.setActionCommand("0");
         rbAnswer1.addActionListener(this);
@@ -135,11 +158,20 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         rbAnswer8.addActionListener(this);
     }
     
+    /**
+     * Saves the selected correct answer into the array of correct answers.
+     * @param e The radio button that set off the action event.
+     */
     @Override
     public void actionPerformed(ActionEvent e){
         correctAnswers[currentQuestion] = Integer.parseInt(e.getActionCommand());
     }
 
+    /**
+     * Gets an answer from a passed text field and enters it into its specified place in the answers array.
+     * @param tf A text field that an answer will be extracted from and entered into the answers array
+     * @param index The ID of the answer being entered into the answers array
+     */
     public void getAnswer(JTextField tf, int index) {
         try {
             answers[currentQuestion][index] = tf.getText();
@@ -149,10 +181,16 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         }
     }
 
+    /**
+     * Sets the current question number onto the GUI.
+     */
     public void setQuestionNum() {
         lblQuestionNum.setText(Integer.toString(currentQuestion) + ":" + Integer.toString(numQuestions));
     }
 
+    /**
+     * Saves current question data and moves onto the next question provided that the current question being accessed is the last question in the quiz.
+     */
     public void nextQuestion() {
         if (currentQuestion + 1 < numQuestions && validateQuestion()) {
             //Cannot navigate further than the max number of added questions and current question must be valid before moving on
@@ -163,6 +201,9 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         }
     }
 
+    /**
+     * Saves current question data and moves to the previous question provided that the current question being accessed is the first question in the quiz.
+     */
     public void prevQuestion() {
         if (currentQuestion -1 < 0 && validateQuestion()){
             //Cannot navigate into -1 question and current question must be valid before moving to the previous question
@@ -173,6 +214,10 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         }
     }
     
+    /**
+     * Validates the current question to make sure that all entered data is valid against specified constraints
+     * @return A boolean determining whether the question is valid or not
+     */
     public boolean validateQuestion(){
         boolean valid = true;
         int numAnswers = 0;
@@ -190,6 +235,9 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         return valid;
     }
     
+    /**
+     * Sort all answers for the current question being accessed so that there are no null gaps between entered answers.
+     */
     public void sortAnswers(){
         boolean sorted = false;
         while(!sorted){
@@ -204,6 +252,35 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
             }
             
         }
+    }
+    
+    /**
+     * Save and submit the quizzes to the database to be attempted by the student.
+     */
+    public void saveAndSubmit(){
+        HashMap<String,String> quizMap = new HashMap<>();
+        quizMap.put("usrID",username);
+        quizMap.put("timeLimit", Integer.toString(sldTime.getValue()));
+        quizMap.put("draft", "false");
+        
+        HashMap<String,String> questionMap = new HashMap<>();
+        //questionMap.put();
+        
+        try{
+            Quiz newQuiz = Quiz.create(quizMap);
+        } catch (SQLException ex){
+            System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered SQLException:");
+            System.out.println(ex);
+        }
+        
+        
+    }
+    
+    /**
+     * Save and submit the quizzes to the database to be edited later.
+     */
+    public void saveToDraft(){
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -605,43 +682,6 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
             numQuestions--;
         }
     }//GEN-LAST:event_btnRemoveQuestionActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateQuiz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateQuiz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateQuiz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateQuiz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CreateQuiz().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddQuestion;
     private javax.swing.JButton btnExit;
