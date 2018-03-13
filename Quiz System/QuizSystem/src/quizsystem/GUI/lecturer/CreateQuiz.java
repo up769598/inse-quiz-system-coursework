@@ -173,13 +173,17 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     
     public boolean validateQuestion(){
         boolean valid = true;
-        if(questions[currentQuestion].length() > 400 || correctAnswers[currentQuestion] == null){
-            valid = false;
-        }
+        int numAnswers = 0;
         for(int i=0;i<8;i++){
-            if(answers[currentQuestion][i].length()>150){
-                valid = false;
+            if(answers[currentQuestion] != null){
+                numAnswers++;
+                if(answers[currentQuestion][i].length()>150){
+                    valid = false;
+                }
             }
+        }
+        if(questions[currentQuestion].length() > 400 || correctAnswers[currentQuestion] == null || numAnswers < 2){
+            valid = false;
         }
         return valid;
     }
