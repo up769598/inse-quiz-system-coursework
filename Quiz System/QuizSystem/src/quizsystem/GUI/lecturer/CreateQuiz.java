@@ -46,6 +46,21 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         }
         return name;
     }
+    
+    /**
+     * Attempts to get the Quiz topic from the GUI.
+     * 
+     * @return The Quiz topic if recovered successfully from the GUI, otherwise "Default"
+     */
+    public String getQuizTopic() {
+        String topic = "Default";
+        try {
+            topic = tfTopic.getText();
+        } catch (NullPointerException ex) {
+            //Text field is empty
+        }
+        return topic;
+    }
 
     /**
      * Refreshes all the fields on the GUI to display the latest information about the current question.
@@ -262,12 +277,15 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         quizMap.put("usrID",username);
         quizMap.put("timeLimit", Integer.toString(sldTime.getValue()));
         quizMap.put("draft", "false");
+        quizMap.put("name", getQuizName());
         
         HashMap<String,String> questionMap = new HashMap<>();
-        //questionMap.put();
+        questionMap.put("usrID",username);
+        questionMap.put("topic",getQuizTopic());
         
         try{
             Quiz newQuiz = Quiz.create(quizMap);
+           
         } catch (SQLException ex){
             System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered SQLException:");
             System.out.println(ex);
@@ -294,6 +312,8 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         chbTimer = new javax.swing.JCheckBox();
         sldTime = new javax.swing.JSlider();
         lblSelectTimeInMins = new javax.swing.JLabel();
+        lblTopic = new javax.swing.JLabel();
+        tfTopic = new javax.swing.JTextField();
         scrpnlQuestion = new javax.swing.JScrollPane();
         taQuestion = new javax.swing.JTextArea();
         btnNextQuestion = new javax.swing.JButton();
@@ -355,6 +375,8 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
 
         lblSelectTimeInMins.setText("Select Time (in minutes)");
 
+        lblTopic.setText("Topic: ");
+
         javax.swing.GroupLayout pnlDetailsLayout = new javax.swing.GroupLayout(pnlDetails);
         pnlDetails.setLayout(pnlDetailsLayout);
         pnlDetailsLayout.setHorizontalGroup(
@@ -371,7 +393,11 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
                         .addGap(18, 18, 18)
                         .addComponent(lblSelectTimeInMins)
                         .addGap(18, 18, 18)
-                        .addComponent(sldTime, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(sldTime, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlDetailsLayout.createSequentialGroup()
+                        .addComponent(lblTopic)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfTopic, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlDetailsLayout.setVerticalGroup(
@@ -390,6 +416,10 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
                     .addGroup(pnlDetailsLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(sldTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(pnlDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTopic)
+                    .addComponent(tfTopic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -598,18 +628,19 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSaveSubmit))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(scrpnlQuestion)
+                                .addComponent(pnlAnswers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(pnlDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblQuestionNumInfo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(lblQuestionNum, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnAddQuestion)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnRemoveQuestion))
-                            .addComponent(scrpnlQuestion)
-                            .addComponent(pnlAnswers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pnlDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnRemoveQuestion)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -617,14 +648,14 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(pnlDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblQuestionNumInfo)
                     .addComponent(lblQuestionNum)
                     .addComponent(btnAddQuestion)
                     .addComponent(btnRemoveQuestion))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scrpnlQuestion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pnlAnswers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -705,6 +736,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JLabel lblQuestionNum;
     private javax.swing.JLabel lblQuestionNumInfo;
     private javax.swing.JLabel lblSelectTimeInMins;
+    private javax.swing.JLabel lblTopic;
     private javax.swing.JPanel pnlAnswers;
     private javax.swing.JPanel pnlDetails;
     private javax.swing.JRadioButton rbAnswer1;
@@ -727,5 +759,6 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JTextField tfAnswer7;
     private javax.swing.JTextField tfAnswer8;
     private javax.swing.JTextField tfName;
+    private javax.swing.JTextField tfTopic;
     // End of variables declaration//GEN-END:variables
 }

@@ -42,19 +42,21 @@
                       <Component id="btnSaveSubmit" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="scrpnlQuestion" alignment="0" max="32767" attributes="0"/>
+                              <Component id="pnlAnswers" alignment="0" max="32767" attributes="0"/>
+                              <Component id="pnlDetails" alignment="0" max="32767" attributes="0"/>
+                          </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="lblQuestionNumInfo" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="lblQuestionNum" min="-2" pref="163" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="btnAddQuestion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="btnRemoveQuestion" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="scrpnlQuestion" alignment="0" max="32767" attributes="0"/>
-                          <Component id="pnlAnswers" alignment="0" max="32767" attributes="0"/>
-                          <Component id="pnlDetails" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -67,15 +69,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="pnlDetails" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+              <Component id="pnlDetails" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblQuestionNumInfo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblQuestionNum" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAddQuestion" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnRemoveQuestion" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="scrpnlQuestion" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Component id="pnlAnswers" min="-2" max="-2" attributes="0"/>
@@ -120,6 +122,11 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="sldTime" min="-2" pref="251" max="-2" attributes="0"/>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="lblTopic" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="tfTopic" min="-2" pref="276" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -145,6 +152,11 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="sldTime" min="-2" max="-2" attributes="0"/>
                       </Group>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblTopic" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfTopic" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -182,6 +194,13 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Select Time (in minutes)"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTopic">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Topic: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="tfTopic">
         </Component>
       </SubComponents>
     </Container>
