@@ -9,7 +9,7 @@ import java.util.List;
  * Represents a user's attempt at a single question of a quiz, referencing a quiz, user, question, and selected answer.
  */
 public class AttemptAnswer extends Model {
-    private DatabaseHandler _handler;
+    private final DatabaseHandler _handler;
     
     /**
      * Constructs an instance of AttemptAnswer using the given ResultRow by delegation to Model.

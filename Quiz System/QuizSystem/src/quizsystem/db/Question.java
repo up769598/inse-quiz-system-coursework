@@ -7,6 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Question extends Model {
+    /**
+     * Given a quiz ID, find all questions associated with that quiz.
+     * @param handler a DatabaseHandler instance
+     * @param quizID  the quiz ID to retrieve questions for
+     * @return        a List of Questions
+     * @throws SQLException 
+     */
     public static List<Question> questionsInQuiz(DatabaseHandler handler, String quizID) throws SQLException {
         String query = "SELECT * FROM Questions WHERE quizID = ?;";
         List<String> params = Arrays.asList(quizID);
@@ -30,6 +37,12 @@ public class Question extends Model {
         return this.get("question");
     }
     
+    /**
+     * Create an instance of Question using the specified attributes and persist it to the underlying database.
+     * @param attributes a map of attributes where keys are database column names
+     * @return           the constructed Question instance
+     * @throws SQLException 
+     */
     public static Question create(HashMap<String, String> attributes) throws SQLException {
         List<String> reselectors = Model.calculateReselectors(Arrays.asList("questionID", "quizID", "usrID",
           "category", "title", "question"), attributes.keySet());

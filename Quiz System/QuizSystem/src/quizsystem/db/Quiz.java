@@ -4,9 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Quiz extends Model {
     private final List<Question> _questions;
@@ -14,6 +12,11 @@ public class Quiz extends Model {
     private final Lecturer _lecturer;
     private int _currentQuestion;
     
+    /**
+     * Construct a Quiz instance from the provided ResultRow and retrieve associated data for it.
+     * @param row the ResultRow returned by the database driver
+     * @throws SQLException 
+     */
     public Quiz(ResultRow row) throws SQLException {
         super(row);
         
@@ -59,6 +62,11 @@ public class Quiz extends Model {
         return this._questions.get(questionNumber - 1).getQuestionText();
     }
     
+    /**
+     * Get the texts of answers to the specified question number.
+     * @param questionNumber the 1-based question index to find answers for
+     * @return               a String array of answer texts
+     */
     public String[] getAnswers(int questionNumber) {
         Question question = this._questions.get(questionNumber - 1);
         String id = question.getQuestionID();
@@ -90,7 +98,13 @@ public class Quiz extends Model {
     public boolean isDraft() {
         return this.get("draft").equals("1");
     }
-    
+
+    /**
+     * Create an instance of Quiz using the specified attributes and persist it to the underlying database.
+     * @param attributes a map of attributes where keys are database column names
+     * @return           the constructed Quiz instance
+     * @throws SQLException 
+     */
     public static Quiz create(HashMap<String, String> attributes) throws SQLException {
         List<String> reselectors = Model.calculateReselectors(Arrays.asList("quizID", "usrID", "timeLimit",
           "topic", "draft"), attributes.keySet());

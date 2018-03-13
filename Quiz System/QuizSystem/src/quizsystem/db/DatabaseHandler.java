@@ -12,6 +12,13 @@ import java.util.Set;
 public class DatabaseHandler {
     private static Connection _connection = null;
     
+    /**
+     * Join all items of a List together into one string, delimited by instances of joiner.
+     * Why does Java 7 not have a builtin to do this?
+     * @param list   the list to join
+     * @param joiner the delimiter string
+     * @return       a joined String
+     */
     public static String join(List<String> list, String joiner) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
@@ -23,6 +30,12 @@ public class DatabaseHandler {
         return sb.toString();
     }
     
+    /**
+     * Join all items of a Set together into one string, delimited by instances of joiner.
+     * @param set    the set to join
+     * @param joiner the delimiter string
+     * @return       a joined String
+     */
     public static String join(Set<String> set, String joiner) {
         List<String> list = new ArrayList<>();
         list.addAll(set);

@@ -106,6 +106,12 @@ public class Model {
         }
     }
     
+    /**
+     * Takes the intersection of two collections for use as reselectors to Model.create.
+     * @param potential all possible selectors - i.e. all columns on the relevant table
+     * @param keys      all selectors to be used in the Model.create call (usually attributes.keySet())
+     * @return          a List containing the intersection that can be used for reselection
+     */
     protected static List<String> calculateReselectors(List<String> potential, Set<String> keys) {
         Set<String> intersection = new HashSet<>(potential);
         intersection.retainAll(keys);
