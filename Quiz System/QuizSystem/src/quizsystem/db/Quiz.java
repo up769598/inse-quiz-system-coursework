@@ -35,7 +35,7 @@ public class Quiz extends Model {
             this._answers.get(questionID).add(answers.get(i));
         }
         
-        this._lecturer = Lecturer.forQuiz(handler, this.get("lecturerID"));
+        this._lecturer = Lecturer.forQuiz(handler, this.get("usrID"));
         
         this._currentQuestion = 1;
     }
