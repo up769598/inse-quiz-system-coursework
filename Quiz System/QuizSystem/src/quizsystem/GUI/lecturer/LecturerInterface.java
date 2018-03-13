@@ -295,7 +295,7 @@ public class LecturerInterface extends javax.swing.JFrame {
 
         pnlSelectQuiz.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        btnWithdrawQuiz.setText("Revert to Draft");
+        btnWithdrawQuiz.setText("Withdraw quiz");
         btnWithdrawQuiz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnWithdrawQuizActionPerformed(evt);

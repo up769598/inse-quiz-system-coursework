@@ -133,7 +133,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnWithdrawQuiz">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Revert to Draft"/>
+            <Property name="text" type="java.lang.String" value="Withdraw quiz"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnWithdrawQuizActionPerformed"/>

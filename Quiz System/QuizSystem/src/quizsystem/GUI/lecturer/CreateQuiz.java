@@ -290,7 +290,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
             System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered SQLException:");
             System.out.println(ex);
         }
-        
+        dispose();
         
     }
     
@@ -582,6 +582,11 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         );
 
         btnSaveSubmit.setText("Save and Submit");
+        btnSaveSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveSubmitActionPerformed(evt);
+            }
+        });
 
         btnSaveDraft.setText("Save to Draft");
 
@@ -713,6 +718,11 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
             numQuestions--;
         }
     }//GEN-LAST:event_btnRemoveQuestionActionPerformed
+
+    private void btnSaveSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveSubmitActionPerformed
+       saveAndSubmit();
+    }//GEN-LAST:event_btnSaveSubmitActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddQuestion;
     private javax.swing.JButton btnExit;
