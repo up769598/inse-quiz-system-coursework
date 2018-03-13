@@ -43,7 +43,7 @@ public class StudentInterface extends javax.swing.JFrame {
         modelCompQuiz = new DefaultTableModel(colCompQuiz, 0);
         tblCompQuiz.setModel(modelCompQuiz);
 
-        displaySetQuizzes(setQuiz);
+        //displaySetQuizzes(setQuiz);
         //displayCompQuizzes(compQuiz);
     }
 

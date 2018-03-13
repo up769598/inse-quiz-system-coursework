@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="btngpCorrectAnswer">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -28,7 +32,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="btnExit" min="-2" pref="60" max="-2" attributes="0"/>
-                      <EmptySpace pref="180" max="32767" attributes="0"/>
+                      <EmptySpace pref="164" max="32767" attributes="0"/>
                       <Component id="btnNextQuestion" min="-2" pref="128" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnPreviousQuestion" min="-2" pref="124" max="-2" attributes="0"/>
@@ -38,24 +42,19 @@
                       <Component id="btnSaveSubmit" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="pnlAnswers" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="btnAddAnswer" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="btnDeleteLastAnswer" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="lblCorrectAnswer" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="pnlDetails" alignment="0" max="32767" attributes="0"/>
-                              <Component id="scrpnlQuestion" alignment="0" max="32767" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="lblQuestionNumInfo" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="lblQuestionNum" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblQuestionNum" min="-2" pref="163" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnAddQuestion" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnRemoveQuestion" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="scrpnlQuestion" alignment="0" max="32767" attributes="0"/>
+                          <Component id="pnlAnswers" alignment="0" max="32767" attributes="0"/>
+                          <Component id="pnlDetails" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -69,20 +68,16 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnlDetails" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblQuestionNumInfo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblQuestionNum" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnAddQuestion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnRemoveQuestion" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="scrpnlQuestion" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnAddAnswer" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnDeleteLastAnswer" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lblCorrectAnswer" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Component id="pnlAnswers" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -125,13 +120,8 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="sldTime" min="-2" pref="251" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="lblNumQuestions" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="tfNumQuestions" min="-2" pref="192" max="-2" attributes="0"/>
-                      </Group>
                   </Group>
-                  <EmptySpace pref="249" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -150,18 +140,13 @@
                               <Component id="chbTimer" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblSelectTimeInMins" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblNumQuestions" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tfNumQuestions" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="sldTime" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -190,19 +175,13 @@
             <Property name="paintLabels" type="boolean" value="true"/>
             <Property name="paintTicks" type="boolean" value="true"/>
             <Property name="snapToTicks" type="boolean" value="true"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblNumQuestions">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Number of Questions"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblSelectTimeInMins">
           <Properties>
             <Property name="text" type="java.lang.String" value="Select Time (in minutes)"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="tfNumQuestions">
         </Component>
       </SubComponents>
     </Container>
@@ -234,16 +213,6 @@
         <Property name="text" type="java.lang.String" value="Previous Question"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnAddAnswer">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Add Answer"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnDeleteLastAnswer">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Delete Last Answer"/>
-      </Properties>
-    </Component>
     <Container class="javax.swing.JPanel" name="pnlAnswers">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -256,17 +225,54 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="tfAnswer1" max="32767" attributes="0"/>
-                      <Component id="tfAnswer2" alignment="0" max="32767" attributes="0"/>
-                      <Component id="tfAnswer3" alignment="0" max="32767" attributes="0"/>
-                      <Component id="tfAnswer4" alignment="0" max="32767" attributes="0"/>
-                      <Component id="tfAnswer5" alignment="0" max="32767" attributes="0"/>
-                      <Component id="tfAnswer6" alignment="0" max="32767" attributes="0"/>
-                      <Component id="tfAnswer7" max="32767" attributes="0"/>
-                      <Component id="tfAnswer8" alignment="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblAnswer1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAnswer2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAnswer3" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAnswer4" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAnswer5" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAnswer6" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAnswer7" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAnswer8" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Component id="tfAnswer7" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tfAnswer6" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tfAnswer5" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tfAnswer4" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tfAnswer3" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="tfAnswer8" max="32767" attributes="0"/>
+                                      <Component id="tfAnswer2" alignment="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="rbAnswer2" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rbAnswer3" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rbAnswer4" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rbAnswer5" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rbAnswer6" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rbAnswer7" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rbAnswer8" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="tfAnswer1" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="rbAnswer1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="10" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -274,76 +280,212 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace pref="13" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="rbAnswer8" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="1" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Group type="102" attributes="0">
+                                                  <Group type="103" groupAlignment="1" attributes="0">
+                                                      <Group type="102" attributes="0">
+                                                          <Group type="103" groupAlignment="1" attributes="0">
+                                                              <Group type="102" attributes="0">
+                                                                  <Group type="103" groupAlignment="1" attributes="0">
+                                                                      <Group type="102" attributes="0">
+                                                                          <Group type="103" groupAlignment="1" attributes="0">
+                                                                              <Group type="103" groupAlignment="3" attributes="0">
+                                                                                  <Component id="tfAnswer1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                                                  <Component id="lblAnswer1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                                              </Group>
+                                                                              <Component id="rbAnswer1" min="-2" max="-2" attributes="0"/>
+                                                                          </Group>
+                                                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                                          <Group type="103" groupAlignment="3" attributes="0">
+                                                                              <Component id="tfAnswer2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                                              <Component id="lblAnswer2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                                          </Group>
+                                                                      </Group>
+                                                                      <Component id="rbAnswer2" min="-2" max="-2" attributes="0"/>
+                                                                  </Group>
+                                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                                  <Group type="103" groupAlignment="3" attributes="0">
+                                                                      <Component id="tfAnswer3" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                                      <Component id="lblAnswer3" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                                  </Group>
+                                                              </Group>
+                                                              <Component id="rbAnswer3" min="-2" max="-2" attributes="0"/>
+                                                          </Group>
+                                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                          <Group type="103" groupAlignment="3" attributes="0">
+                                                              <Component id="tfAnswer4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                              <Component id="lblAnswer4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                          </Group>
+                                                      </Group>
+                                                      <Component id="rbAnswer4" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="3" attributes="0">
+                                                      <Component id="tfAnswer5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="lblAnswer5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <Component id="rbAnswer5" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="3" attributes="0">
+                                              <Component id="tfAnswer6" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblAnswer6" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <Component id="rbAnswer6" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="tfAnswer7" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblAnswer7" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Component id="rbAnswer7" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="tfAnswer8" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAnswer8" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="tfAnswer1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tfAnswer2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tfAnswer3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tfAnswer4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tfAnswer5" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tfAnswer6" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tfAnswer7" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="tfAnswer8" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="45" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="tfAnswer1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;Insert Answer Here&gt;"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tfAnswer2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;Insert Answer Here&gt;"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tfAnswer3">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;Insert Answer Here&gt;"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tfAnswer4">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;Insert Answer Here&gt;"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tfAnswer5">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;Insert Answer Here&gt;"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tfAnswer6">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;Insert Answer Here&gt;"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tfAnswer7">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;Insert Answer Here&gt;"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tfAnswer8">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblAnswer1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;Insert Answer Here&gt;"/>
+            <Property name="text" type="java.lang.String" value="1)"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblAnswer2">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="2)"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblAnswer3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="3)"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblAnswer4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="4)"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblAnswer5">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="5)"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblAnswer6">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="6)"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblAnswer7">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="7)"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblAnswer8">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="8)"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Please enter each answer you want, leave blank for any unwanted answer and select the correct answer with the radio buttons on the right"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbAnswer1">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btngpCorrectAnswer"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbAnswer2">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btngpCorrectAnswer"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbAnswer3">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btngpCorrectAnswer"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbAnswer4">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btngpCorrectAnswer"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbAnswer5">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btngpCorrectAnswer"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbAnswer6">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btngpCorrectAnswer"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbAnswer7">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btngpCorrectAnswer"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="rbAnswer8">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="btngpCorrectAnswer"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="lblCorrectAnswer">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Correct Answer: "/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="btnSaveSubmit">
       <Properties>
         <Property name="text" type="java.lang.String" value="Save and Submit"/>
@@ -369,8 +511,24 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblQuestionNum">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&lt;Insert Question Number Here&gt;"/>
+        <Property name="text" type="java.lang.String" value="1:5"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnAddQuestion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Add Question"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddQuestionActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnRemoveQuestion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Remove Last Question"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoveQuestionActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
