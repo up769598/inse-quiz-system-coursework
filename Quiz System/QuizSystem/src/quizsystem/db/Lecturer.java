@@ -45,4 +45,14 @@ public class Lecturer extends User {
     public void setName(String name) {
         this.name = name;
     }
+    
+    /**
+     * Get a list of quizzes created by the current lecturer.
+     * @param drafts the draft status of returned quizzes
+     * @return       a List of Quizzes
+     * @throws SQLException 
+     */
+    public List<Quiz> getQuizzesCreated(DraftState drafts) throws SQLException {
+        return Quiz.getQuizzesForLecturer(this.get("usrID"), drafts);
+    }
 }

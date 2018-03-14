@@ -74,4 +74,26 @@ public class User extends Model {
         this.course = course;
         return this.set("course", course);
     }
+    
+    /**
+     * Find a user by their user ID.
+     * @param id the user ID to search for
+     * @return   a User record for the requested user, or null if none was found
+     * @throws SQLException 
+     */
+    public static User getById(String id) throws SQLException {
+        ResultRow row = Model.getById("Users", "usrID", id);
+        return row == null ? null : new User(row);
+    }
+    
+    /**
+     * Find a user by their email address.
+     * @param email the email address to search for
+     * @return      a User record for the requested user, or null if none was found
+     * @throws SQLException 
+     */
+    public static User getByEmail(String email) throws SQLException {
+        ResultRow row = Model.getById("Users", "email", email);
+        return row == null ? null : new User(row);
+    }
 }

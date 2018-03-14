@@ -98,6 +98,32 @@ public class Quiz extends Model {
     public boolean isDraft() {
         return this.get("draft").equals("1");
     }
+    
+    /**
+     * Revert the current quiz to a draft state and delete all results data belonging to it.
+     * @throws SQLException 
+     */
+    public void revertToDraft() throws SQLException {
+        this.set("draft", "1");
+        String deleteAttempts = "DELETE FROM AttemptAnswers WHERE quizID = ?;";
+        String deleteCompletions = "DELETE FROM QuizCompletions WHERE quizID = ?;";
+        List<String> params = Arrays.asList(this.get("quizID"));
+        DatabaseHandler handler = new DatabaseHandler();
+        
+        handler.executeManipulator(deleteAttempts, params);
+        handler.executeManipulator(deleteCompletions, params);
+    }
+    
+    /**
+     * Find a quiz by its ID.
+     * @param id the quiz ID to search for
+     * @return   a Quiz object for the requested quiz, or null if none was found
+     * @throws SQLException 
+     */
+    public static Quiz getById(String id) throws SQLException {
+        ResultRow row = Model.getById("Quizzes", "quizID", id);
+        return row == null ? null : new Quiz(row);
+    }
 
     /**
      * Create an instance of Quiz using the specified attributes and persist it to the underlying database.
@@ -115,5 +141,32 @@ public class Quiz extends Model {
         
         ResultRow row = Model.create("Quizzes", attributes, reselectors, "quizID");
         return row == null ? null : new Quiz(row);
+    }
+    
+    /**
+     * Get a list of quizzes created by the specified lecturer.
+     * @param usrID  the user ID of the lecturer
+     * @param drafts a DraftState - ANY for all quizzes, DRAFT for just drafts, or LIVE for just live quizzes
+     * @return       a List of Quizzes
+     * @throws SQLException
+     */
+    public static List<Quiz> getQuizzesForLecturer(String usrID, DraftState drafts) throws SQLException {
+        String query = "SELECT * FROM Quizzes WHERE usrID = ?";
+        List<String> params = Arrays.asList(usrID);
+        if (drafts != DraftState.ANY) {
+            query += " AND draft = ?;";
+            params.add(drafts == DraftState.DRAFT ? "1" : "0");
+        }
+        else {
+            query += ";";
+        }
+        DatabaseHandler handler = new DatabaseHandler();
+        
+        ArrayList<ResultRow> rows = handler.executeParameterized(query, params);
+        List<Quiz> quizzes = new ArrayList<>();
+        for (int i = 0; i < rows.size(); i++) {
+            quizzes.add(new Quiz(rows.get(i)));
+        }
+        return quizzes;
     }
 }

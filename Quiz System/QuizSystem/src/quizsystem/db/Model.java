@@ -61,6 +61,28 @@ public class Model {
     }
     
     /**
+     * Retrieve a database row from the specified table with the given primary ID.
+     * @param tableName the table name to select from
+     * @param idColumn  the name of the primary key column or other single unique column to index by
+     * @param id        the value of idColumn to search for
+     * @return          a ResultRow for the requested record, or null if none could be found
+     * @throws SQLException
+     */
+    protected static ResultRow getById(String tableName, String idColumn, String id) throws SQLException {
+        String query = "SELECT * FROM " + tableName + " WHERE " + idColumn + " = ? LIMIT 1;";
+        List<String> params = Arrays.asList(id);
+        DatabaseHandler handler = new DatabaseHandler();
+        ArrayList<ResultRow> rows = handler.executeParameterized(query, params);
+        
+        if (rows.size() > 0) {
+            return rows.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+    
+    /**
      * Using the provided attributes, create a database row in the specified table.
      * @param tableName   the table name to create a row in
      * @param attributes  a HashMap of database column names to new row values
