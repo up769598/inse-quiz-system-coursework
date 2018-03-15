@@ -1,8 +1,9 @@
 package quizsystem;
 
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.List;
 import quizsystem.db.DatabaseHandler;
+import quizsystem.db.DraftState;
 import quizsystem.db.Quiz;
 
 public class QuizSystem {
@@ -10,16 +11,11 @@ public class QuizSystem {
     public static void main(String[] args) throws SQLException {
        quizsystem.GUI.LoginRegister qr = new quizsystem.GUI.LoginRegister();
        qr.setVisible(true);
-                   
+       
         try {
             DatabaseHandler db = new DatabaseHandler();
             
-            HashMap<String, String> qm = new HashMap<>();
-            qm.put("usrID", "4");
-            qm.put("draft", "false");
-            qm.put("timeLimit", "30.00");
-            qm.put("name", "something");
-            Quiz q = Quiz.create(qm);
+            List<Quiz> qs = Quiz.getQuizzesForLecturer("4", DraftState.LIVE);
             
             System.out.println("");
         }

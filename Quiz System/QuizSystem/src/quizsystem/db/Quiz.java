@@ -227,7 +227,8 @@ public class Quiz extends Model {
      */
     public static List<Quiz> getQuizzesForLecturer(String usrID, DraftState drafts) throws SQLException {
         String query = "SELECT * FROM Quizzes WHERE usrID = ?";
-        List<String> params = Arrays.asList(usrID);
+        List<String> params = new ArrayList<>();
+        params.add(usrID);
         if (drafts != DraftState.ANY) {
             query += " AND draft = ?;";
             params.add(drafts == DraftState.DRAFT ? "1" : "0");
