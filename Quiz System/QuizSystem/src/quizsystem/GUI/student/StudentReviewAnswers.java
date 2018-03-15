@@ -2,12 +2,13 @@ package quizsystem.GUI.student;
 
 public class StudentReviewAnswers extends javax.swing.JDialog {
     private final quizsystem.db.Quiz quiz;
+    private final quizsystem.db.AttemptAnswer ans;
     
-    public StudentReviewAnswers(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz) {
+    public StudentReviewAnswers(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz,quizsystem.db.AttemptAnswer inAnswer) {
         super(parent, modal);
         initComponents();
         quiz = inQuiz;
-        //Set the marks attained here
+        ans= inAnswer;
     }
     
     public void refresh(){
@@ -85,6 +86,13 @@ public class StudentReviewAnswers extends javax.swing.JDialog {
         }
     }
     
+   public void setMark(){
+       int numQuestion = quiz.getQuestions().size();
+       int mark = ans.getMarks();
+       int percentage = mark/numQuestion *100 ;
+       lblPercentage.setText(Integer.toString(percentage)+ "%");
+   }
+  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
