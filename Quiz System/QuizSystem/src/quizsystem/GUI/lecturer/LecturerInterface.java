@@ -29,8 +29,6 @@ public class LecturerInterface extends javax.swing.JFrame {
      */
     public LecturerInterface(String inUsername) {
         initComponents();
-        loadQuizzes();
-        loadDraftQuizzes();
         searchQuiz = new ArrayList<>();
         searched = false;
         username = inUsername;
@@ -40,7 +38,8 @@ public class LecturerInterface extends javax.swing.JFrame {
             System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
             System.out.println(ex);
         }
-
+        loadQuizzes();
+        loadDraftQuizzes();
         Object[] colQuiz = {"Lecturer", "Name", "Time", "Avg Mark"};
         modelQuiz = new DefaultTableModel(colQuiz, 0);
         tblQuiz.setModel(modelQuiz);
@@ -60,6 +59,7 @@ public class LecturerInterface extends javax.swing.JFrame {
         //Get all quizzes made by the lecturer that are still in their draft phase
         //add results to the draft quiz arraylist
         try {
+            
             draftQuiz = Quiz.getQuizzesForLecturer(user.getUserId(),DraftState.DRAFT);
         } catch (SQLException ex) {
             System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
