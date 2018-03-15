@@ -17,6 +17,7 @@ public class StudentInterface extends javax.swing.JFrame {
     private final ArrayList<Quiz> searchQuiz;
     private boolean searched;
     private final String username;
+    private User user = null;
 
     /**
      * Creates new form StudentInterface, initialises the ArrayLists and sets up
@@ -26,29 +27,33 @@ public class StudentInterface extends javax.swing.JFrame {
      */
     public StudentInterface(String inUsername) {
         initComponents();
-        loadSetQuizzes();
-        loadCompQuizzes();
         searchQuiz = new ArrayList<>();
         searched = false;
         username = inUsername;
-
-        Object[] colSetQuiz = {"Lecturer", "Name", "Time"};
+         try {
+            user = User.getByEmail(username);
+        } catch (SQLException ex) {
+            System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
+            System.out.println(ex);
+        }
+        loadSetQuizzes();
+        loadCompQuizzes();
+        Object[] colSetQuiz = {"Lecturer", "Name"};
         modelSetQuiz = new DefaultTableModel(colSetQuiz, 0);
         tblSetQuiz.setModel(modelSetQuiz);
 
-        Object[] colCompQuiz = {"Lecturer", "Name", "Time", "Mark"};
+        Object[] colCompQuiz = {"Lecturer", "Name", "Mark"};
         modelCompQuiz = new DefaultTableModel(colCompQuiz, 0);
         tblCompQuiz.setModel(modelCompQuiz);
 
-        //displaySetQuizzes(setQuiz);
-        //displayCompQuizzes(compQuiz);
+        displaySetQuizzes(setQuiz);
+        displayCompQuizzes(compQuiz);
     }
 
     public void loadSetQuizzes() {
         //Get all quizzes from the database that are able to be taken by the student but have not yet completed
         //Load the results in the setQuiz arraylist
         try {
-            User user = User.getByEmail(username);
             DatabaseHandler db = new DatabaseHandler();
             setQuiz = db.getQuizzesForStudent(user.getUserId(), QuizState.INCOMPLETE);
         } catch (SQLException ex) {
@@ -76,7 +81,7 @@ public class StudentInterface extends javax.swing.JFrame {
      * @param inQuiz The Quiz to be appended onto the set quiz table
      */
     private void addSetQuiz(quizsystem.db.Quiz inQuiz) {
-        Object[] data = {"Default", inQuiz.getName(), inQuiz.getTimeLimit()};
+        Object[] data = {inQuiz.getLecturerName(), inQuiz.getName()};
         modelSetQuiz.addRow(data);
     }
 
@@ -86,7 +91,19 @@ public class StudentInterface extends javax.swing.JFrame {
      * @param inQuiz The Quiz to be appended onto the complete quiz table
      */
     private void addCompQuiz(quizsystem.db.Quiz inQuiz) {
-        Object[] data = {"Default", inQuiz.getName(), inQuiz.getTimeLimit(), 0};
+        int totalMark = 0;
+        try {
+            DatabaseHandler db = new DatabaseHandler();
+            List<AttemptAnswer> tempResults = db.getQuizAttempt(inQuiz.getQuizID(), User.getByEmail(username).getUserId());
+            for (AttemptAnswer tempResult : tempResults) {
+                totalMark += tempResult.getMarks();
+            }
+        } catch (SQLException ex) {
+            System.out.println("[WARN] QuizSystem.GUI.lecturer.SelectResult encountered SQLException:");
+            System.out.println(ex);
+        }
+       
+        Object[] data = {"Default", inQuiz.getName(), totalMark};
         modelCompQuiz.addRow(data);
     }
 
