@@ -61,7 +61,7 @@ public class Quiz extends Model {
     public String getQuestion(int questionNumber) {
         return this._questions.get(questionNumber - 1).getQuestionText();
     }
-    
+       
     /**
      * Get the texts of answers to the specified question number.
      * @param questionNumber the 1-based question index to find answers for
@@ -97,6 +97,10 @@ public class Quiz extends Model {
     
     public boolean isDraft() {
         return this.get("draft").equals("1");
+    }
+    
+    public String getQuizID(){
+        return this.get("quizID");
     }
     
     /**

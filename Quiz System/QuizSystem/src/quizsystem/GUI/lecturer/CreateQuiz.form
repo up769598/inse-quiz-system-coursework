@@ -231,6 +231,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Previous Question"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPreviousQuestionActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="pnlAnswers">
       <Properties>
@@ -517,6 +520,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Save to Draft"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSaveDraftActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnExit">
       <Properties>

@@ -5,9 +5,12 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.HashMap;
 import javax.swing.JTextField;
+import quizsystem.db.Answer;
+import quizsystem.db.Question;
 import quizsystem.db.Quiz;
+import quizsystem.db.User;
 
-public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
+public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
 
     private Quiz quiz;
     private String[] questions = new String[30];
@@ -16,6 +19,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     private int currentQuestion = 0;
     private int numQuestions = 5;
     private String username;
+    private boolean loaded = false;
 
     public CreateQuiz(String inUsername) {
         initComponents();
@@ -30,12 +34,14 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         sldTime.setValue((int) quiz.getTimeLimit());
         tfName.setText(quiz.getName());
         numQuestions = quiz.getQuestions().size();
+        loaded = true;
     }
 
     /**
      * Attempts to get the Quiz name from the GUI.
-     * 
-     * @return The Quiz name if recovered successfully from the GUI, otherwise "Default"
+     *
+     * @return The Quiz name if recovered successfully from the GUI, otherwise
+     * "Default"
      */
     public String getQuizName() {
         String name = "Default";
@@ -46,11 +52,12 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         }
         return name;
     }
-    
+
     /**
      * Attempts to get the Quiz topic from the GUI.
-     * 
-     * @return The Quiz topic if recovered successfully from the GUI, otherwise "Default"
+     *
+     * @return The Quiz topic if recovered successfully from the GUI, otherwise
+     * "Default"
      */
     public String getQuizTopic() {
         String topic = "Default";
@@ -63,7 +70,8 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     }
 
     /**
-     * Refreshes all the fields on the GUI to display the latest information about the current question.
+     * Refreshes all the fields on the GUI to display the latest information
+     * about the current question.
      */
     public void refresh() {
         setQuestion();
@@ -79,7 +87,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     }
 
     /**
-     * Set the saved answers into each of the answer text fields. 
+     * Set the saved answers into each of the answer text fields.
      */
     public void setAnswers() {
         for (int i = 0; i < 8; i++) {
@@ -118,7 +126,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     /**
      * Saves entered question and answer data from the GUI.
      */
-    public void save() {
+    public void record() {
         saveQuestion();
         saveAnswers();
         sortAnswers();
@@ -126,7 +134,8 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     }
 
     /**
-     * Saves the question entered into the question text area in the questions array or a default message if there is no entered question.
+     * Saves the question entered into the question text area in the questions
+     * array or a default message if there is no entered question.
      */
     public void saveQuestion() {
         try {
@@ -150,11 +159,12 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         getAnswer(tfAnswer7, 6);
         getAnswer(tfAnswer8, 7);
     }
-    
+
     /**
-     * Adds an action listener to each of the radio buttons and assigns its action command.
+     * Adds an action listener to each of the radio buttons and assigns its
+     * action command.
      */
-    public void initialiseRadioButtons(){
+    public void initialiseRadioButtons() {
         rbAnswer1.setActionCommand("0");
         rbAnswer1.addActionListener(this);
         rbAnswer2.setActionCommand("1");
@@ -172,19 +182,23 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         rbAnswer8.setActionCommand("7");
         rbAnswer8.addActionListener(this);
     }
-    
+
     /**
      * Saves the selected correct answer into the array of correct answers.
+     *
      * @param e The radio button that set off the action event.
      */
     @Override
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
         correctAnswers[currentQuestion] = Integer.parseInt(e.getActionCommand());
     }
 
     /**
-     * Gets an answer from a passed text field and enters it into its specified place in the answers array.
-     * @param tf A text field that an answer will be extracted from and entered into the answers array
+     * Gets an answer from a passed text field and enters it into its specified
+     * place in the answers array.
+     *
+     * @param tf A text field that an answer will be extracted from and entered
+     * into the answers array
      * @param index The ID of the answer being entered into the answers array
      */
     public void getAnswer(JTextField tf, int index) {
@@ -204,101 +218,134 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     }
 
     /**
-     * Saves current question data and moves onto the next question provided that the current question being accessed is the last question in the quiz.
+     * Saves current question data and moves onto the next question provided
+     * that the current question being accessed is the last question in the
+     * quiz.
      */
     public void nextQuestion() {
         if (currentQuestion + 1 < numQuestions && validateQuestion()) {
             //Cannot navigate further than the max number of added questions and current question must be valid before moving on
         } else {
-            save();
+            record();
             currentQuestion++;
             refresh();
         }
     }
 
     /**
-     * Saves current question data and moves to the previous question provided that the current question being accessed is the first question in the quiz.
+     * Saves current question data and moves to the previous question provided
+     * that the current question being accessed is the first question in the
+     * quiz.
      */
     public void prevQuestion() {
-        if (currentQuestion -1 < 0 && validateQuestion()){
+        if (currentQuestion - 1 < 0 && validateQuestion()) {
             //Cannot navigate into -1 question and current question must be valid before moving to the previous question
         } else {
-            save();
+            record();
             currentQuestion--;
             refresh();
         }
     }
-    
+
     /**
-     * Validates the current question to make sure that all entered data is valid against specified constraints
+     * Validates the current question to make sure that all entered data is
+     * valid against specified constraints
+     *
      * @return A boolean determining whether the question is valid or not
      */
-    public boolean validateQuestion(){
+    public boolean validateQuestion() {
         boolean valid = true;
         int numAnswers = 0;
-        for(int i=0;i<8;i++){
-            if(answers[currentQuestion] != null){
+        for (int i = 0; i < 8; i++) {
+            if (answers[currentQuestion] != null) {
                 numAnswers++;
-                if(answers[currentQuestion][i].length()>150){
+                if (answers[currentQuestion][i].length() > 150) {
                     valid = false;
                 }
             }
         }
-        if(questions[currentQuestion].length() > 400 || correctAnswers[currentQuestion] == null || numAnswers < 2){
+        if (questions[currentQuestion].length() > 400 || correctAnswers[currentQuestion] == null || numAnswers < 2) {
             valid = false;
         }
         return valid;
     }
-    
+
     /**
-     * Sort all answers for the current question being accessed so that there are no null gaps between entered answers.
+     * Sort all answers for the current question being accessed so that there
+     * are no null gaps between entered answers.
      */
-    public void sortAnswers(){
+    public void sortAnswers() {
         boolean sorted = false;
-        while(!sorted){
+        while (!sorted) {
             sorted = true;
-            for(int i=0;i<7;i++){
-                if(answers[currentQuestion][i] == null && answers[currentQuestion][i+1] != null){
+            for (int i = 0; i < 7; i++) {
+                if (answers[currentQuestion][i] == null && answers[currentQuestion][i + 1] != null) {
                     String temp = answers[currentQuestion][i];
-                    answers[currentQuestion][i] = answers[currentQuestion][i+1];
-                    answers[currentQuestion][i+1] = temp;
+                    answers[currentQuestion][i] = answers[currentQuestion][i + 1];
+                    answers[currentQuestion][i + 1] = temp;
                     sorted = false;
                 }
             }
-            
+
         }
     }
-    
+
     /**
-     * Save and submit the quizzes to the database to be attempted by the student.
+     * Save and submit the quizzes to the database to be attempted by the
+     * student.
+     * @param draft Whether the new quiz is a draft or not
      */
-    public void saveAndSubmit(){
-        HashMap<String,String> quizMap = new HashMap<>();
-        quizMap.put("usrID",username);
-        quizMap.put("timeLimit", Integer.toString(sldTime.getValue()));
-        quizMap.put("draft", "false");
-        quizMap.put("name", getQuizName());
-        
-        HashMap<String,String> questionMap = new HashMap<>();
-        questionMap.put("usrID",username);
-        questionMap.put("topic",getQuizTopic());
-        
-        try{
+    public void save(boolean draft) {
+
+        try {
+            User user = User.getByEmail(username);
+
+            HashMap<String, String> quizMap = new HashMap<>();
+            quizMap.put("usrID", user.getUserId());
+            quizMap.put("timeLimit", Integer.toString(sldTime.getValue()));
+            if (draft) {
+                quizMap.put("draft", "true");
+            } else {
+                quizMap.put("draft", "false");
+            }
+            quizMap.put("draft", "false");
+            quizMap.put("name", getQuizName());
             Quiz newQuiz = Quiz.create(quizMap);
-           
-        } catch (SQLException ex){
+
+            HashMap<String, String> questionMap = new HashMap<>();
+            questionMap.put("usrID", user.getUserId());
+            questionMap.put("topic", getQuizTopic());
+            questionMap.put("category", user.getCourse());
+            questionMap.put("quizID", newQuiz.getQuizID());
+
+            HashMap<String, String> answerMap = new HashMap<>();
+            answerMap.put("category", user.getCourse());
+
+            for (int i = 0; i < numQuestions; i++) {
+                //Create new question
+                questionMap.put("question", questions[i]);
+                Question newQuestion = Question.create(questionMap);
+                for (int k = 0; k < 8; k++) {
+                    //Add all answers to the question
+                    answerMap.put("questionID", newQuestion.getQuestionId());
+                    if (answers[i][k] != null) {
+                        answerMap.put("answer", answers[i][k]);
+                        if (correctAnswers[i] == k) {
+                            answerMap.put("correct", "true");
+                        } else {
+                            answerMap.put("correct", "false");
+                        }
+                        Answer newAnswer = Answer.create(answerMap);
+                    }
+                }
+            }
+
+        } catch (SQLException ex) {
             System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered SQLException:");
             System.out.println(ex);
         }
         dispose();
-        
-    }
-    
-    /**
-     * Save and submit the quizzes to the database to be edited later.
-     */
-    public void saveToDraft(){
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -435,6 +482,11 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         });
 
         btnPreviousQuestion.setText("Previous Question");
+        btnPreviousQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreviousQuestionActionPerformed(evt);
+            }
+        });
 
         pnlAnswers.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -589,6 +641,11 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
         });
 
         btnSaveDraft.setText("Save to Draft");
+        btnSaveDraft.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveDraftActionPerformed(evt);
+            }
+        });
 
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
@@ -695,7 +752,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     }//GEN-LAST:event_btnNextQuestionActionPerformed
 
     private void btnAddQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddQuestionActionPerformed
-        if (numQuestions+1 > 30) {
+        if (numQuestions + 1 > 30) {
             //Number of questions cannot exceed 30
             //Tell the user they cannot exceed this number of questions
         } else {
@@ -711,7 +768,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
             for (int i = 0; i < 8; i++) {
                 answers[numQuestions][i] = null;
             }
-            if(currentQuestion == numQuestions){
+            if (currentQuestion == numQuestions) {
                 currentQuestion--;
                 refresh();
             }
@@ -720,8 +777,16 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener{
     }//GEN-LAST:event_btnRemoveQuestionActionPerformed
 
     private void btnSaveSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveSubmitActionPerformed
-       saveAndSubmit();
+        save(false);
     }//GEN-LAST:event_btnSaveSubmitActionPerformed
+
+    private void btnPreviousQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousQuestionActionPerformed
+        prevQuestion();
+    }//GEN-LAST:event_btnPreviousQuestionActionPerformed
+
+    private void btnSaveDraftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveDraftActionPerformed
+        save(true);
+    }//GEN-LAST:event_btnSaveDraftActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddQuestion;
