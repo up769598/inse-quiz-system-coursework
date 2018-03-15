@@ -1,5 +1,6 @@
 package quizsystem.db;
 
+import java.io.InvalidObjectException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,6 +127,13 @@ public class Quiz extends Model {
         handler.executeManipulator(deleteCompletions, params);
     }
     
+    /**
+     * Create a record of a quiz attempt.
+     * @param student               the completing student
+     * @param chosenAnswers         a map between questions in the quiz and the answers the student chose
+     * @param allQuestionsCompleted whether or not all questions have been completed
+     * @throws SQLException
+     */
     public void addAttempt(User student, HashMap<Question, Answer> chosenAnswers, boolean allQuestionsCompleted)
       throws SQLException {
         List<Question> keys = new ArrayList<>(chosenAnswers.keySet());
@@ -154,6 +162,26 @@ public class Quiz extends Model {
             List<String> completedParams = Arrays.asList(quizID, student.getUserId());
             String completedInsert = "INSERT INTO QuizCompletions (quizID, usrID) VALUES (?, ?);";
             handler.executeManipulator(completedInsert, completedParams);
+        }
+    }
+    
+    /**
+     * Delete all associated questions and answers on a quiz.
+     * @throws InvalidObjectException
+     * @throws SQLException
+     */
+    public void deleteAssociated() throws InvalidObjectException, SQLException {
+        if (this.isDraft()) {
+            List<String> params = Arrays.asList(this.get("quizID"));
+            String deleteAnswers = "DELETE FROM Answers AS a INNER JOIN Questions AS q WHERE q.quizID = ?;";
+            String deleteQuestions = "DELETE FROM Questions WHERE quizID = ?;";
+            DatabaseHandler handler = new DatabaseHandler();
+            
+            handler.executeManipulator(deleteAnswers, params);
+            handler.executeManipulator(deleteQuestions, params);
+        }
+        else {
+            throw new InvalidObjectException("Quiz must be in a draft state to delete associations.");
         }
     }
     
