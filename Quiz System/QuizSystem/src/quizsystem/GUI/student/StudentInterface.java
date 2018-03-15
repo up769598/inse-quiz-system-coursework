@@ -74,7 +74,7 @@ public class StudentInterface extends javax.swing.JFrame {
      * @param inQuiz The Quiz to be appended onto the set quiz table
      */
     private void addSetQuiz(quizsystem.db.Quiz inQuiz) {
-        Object[] data = {inQuiz.getLecturerName(), inQuiz.getName(), inQuiz.getTimeLimit()};
+        Object[] data = {"Default", inQuiz.getName(), inQuiz.getTimeLimit()};
         modelSetQuiz.addRow(data);
     }
 
@@ -84,7 +84,7 @@ public class StudentInterface extends javax.swing.JFrame {
      * @param inQuiz The Quiz to be appended onto the complete quiz table
      */
     private void addCompQuiz(quizsystem.db.Quiz inQuiz) {
-        Object[] data = {inQuiz.getLecturerName(), inQuiz.getName(), inQuiz.getTimeLimit(), 0}; //Need to add answer
+        Object[] data = {"Default", inQuiz.getName(), inQuiz.getTimeLimit(), 0};
         modelCompQuiz.addRow(data);
     }
 

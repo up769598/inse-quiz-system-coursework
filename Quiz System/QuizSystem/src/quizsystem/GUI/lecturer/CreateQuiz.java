@@ -222,8 +222,6 @@ public class CreateQuiz extends javax.swing.JFrame {
 
     /**
      * Saves the selected correct answer into the array of correct answers.
-     *
-     * @param e The radio button that set off the action event.
      */
     public void saveCorrectAnswer() {
         if (rbAnswer1.isSelected()) {
@@ -276,7 +274,7 @@ public class CreateQuiz extends javax.swing.JFrame {
      */
     public void nextQuestion() {
         record();
-        if (currentQuestion > numQuestions || !validateQuestion(currentQuestion)) {
+        if (currentQuestion +1 > numQuestions || !validateQuestion(currentQuestion)) {
             //Cannot navigate further than the max number of added questions and current question must be valid before moving on
         } else {
             currentQuestion++;
@@ -291,7 +289,7 @@ public class CreateQuiz extends javax.swing.JFrame {
      */
     public void prevQuestion() {
         record();
-        if (currentQuestion < 0 || !validateQuestion(currentQuestion)) {
+        if (currentQuestion -1 < 0 || !validateQuestion(currentQuestion)) {
             //Cannot navigate into -1 question and current question must be valid before moving to the previous question
         } else {
             currentQuestion--;
@@ -379,6 +377,7 @@ public class CreateQuiz extends javax.swing.JFrame {
      * @param draft Whether the new quiz is a draft or not
      */
     public void save(boolean draft) {
+        record();
         if (validateQuiz()) {
             //If quiz is valid
             try {
