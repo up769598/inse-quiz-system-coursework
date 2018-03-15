@@ -32,7 +32,7 @@ public class Login {
                 String[] db_passwordAndSalt = db.getPasswordAndSalt(email);
                 String salt = db_passwordAndSalt[1];
                 String hashPassword = db_passwordAndSalt[0];
-                System.out.println("Login salt" + salt);
+                System.out.println("Login salt; " + salt);
 
                 if (isPasswordCorrect(password, salt, hashPassword)){
                     return "Successful login";

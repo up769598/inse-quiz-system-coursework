@@ -1,20 +1,26 @@
 package quizsystem.GUI.lecturer;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import quizsystem.GUI.LoginRegister;
+import quizsystem.db.DraftState;
 import quizsystem.db.Quiz;
+import quizsystem.db.User;
 
 public class LecturerInterface extends javax.swing.JFrame {
 
     private final DefaultTableModel modelDraftQuiz;
     private final DefaultTableModel modelQuiz;
-    private  ArrayList<quizsystem.db.Quiz> draftQuiz;
-    private  ArrayList<quizsystem.db.Quiz> quizzes;
-    private  ArrayList<quizsystem.db.Quiz> searchQuiz;
+    private List<Quiz> draftQuiz;
+    private List<Quiz> quizzes;
+    private List<Quiz> searchQuiz;
     private boolean searched;
     private final String username;
+    private User user = null;
 
     /**
      * Create a new Lecturer Interface GUI Window
@@ -23,11 +29,17 @@ public class LecturerInterface extends javax.swing.JFrame {
      */
     public LecturerInterface(String inUsername) {
         initComponents();
-        quizzes = new ArrayList<>();
-        draftQuiz = new ArrayList<>();
+        loadQuizzes();
+        loadDraftQuizzes();
         searchQuiz = new ArrayList<>();
         searched = false;
         username = inUsername;
+        try {
+            user = User.getByEmail(username);
+        } catch (SQLException ex) {
+            System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
+            System.out.println(ex);
+        }
 
         Object[] colQuiz = {"Lecturer", "Name", "Time", "Avg Mark"};
         modelQuiz = new DefaultTableModel(colQuiz, 0);
@@ -36,30 +48,39 @@ public class LecturerInterface extends javax.swing.JFrame {
         Object[] colDraftQuiz = {"Name", "Number of Questions"};
         modelDraftQuiz = new DefaultTableModel(colDraftQuiz, 0);
         tblDraftQuiz.setModel(modelDraftQuiz);
+
+        displayDraftQuizzes(draftQuiz);
+        displayQuizzes(quizzes);
     }
-    
+
     /**
-     * Loads the draft quizzes made by the lecturer into an arraylist.
-     * @return The arraylist containing all quizzes in a draft state created by the logged-in lecturer
+     * Loads the draft quizzes made by the lecturer into an list.
      */
-    public ArrayList<quizsystem.db.Quiz> loadDraftQuizzes(){
+    public void loadDraftQuizzes() {
         //Get all quizzes made by the lecturer that are still in their draft phase
         //add results to the draft quiz arraylist
-        ArrayList<Quiz> quiz = new ArrayList<>();
-        return quiz;
+        try {
+            draftQuiz = Quiz.getQuizzesForLecturer(user.getUserId(),DraftState.DRAFT);
+        } catch (SQLException ex) {
+            System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
+            System.out.println(ex);
+        }
     }
-    
+
     /**
-     * Loads all non-draft quizzes made by the lecturer into an arraylist 
-     * @return The arraylist containing all quizzes in a non-draft state created by the logged-in lecturer
+     * Loads all non-draft quizzes made by the lecturer into an list.
      */
-    public ArrayList<quizsystem.db.Quiz> loadQuizzes(){
+    public void loadQuizzes() {
         //Get all quizzes made by the lecturer that are NOT in their draft phase and potentially have results attached to them
         //Add results to the quizzes arraylist
-        ArrayList<Quiz> quiz = new ArrayList<>();
-        return quiz;
+        try {
+            quizzes = Quiz.getQuizzesForLecturer(user.getUserId(),DraftState.LIVE);
+        } catch (SQLException ex) {
+            System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
+            System.out.println(ex);
+        }
     }
-    
+
     /**
      * Logs out of the interface and reloads the Login/Registration GUI
      */
@@ -109,7 +130,7 @@ public class LecturerInterface extends javax.swing.JFrame {
      *
      * @param inDraftQuiz Arraylist of all quizzes to be added to the table
      */
-    private void displayDraftQuizzes(ArrayList<quizsystem.db.Quiz> inDraftQuiz) {
+    private void displayDraftQuizzes(List<quizsystem.db.Quiz> inDraftQuiz) {
         clearDraftQuizTable();
         inDraftQuiz.forEach((quiz) -> {
             addDraftQuiz(quiz);
@@ -120,9 +141,9 @@ public class LecturerInterface extends javax.swing.JFrame {
      * Adds data from all quizzes within a passed list of quizzes to the quiz
      * table
      *
-     * @param inQuiz ArrayList of all quizzes to be added to the table
+     * @param inQuiz List of all quizzes to be added to the table
      */
-    private void displayQuizzes(ArrayList<quizsystem.db.Quiz> inQuiz) {
+    private void displayQuizzes(List<quizsystem.db.Quiz> inQuiz) {
         clearQuizTable();
         inQuiz.forEach((quiz) -> {
             addQuiz(quiz);
@@ -139,9 +160,9 @@ public class LecturerInterface extends javax.swing.JFrame {
      */
     public void searchQuiz(String name, String lectName, String topic) {
         searchQuiz.clear();
-        ArrayList<quizsystem.db.Quiz> searchList1 = searchByName(name, quizzes);
-        ArrayList<quizsystem.db.Quiz> searchList2 = searchByLectName(lectName, quizzes);
-        ArrayList<quizsystem.db.Quiz> searchList3 = searchByTopic(topic, quizzes);
+        List<quizsystem.db.Quiz> searchList1 = searchByName(name, quizzes);
+        List<quizsystem.db.Quiz> searchList2 = searchByLectName(lectName, quizzes);
+        List<quizsystem.db.Quiz> searchList3 = searchByTopic(topic, quizzes);
         searchList1.stream().filter((quiz) -> (searchList2.contains(quiz))).forEachOrdered((quiz) -> {
             searchQuiz.add(quiz);
         });
@@ -174,8 +195,8 @@ public class LecturerInterface extends javax.swing.JFrame {
      * @param quizList The full list of quizzes to search through
      * @return The list of quizzes with names that contain that keyword
      */
-    public ArrayList<quizsystem.db.Quiz> searchByName(String name, ArrayList<quizsystem.db.Quiz> quizList) {
-        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+    public List<quizsystem.db.Quiz> searchByName(String name, List<quizsystem.db.Quiz> quizList) {
+        List<quizsystem.db.Quiz> tempList = new ArrayList<>();
         if (!name.equals("Default")) {
             quizList.stream().filter((quiz) -> (quiz.getName().contains(name))).forEachOrdered((quiz) -> {
                 tempList.add(quiz);
@@ -192,8 +213,8 @@ public class LecturerInterface extends javax.swing.JFrame {
      * @param quizList The full list of quizzes to search through
      * @return The list of quizzes with lecturer names that contain that keyword
      */
-    public ArrayList<quizsystem.db.Quiz> searchByLectName(String lectName, ArrayList<quizsystem.db.Quiz> quizList) {
-        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+    public List<quizsystem.db.Quiz> searchByLectName(String lectName, List<quizsystem.db.Quiz> quizList) {
+        List<quizsystem.db.Quiz> tempList = new ArrayList<>();
         if (!lectName.equals("Default")) {
             quizList.stream().filter((quiz) -> (quiz.getLecturerName().contains(lectName))).forEachOrdered((quiz) -> {
                 tempList.add(quiz);
@@ -210,8 +231,8 @@ public class LecturerInterface extends javax.swing.JFrame {
      * @param quizList The full list of quizzes to search through
      * @return The list of quizzes with topics that contain that keyword
      */
-    public ArrayList<quizsystem.db.Quiz> searchByTopic(String topic, ArrayList<quizsystem.db.Quiz> quizList) {
-        ArrayList<quizsystem.db.Quiz> tempList = new ArrayList<>();
+    public List<quizsystem.db.Quiz> searchByTopic(String topic, List<quizsystem.db.Quiz> quizList) {
+        List<quizsystem.db.Quiz> tempList = new ArrayList<>();
         if (!topic.equals("Default")) {
             quizList.stream().filter((quiz) -> (quiz.getTopic().contains(topic))).forEachOrdered((quiz) -> {
                 tempList.add(quiz);
@@ -227,14 +248,15 @@ public class LecturerInterface extends javax.swing.JFrame {
     public void withdrawQuiz() {
         //revert quiz to draft
         //write to db
-        draftQuiz = loadDraftQuizzes();
-        quizzes = loadQuizzes();
+        loadDraftQuizzes();
+        loadQuizzes();
         displayDraftQuizzes(draftQuiz);
         displayQuizzes(quizzes);
     }
-    
+
     /**
      * Return the quiz selected in the draft quiz table
+     *
      * @return The Quiz selected
      */
     public quizsystem.db.Quiz getDraftQuiz() {
@@ -243,6 +265,7 @@ public class LecturerInterface extends javax.swing.JFrame {
 
     /**
      * Return the quiz selected in the quiz table
+     *
      * @return The Quiz Selected
      */
     public quizsystem.db.Quiz getQuiz() {
@@ -523,7 +546,7 @@ public class LecturerInterface extends javax.swing.JFrame {
 
     private void btnEditQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditQuizActionPerformed
         Quiz quiz = getDraftQuiz();
-        
+
     }//GEN-LAST:event_btnEditQuizActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
