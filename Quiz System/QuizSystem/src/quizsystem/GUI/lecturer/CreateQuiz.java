@@ -1,7 +1,5 @@
 package quizsystem.GUI.lecturer;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
@@ -11,7 +9,7 @@ import quizsystem.db.Question;
 import quizsystem.db.Quiz;
 import quizsystem.db.User;
 
-public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
+public class CreateQuiz extends javax.swing.JFrame {
 
     private Quiz quiz;
     private String[] questions = new String[30];
@@ -100,6 +98,43 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
         setQuestion();
         setAnswers();
         setQuestionNum();
+        setCorrectAnswer();
+    }
+
+    /**
+     *
+     */
+    public void setCorrectAnswer() {
+        int correct = correctAnswers[currentQuestion];
+        switch (correct) {
+            case 1:
+                rbAnswer1.setSelected(true);
+                break;
+            case 2:
+                rbAnswer2.setSelected(true);
+                break;
+            case 3:
+                rbAnswer3.setSelected(true);
+                break;
+            case 4:
+                rbAnswer4.setSelected(true);
+                break;
+            case 5:
+                rbAnswer5.setSelected(true);
+                break;
+            case 6:
+                rbAnswer6.setSelected(true);
+                break;
+            case 7:
+                rbAnswer7.setSelected(true);
+                break;
+            case 8:
+                rbAnswer8.setSelected(true);
+                break;
+            default:
+                rbAnswer1.setSelected(true);
+                break;
+        }
     }
 
     /**
@@ -115,7 +150,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
     public void setAnswers() {
         for (int i = 0; i < 8; i++) {
             String answer = answers[currentQuestion][i];
-            if (answer != null) {
+            if (answer != "") {
                 switch (i) {
                     case 0:
                         tfAnswer1.setText(answer);
@@ -152,6 +187,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
     public void record() {
         saveQuestion();
         saveAnswers();
+        saveCorrectAnswer();
         sortAnswers();
         refresh();
     }
@@ -161,12 +197,10 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
      * array or a default message if there is no entered question.
      */
     public void saveQuestion() {
-        try {
-            questions[currentQuestion] = taQuestion.getText();
-        } catch (NullPointerException ex) {
-            //Text Area is empty
+        questions[currentQuestion] = taQuestion.getText();
+        if (questions[currentQuestion].equals("")) {
             createMessagePane("Question cannot be blank, please enter a question into the text area", "Error");
-            questions[currentQuestion] = "Please enter a question here"; //Set a default value to prevent possible error
+            questions[currentQuestion] = null;
         }
     }
 
@@ -185,36 +219,28 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
     }
 
     /**
-     * Adds an action listener to each of the radio buttons and assigns its
-     * action command.
-     */
-    public void initialiseRadioButtons() {
-        rbAnswer1.setActionCommand("0");
-        rbAnswer1.addActionListener(this);
-        rbAnswer2.setActionCommand("1");
-        rbAnswer2.addActionListener(this);
-        rbAnswer3.setActionCommand("2");
-        rbAnswer3.addActionListener(this);
-        rbAnswer4.setActionCommand("3");
-        rbAnswer4.addActionListener(this);
-        rbAnswer5.setActionCommand("4");
-        rbAnswer5.addActionListener(this);
-        rbAnswer6.setActionCommand("5");
-        rbAnswer6.addActionListener(this);
-        rbAnswer7.setActionCommand("6");
-        rbAnswer7.addActionListener(this);
-        rbAnswer8.setActionCommand("7");
-        rbAnswer8.addActionListener(this);
-    }
-
-    /**
      * Saves the selected correct answer into the array of correct answers.
      *
      * @param e The radio button that set off the action event.
      */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        correctAnswers[currentQuestion] = Integer.parseInt(e.getActionCommand());
+    public void saveCorrectAnswer() {
+        if (rbAnswer1.isSelected()) {
+            correctAnswers[currentQuestion] = 1;
+        } else if (rbAnswer2.isSelected()) {
+            correctAnswers[currentQuestion] = 2;
+        } else if (rbAnswer3.isSelected()) {
+            correctAnswers[currentQuestion] = 3;
+        } else if (rbAnswer4.isSelected()) {
+            correctAnswers[currentQuestion] = 4;
+        } else if (rbAnswer5.isSelected()) {
+            correctAnswers[currentQuestion] = 5;
+        } else if (rbAnswer6.isSelected()) {
+            correctAnswers[currentQuestion] = 6;
+        } else if (rbAnswer7.isSelected()) {
+            correctAnswers[currentQuestion] = 7;
+        } else if (rbAnswer8.isSelected()) {
+            correctAnswers[currentQuestion] = 8;
+        }
     }
 
     /**
@@ -230,7 +256,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
             answers[currentQuestion][index] = tf.getText();
         } catch (NullPointerException ex) {
             //Text Area is empty
-            answers[currentQuestion][index] = null;
+            answers[currentQuestion][index] = "";
         }
     }
 
@@ -238,7 +264,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
      * Sets the current question number onto the GUI.
      */
     public void setQuestionNum() {
-        lblQuestionNum.setText(Integer.toString(currentQuestion) + ":" + Integer.toString(numQuestions));
+        lblQuestionNum.setText(Integer.toString(currentQuestion + 1) + ":" + Integer.toString(numQuestions));
     }
 
     /**
@@ -247,10 +273,10 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
      * quiz.
      */
     public void nextQuestion() {
-        if (currentQuestion + 1 < numQuestions && validateQuestion(currentQuestion)) {
+        record();
+        if (currentQuestion < numQuestions && !validateQuestion(currentQuestion)) {
             //Cannot navigate further than the max number of added questions and current question must be valid before moving on
         } else {
-            record();
             currentQuestion++;
             refresh();
         }
@@ -262,10 +288,11 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
      * quiz.
      */
     public void prevQuestion() {
-        if (currentQuestion - 1 < 0 && validateQuestion(currentQuestion)) {
+        record();
+        if (currentQuestion < 0 && !validateQuestion(currentQuestion)) {
             //Cannot navigate into -1 question and current question must be valid before moving to the previous question
         } else {
-            record();
+
             currentQuestion--;
             refresh();
         }
@@ -280,22 +307,26 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
      */
     public boolean validateQuestion(int questionNum) {
         boolean valid = true;
-        int numAnswers = 0;
-        for (int i = 0; i < 8; i++) {
-            if (answers[questionNum] != null) {
-                numAnswers++;
-                if (answers[questionNum][i].length() > 150) {
-                    valid = false;
+        if (questions[questionNum] != null) {
+            int numAnswers = 0;
+            for (int i = 0; i < 8; i++) {
+                if (!"".equals(answers[questionNum][i])) {
+                    numAnswers++;
+                    if (answers[questionNum][i].length() > 150) {
+                        valid = false;
+                    }
                 }
             }
-        }
-        if (questions[questionNum].length() > 400 || correctAnswers[questionNum] == null || numAnswers < 2) {
+            if (questions[questionNum].length() > 400 || correctAnswers[questionNum] == null || numAnswers < 2) {
+                valid = false;
+            }
+        } else {
             valid = false;
         }
         if (!valid) {
-            createMessagePane("Question " + Integer.toString(questionNum) + " is not valid, "
+            createMessagePane("Question " + Integer.toString(questionNum + 1) + " is not valid, "
                     + "please enter a question with less than 400 characters with at least 2 answers."
-                    + " Each answer must be less than 150 characters", "Error");
+                    + " Each answer must be less than 150 characters and a correct answer must be selected", "Error");
         }
         return valid;
     }
@@ -314,7 +345,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
             }
         }
         if (getQuizName().equals("-1") || getQuizTopic().equals("-1")) {
-            createMessagePane("Quiz name and topic cannot be -1","Error");
+            createMessagePane("Quiz name and topic cannot be -1", "Error");
             valid = false;
         }
         return valid;
@@ -329,7 +360,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
         while (!sorted) {
             sorted = true;
             for (int i = 0; i < 7; i++) {
-                if (answers[currentQuestion][i] == null && answers[currentQuestion][i + 1] != null) {
+                if ("".equals(answers[currentQuestion][i]) && !"".equals(answers[currentQuestion][i + 1])) {
                     String temp = answers[currentQuestion][i];
                     answers[currentQuestion][i] = answers[currentQuestion][i + 1];
                     answers[currentQuestion][i + 1] = temp;
@@ -407,7 +438,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
 
             }
         } else {
-            createMessagePane("Quiz is not valid, it cannot save!","Error");
+            createMessagePane("Quiz is not valid, it cannot save!", "Error");
         }
     }
 
@@ -468,6 +499,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
         btnRemoveQuestion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         pnlDetails.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -823,24 +855,30 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
         if (numQuestions + 1 > 30) {
             //Number of questions cannot exceed 30
             //Tell the user they cannot exceed this number of questions
+            createMessagePane("A Quiz cannot exceed more than 30 questions, no question has been added", "Warning");
         } else {
             numQuestions++;
+            createMessagePane("Question Added", "Success");
+            refresh();
         }
     }//GEN-LAST:event_btnAddQuestionActionPerformed
 
     private void btnRemoveQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveQuestionActionPerformed
         if (numQuestions == 5) {
             //Do not let the user delete the question
+            createMessagePane("A quiz must have a minimum of 5 questions, cannot delete", "Warning");
         } else {
-            questions[numQuestions] = null;
+            questions[numQuestions - 1] = null;
             for (int i = 0; i < 8; i++) {
-                answers[numQuestions][i] = null;
+                answers[numQuestions - 1][i] = "";
             }
             if (currentQuestion == numQuestions) {
                 currentQuestion--;
-                refresh();
+
             }
             numQuestions--;
+            createMessagePane("Deleted last question successfully", "Success");
+            refresh();
         }
     }//GEN-LAST:event_btnRemoveQuestionActionPerformed
 
