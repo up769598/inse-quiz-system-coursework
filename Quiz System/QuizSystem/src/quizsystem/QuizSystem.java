@@ -1,10 +1,9 @@
 package quizsystem;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.HashMap;
 import quizsystem.db.DatabaseHandler;
 import quizsystem.db.Quiz;
-import quizsystem.db.QuizState;
 
 public class QuizSystem {
 
@@ -18,7 +17,14 @@ public class QuizSystem {
                    
         try {
             DatabaseHandler db = new DatabaseHandler();
-            List<Quiz> qs = db.getQuizzesForStudent("5", QuizState.INCOMPLETE);
+            
+            HashMap<String, String> qm = new HashMap<>();
+            qm.put("usrID", "4");
+            qm.put("draft", "false");
+            qm.put("timeLimit", "30.00");
+            qm.put("name", "something");
+            Quiz q = Quiz.create(qm);
+            
             System.out.println("");
         }
         catch (SQLException ex) {

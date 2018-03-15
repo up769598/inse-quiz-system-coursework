@@ -113,8 +113,8 @@ public class Model {
         // The data is in the database now, but we don't yet have a row to return. Re-select it out of the DB.
         List<String> rsParams = new ArrayList<>();
         for (int i = 0; i < reselectors.size(); i++) {
-            reselectors.set(i, reselectors.get(i) + " = ?");
             rsParams.add(attributes.get(reselectors.get(i)));
+            reselectors.set(i, reselectors.get(i) + " = ?");
         }
         String reselectConditions = DatabaseHandler.join(reselectors, " AND ");
         String rsQuery = "SELECT * FROM " + tableName + " WHERE " + reselectConditions + " ORDER BY " +
