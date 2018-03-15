@@ -1,29 +1,26 @@
 package quizsystem;
 
+import java.io.InvalidObjectException;
 import java.sql.SQLException;
-import java.util.List;
 import quizsystem.db.DatabaseHandler;
-import quizsystem.db.DraftState;
 import quizsystem.db.Quiz;
 
 public class QuizSystem {
 
-    public static void main(String[] args) throws SQLException {
-        
-        Login login = new Login();
-        System.out.println(login.hash("password","qwerty"));
-        
-       quizsystem.GUI.LoginRegister qr = new quizsystem.GUI.LoginRegister();
-       qr.setVisible(true);
+    public static void main(String[] args) throws SQLException, InvalidObjectException {
+        quizsystem.GUI.LoginRegister qr = new quizsystem.GUI.LoginRegister();
+        qr.setVisible(true);
        
         try {
             DatabaseHandler db = new DatabaseHandler();
             
-            List<Quiz> qs = Quiz.getQuizzesForLecturer("4", DraftState.LIVE);
+            Quiz q = Quiz.getById("5");
+            q.revertToDraft();
+            q.deleteAssociated();
             
             System.out.println("");
         }
-        catch (SQLException ex) {
+        catch (SQLException | InvalidObjectException ex) {
             System.out.println("[WARN] QuizSystem.main encountered SQLException:");
             System.out.println(ex);
             throw ex;

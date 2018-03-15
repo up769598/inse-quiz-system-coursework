@@ -123,7 +123,7 @@ public class Quiz extends Model {
      */
     public void revertToDraft() throws SQLException {
         HashMap<String, String> updatedAttributes = new HashMap<>();
-        updatedAttributes.put("draft", "1");
+        updatedAttributes.put("draft", "true");
         this.update(updatedAttributes);
         
         String deleteAttempts = "DELETE FROM AttemptAnswers WHERE quizID = ?;";
@@ -181,7 +181,7 @@ public class Quiz extends Model {
     public void deleteAssociated() throws InvalidObjectException, SQLException {
         if (this.isDraft()) {
             List<String> params = Arrays.asList(this.get("quizID"));
-            String deleteAnswers = "DELETE FROM Answers AS a INNER JOIN Questions AS q WHERE q.quizID = ?;";
+            String deleteAnswers = "DELETE a FROM Answers AS a INNER JOIN Questions AS q WHERE q.quizID = ?;";
             String deleteQuestions = "DELETE FROM Questions WHERE quizID = ?;";
             DatabaseHandler handler = new DatabaseHandler();
             
