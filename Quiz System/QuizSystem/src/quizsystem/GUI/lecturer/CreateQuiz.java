@@ -1,5 +1,6 @@
 package quizsystem.GUI.lecturer;
 
+import java.io.InvalidObjectException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -279,7 +280,7 @@ public class CreateQuiz extends javax.swing.JFrame {
      */
     public void nextQuestion() {
         record();
-        if (currentQuestion > numQuestions || !validateQuestion(currentQuestion)) {
+        if (currentQuestion +1 >= numQuestions || !validateQuestion(currentQuestion)) {
             //Cannot navigate further than the max number of added questions and current question must be valid before moving on
         } else {
             currentQuestion++;
@@ -395,14 +396,13 @@ public class CreateQuiz extends javax.swing.JFrame {
                 } else {
                     quizMap.put("draft", "false");
                 }
-                quizMap.put("draft", "false");
                 quizMap.put("name", getQuizName());
-
                 String quizID;
                 if (loaded) {
                     //Update existing if loading a draft quiz instead of creating a brand new quiz
                     quiz.update(quizMap);
                     quizID = quiz.getQuizID();
+                    quiz.deleteAssociated();
                 } else {
                     //Create a new quiz
                     Quiz newQuiz = Quiz.create(quizMap);
@@ -410,7 +410,7 @@ public class CreateQuiz extends javax.swing.JFrame {
                 }
                 HashMap<String, String> questionMap = new HashMap<>();
                 questionMap.put("usrID", user.getUserId());
-                //questionMap.put("topic", getQuizTopic());
+                //  questionMap.put("topic", getQuizTopic());
                 questionMap.put("category", user.getCourse());
                 questionMap.put("quizID", quizID);
 
@@ -440,7 +440,9 @@ public class CreateQuiz extends javax.swing.JFrame {
                 createMessagePane("Save Unsuccessful", "Error");
                 System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered SQLException:");
                 System.out.println(ex);
-
+            } catch(InvalidObjectException ex){
+                System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered InvalidObjectException:");
+                System.out.println(ex);
             }
         } else {
             createMessagePane("Quiz is not valid, it cannot save!", "Error");
