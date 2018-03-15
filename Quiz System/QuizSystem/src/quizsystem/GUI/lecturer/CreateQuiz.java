@@ -28,6 +28,7 @@ public class CreateQuiz extends javax.swing.JFrame {
     public CreateQuiz(String inUsername) {
         initComponents();
         username = inUsername;
+        refresh();
     }
 
     /**
@@ -102,38 +103,39 @@ public class CreateQuiz extends javax.swing.JFrame {
     }
 
     /**
-     *
+     * Set the selected correct answer if it has been recorded
      */
     public void setCorrectAnswer() {
-        int correct = correctAnswers[currentQuestion];
-        switch (correct) {
-            case 1:
-                rbAnswer1.setSelected(true);
-                break;
-            case 2:
-                rbAnswer2.setSelected(true);
-                break;
-            case 3:
-                rbAnswer3.setSelected(true);
-                break;
-            case 4:
-                rbAnswer4.setSelected(true);
-                break;
-            case 5:
-                rbAnswer5.setSelected(true);
-                break;
-            case 6:
-                rbAnswer6.setSelected(true);
-                break;
-            case 7:
-                rbAnswer7.setSelected(true);
-                break;
-            case 8:
-                rbAnswer8.setSelected(true);
-                break;
-            default:
-                rbAnswer1.setSelected(true);
-                break;
+        if (correctAnswers[currentQuestion] != null) {
+            int correct = correctAnswers[currentQuestion];
+            switch (correct) {
+                case 1:
+                    rbAnswer1.setSelected(true);
+                    break;
+                case 2:
+                    rbAnswer2.setSelected(true);
+                    break;
+                case 3:
+                    rbAnswer3.setSelected(true);
+                    break;
+                case 4:
+                    rbAnswer4.setSelected(true);
+                    break;
+                case 5:
+                    rbAnswer5.setSelected(true);
+                    break;
+                case 6:
+                    rbAnswer6.setSelected(true);
+                    break;
+                case 7:
+                    rbAnswer7.setSelected(true);
+                    break;
+                case 8:
+                    rbAnswer8.setSelected(true);
+                    break;
+            }
+        } else {
+            rbAnswer1.setSelected(true);
         }
     }
 
@@ -274,7 +276,7 @@ public class CreateQuiz extends javax.swing.JFrame {
      */
     public void nextQuestion() {
         record();
-        if (currentQuestion < numQuestions && !validateQuestion(currentQuestion)) {
+        if (currentQuestion > numQuestions || !validateQuestion(currentQuestion)) {
             //Cannot navigate further than the max number of added questions and current question must be valid before moving on
         } else {
             currentQuestion++;
@@ -289,10 +291,9 @@ public class CreateQuiz extends javax.swing.JFrame {
      */
     public void prevQuestion() {
         record();
-        if (currentQuestion < 0 && !validateQuestion(currentQuestion)) {
+        if (currentQuestion < 0 || !validateQuestion(currentQuestion)) {
             //Cannot navigate into -1 question and current question must be valid before moving to the previous question
         } else {
-
             currentQuestion--;
             refresh();
         }
@@ -442,6 +443,11 @@ public class CreateQuiz extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Display a message to the user
+     * @param message The message to be displayed to the user
+     * @param title The title found on the window decoration
+     */
     public void createMessagePane(String message, String title) {
         Object[] options = {"Ok"};
         JOptionPane.showOptionDialog(this, message, title, JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
