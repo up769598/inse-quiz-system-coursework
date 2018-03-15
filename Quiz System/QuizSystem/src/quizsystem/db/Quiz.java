@@ -27,7 +27,7 @@ public class Quiz extends Model {
         this._questions = questions;
         List<String> questionIDs = new ArrayList<>();
         for (int i = 0; i < questions.size(); i++) {
-            questionIDs.add(questions.get(i).getQuestionID());
+            questionIDs.add(questions.get(i).getQuestionId());
         }
         
         List<Answer> answers = Answer.answersForQuestions(handler, questionIDs);
@@ -69,7 +69,7 @@ public class Quiz extends Model {
      */
     public String[] getAnswers(int questionNumber) {
         Question question = this._questions.get(questionNumber - 1);
-        String id = question.getQuestionID();
+        String id = question.getQuestionId();
         List<Answer> answers = this._answers.get(id);
         List<String> texts = new ArrayList<>();
         for (int i = 0; i < answers.size(); i++) {
@@ -124,6 +124,37 @@ public class Quiz extends Model {
         
         handler.executeManipulator(deleteAttempts, params);
         handler.executeManipulator(deleteCompletions, params);
+    }
+    
+    public void addAttempt(User student, HashMap<Question, Answer> chosenAnswers, boolean allQuestionsCompleted)
+      throws SQLException {
+        List<Question> keys = new ArrayList<>(chosenAnswers.keySet());
+        String quizID = keys.get(0).getQuizId();
+        List<String> insertValues = new ArrayList<>();
+        List<String> params = new ArrayList<>();
+        for (int i = 0; i < chosenAnswers.size(); i++) {
+            Question q = keys.get(i);
+            Answer a = chosenAnswers.get(q);
+            
+            String marks = a.isCorrect() ? "1" : "0";
+            params.addAll(Arrays.asList(quizID, student.getUserId(), q.getQuestionId(), a.getAnswerId(), marks));
+            List<String> values = Arrays.asList("?", "?", "?", "?", "?");
+            
+            String insert = "(" + DatabaseHandler.join(values, ", ") + ")";
+            insertValues.add(insert);
+        }
+        
+        String insertClause = DatabaseHandler.join(insertValues, ", ");
+        String query = "INSERT INTO AttemptAnswers (quizID, usrID, questionID, answerID, marks) VALUES " +
+                insertClause + ";";
+        DatabaseHandler handler = new DatabaseHandler();
+        handler.executeManipulator(query, params);
+        
+        if (allQuestionsCompleted) {
+            List<String> completedParams = Arrays.asList(quizID, student.getUserId());
+            String completedInsert = "INSERT INTO QuizCompletions (quizID, usrID) VALUES (?, ?);";
+            handler.executeManipulator(completedInsert, completedParams);
+        }
     }
     
     /**

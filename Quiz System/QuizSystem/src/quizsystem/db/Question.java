@@ -29,12 +29,16 @@ public class Question extends Model {
         super(row);
     }
     
-    public String getQuestionID() {
+    public String getQuestionId() {
         return this.get("questionID");
     }
     
     public String getQuestionText() {
         return this.get("question");
+    }
+    
+    public String getQuizId() {
+        return this.get("quizID");
     }
     
     /**

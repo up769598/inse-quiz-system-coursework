@@ -69,6 +69,10 @@ public class User extends Model {
     public String getCourse() {
         return course;
     }
+    
+    public String getUserId() {
+        return this.get("usrID");
+    }
 
     /**
      * Change the user's course.

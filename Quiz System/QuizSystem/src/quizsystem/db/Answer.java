@@ -46,6 +46,14 @@ public class Answer extends Model {
         return this.get("answer");
     }
     
+    public boolean isCorrect() {
+        return this.get("correct").equals("1");
+    }
+    
+    public String getAnswerId() {
+        return this.get("answerID");
+    }
+    
     /**
      * Update the current Answer with new attributes.
      * @param newAttributes new attributes to set
