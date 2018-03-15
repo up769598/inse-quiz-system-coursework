@@ -7,6 +7,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -126,6 +127,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="tfEmailLogin">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="aaa.bbb@port.ac.uk"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -138,6 +142,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="tfPasswordLogin">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="inse1inse"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnLogin">
           <Properties>

@@ -155,6 +155,7 @@ public class TakeQuiz extends javax.swing.JDialog {
         btnQuit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         taQuestion.setColumns(20);
         taQuestion.setRows(5);

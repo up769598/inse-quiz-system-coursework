@@ -43,6 +43,7 @@ public class SelectResult extends javax.swing.JFrame {
         btnReviewResults = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         lblQuizNameTitle.setText("Quiz Name: ");
 

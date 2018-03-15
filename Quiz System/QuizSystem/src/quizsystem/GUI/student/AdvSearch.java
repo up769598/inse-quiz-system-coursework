@@ -50,6 +50,7 @@ public class AdvSearch extends javax.swing.JDialog {
         lblSetBy = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         lblName.setText("Name Of Quiz");
 

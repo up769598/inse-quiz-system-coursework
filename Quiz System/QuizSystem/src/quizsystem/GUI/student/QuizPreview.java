@@ -31,6 +31,7 @@ public class QuizPreview extends javax.swing.JFrame {
         btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         lblName.setText("(Insert Quiz Name Here)");
         lblName.setBorder(javax.swing.BorderFactory.createEtchedBorder());

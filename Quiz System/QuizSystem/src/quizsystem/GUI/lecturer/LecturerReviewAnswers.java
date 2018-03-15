@@ -113,6 +113,7 @@ public class LecturerReviewAnswers extends javax.swing.JDialog {
         lblGrade = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         lblQuestionNumber.setText("(Question Number) / (Total Number of Questions):");
 
