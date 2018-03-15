@@ -24,6 +24,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
 
     /**
      * Create a new instance of createQuiz and initialise the GUI.
+     *
      * @param inUsername The username of the lecturer using the system
      */
     public CreateQuiz(String inUsername) {
@@ -32,7 +33,9 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
     }
 
     /**
-     * Create a new instance of createQuiz, initialise the GUI and load the passed Quiz into the GUI.
+     * Create a new instance of createQuiz, initialise the GUI and load the
+     * passed Quiz into the GUI.
+     *
      * @param inQuiz Quiz to be edited, this will be loaded into the GUI
      * @param inUsername The username of the lecturer using the system
      */
@@ -47,27 +50,27 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
         tfTopic.setText(quiz.getTopic());
         numQuestions = quiz.getQuestions().size();
         questions = (String[]) quiz.getQuestions().toArray(); //Make a copy of the quizzes questions
-        for(int i=0;i<questions.length;i++){
+        for (int i = 0; i < questions.length; i++) {
             String[] existingAnswers = quiz.getAnswers(i);
             System.arraycopy(existingAnswers, 0, answers[i], 0, existingAnswers.length); //Copy all of the question's answers into a 2d array
         }
         refresh();
-        createMessagePane("Loaded Quiz","Success!");
+        createMessagePane("Loaded Quiz", "Success!");
     }
 
     /**
      * Attempts to get the Quiz name from the GUI.
      *
      * @return The Quiz name if recovered successfully from the GUI, otherwise
-     * "Default"
+     * "-1"
      */
     public String getQuizName() {
-        String name = "Default";
+        String name = "-1";
         try {
             name = tfName.getText();
         } catch (NullPointerException ex) {
             //Text field is empty
-            createMessagePane("Please give the quiz a name","Error");
+            createMessagePane("Please give the quiz a name", "Error");
         }
         return name;
     }
@@ -76,15 +79,15 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
      * Attempts to get the Quiz topic from the GUI.
      *
      * @return The Quiz topic if recovered successfully from the GUI, otherwise
-     * "Default"
+     * "-1"
      */
     public String getQuizTopic() {
-        String topic = "Default";
+        String topic = "-1";
         try {
             topic = tfTopic.getText();
         } catch (NullPointerException ex) {
             //Text field is empty
-            createMessagePane("Please give the quiz a topic","");
+            createMessagePane("Please give the quiz a topic", "");
         }
         return topic;
     }
@@ -162,7 +165,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
             questions[currentQuestion] = taQuestion.getText();
         } catch (NullPointerException ex) {
             //Text Area is empty
-            createMessagePane("Question cannot be blank, please enter a question into the text area","Error");
+            createMessagePane("Question cannot be blank, please enter a question into the text area", "Error");
             questions[currentQuestion] = "Please enter a question here"; //Set a default value to prevent possible error
         }
     }
@@ -244,7 +247,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
      * quiz.
      */
     public void nextQuestion() {
-        if (currentQuestion + 1 < numQuestions && validateQuestion()) {
+        if (currentQuestion + 1 < numQuestions && validateQuestion(currentQuestion)) {
             //Cannot navigate further than the max number of added questions and current question must be valid before moving on
         } else {
             record();
@@ -259,7 +262,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
      * quiz.
      */
     public void prevQuestion() {
-        if (currentQuestion - 1 < 0 && validateQuestion()) {
+        if (currentQuestion - 1 < 0 && validateQuestion(currentQuestion)) {
             //Cannot navigate into -1 question and current question must be valid before moving to the previous question
         } else {
             record();
@@ -272,20 +275,46 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
      * Validates the current question to make sure that all entered data is
      * valid against specified constraints
      *
+     * @param questionNum The question being validated.
      * @return A boolean determining whether the question is valid or not
      */
-    public boolean validateQuestion() {
+    public boolean validateQuestion(int questionNum) {
         boolean valid = true;
         int numAnswers = 0;
         for (int i = 0; i < 8; i++) {
-            if (answers[currentQuestion] != null) {
+            if (answers[questionNum] != null) {
                 numAnswers++;
-                if (answers[currentQuestion][i].length() > 150) {
+                if (answers[questionNum][i].length() > 150) {
                     valid = false;
                 }
             }
         }
-        if (questions[currentQuestion].length() > 400 || correctAnswers[currentQuestion] == null || numAnswers < 2) {
+        if (questions[questionNum].length() > 400 || correctAnswers[questionNum] == null || numAnswers < 2) {
+            valid = false;
+        }
+        if (!valid) {
+            createMessagePane("Question " + Integer.toString(questionNum) + " is not valid, "
+                    + "please enter a question with less than 400 characters with at least 2 answers."
+                    + " Each answer must be less than 150 characters", "Error");
+        }
+        return valid;
+    }
+
+    /**
+     * Validate the quiz, make sure that each question is valid as well as the
+     * quiz name and topic.
+     *
+     * @return Whether the quiz is valid or not
+     */
+    public boolean validateQuiz() {
+        boolean valid = true;
+        for (int i = 0; i < numQuestions; i++) {
+            if (!validateQuestion(i)) {
+                valid = false;
+            }
+        }
+        if (getQuizName().equals("-1") || getQuizTopic().equals("-1")) {
+            createMessagePane("Quiz name and topic cannot be -1","Error");
             valid = false;
         }
         return valid;
@@ -314,68 +343,74 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
     /**
      * Save and submit the quizzes to the database to be attempted by the
      * student.
+     *
      * @param draft Whether the new quiz is a draft or not
      */
     public void save(boolean draft) {
-
-        try {
-            User user = User.getByEmail(username);
-            HashMap<String, String> quizMap = new HashMap<>();
-            quizMap.put("usrID", user.getUserId());
-            quizMap.put("timeLimit", Integer.toString(sldTime.getValue()));
-            if (draft) {
-                quizMap.put("draft", "true");
-            } else {
+        if (validateQuiz()) {
+            //If quiz is valid
+            try {
+                User user = User.getByEmail(username);
+                HashMap<String, String> quizMap = new HashMap<>();
+                quizMap.put("usrID", user.getUserId());
+                quizMap.put("timeLimit", Integer.toString(sldTime.getValue()));
+                if (draft) {
+                    quizMap.put("draft", "true");
+                } else {
+                    quizMap.put("draft", "false");
+                }
                 quizMap.put("draft", "false");
-            }
-            quizMap.put("draft", "false");
-            quizMap.put("name", getQuizName());
-            
-            String quizID;
-            if(loaded){
-                //Update existing if loading a draft quiz instead of creating a brand new quiz
-                quiz.update(quizMap);
-                quizID = quiz.getQuizID();
-            } else {
-                //Create a new quiz
-                Quiz newQuiz = Quiz.create(quizMap);
-                quizID = newQuiz.getQuizID();
-            }
-            HashMap<String, String> questionMap = new HashMap<>();
-            questionMap.put("usrID", user.getUserId());
-            questionMap.put("topic", getQuizTopic());
-            questionMap.put("category", user.getCourse());
-            questionMap.put("quizID", quizID);
+                quizMap.put("name", getQuizName());
 
-            HashMap<String, String> answerMap = new HashMap<>();
-            answerMap.put("category", user.getCourse());
+                String quizID;
+                if (loaded) {
+                    //Update existing if loading a draft quiz instead of creating a brand new quiz
+                    quiz.update(quizMap);
+                    quizID = quiz.getQuizID();
+                } else {
+                    //Create a new quiz
+                    Quiz newQuiz = Quiz.create(quizMap);
+                    quizID = newQuiz.getQuizID();
+                }
+                HashMap<String, String> questionMap = new HashMap<>();
+                questionMap.put("usrID", user.getUserId());
+                questionMap.put("topic", getQuizTopic());
+                questionMap.put("category", user.getCourse());
+                questionMap.put("quizID", quizID);
 
-            for (int i = 0; i < numQuestions; i++) {
-                //Create new question
-                questionMap.put("question", questions[i]);
-                Question newQuestion = Question.create(questionMap);
-                for (int k = 0; k < 8; k++) {
-                    //Add all answers to the question
-                    answerMap.put("questionID", newQuestion.getQuestionId());
-                    if (answers[i][k] != null) {
-                        answerMap.put("answer", answers[i][k]);
-                        if (correctAnswers[i] == k) {
-                            answerMap.put("correct", "true");
-                        } else {
-                            answerMap.put("correct", "false");
+                HashMap<String, String> answerMap = new HashMap<>();
+                answerMap.put("category", user.getCourse());
+
+                for (int i = 0; i < numQuestions; i++) {
+                    //Create new question
+                    questionMap.put("question", questions[i]);
+                    Question newQuestion = Question.create(questionMap);
+                    for (int k = 0; k < 8; k++) {
+                        //Add all answers to the question
+                        answerMap.put("questionID", newQuestion.getQuestionId());
+                        if (answers[i][k] != null) {
+                            answerMap.put("answer", answers[i][k]);
+                            if (correctAnswers[i] == k) {
+                                answerMap.put("correct", "true");
+                            } else {
+                                answerMap.put("correct", "false");
+                            }
+                            Answer newAnswer = Answer.create(answerMap);
                         }
-                        Answer newAnswer = Answer.create(answerMap);
                     }
                 }
+                createMessagePane("Save Successful!", "Success!");
+            } catch (SQLException ex) {
+                createMessagePane("Save Unsuccessful", "Error");
+                System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered SQLException:");
+                System.out.println(ex);
+
             }
-            createMessagePane("Save Successful!","Success!");
-        } catch (SQLException ex) {
-            createMessagePane("Save Unsuccessful","Error");
-            System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered SQLException:");
-            System.out.println(ex);
+        } else {
+            createMessagePane("Quiz is not valid, it cannot save!","Error");
         }
     }
-    
+
     public void createMessagePane(String message, String title) {
         Object[] options = {"Ok"};
         JOptionPane.showOptionDialog(this, message, title, JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
