@@ -2,6 +2,7 @@ package quizsystem.GUI.lecturer;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import quizsystem.db.Answer;
@@ -48,9 +49,13 @@ public class CreateQuiz extends javax.swing.JFrame {
         tfName.setText(quiz.getName());
         tfTopic.setText(quiz.getTopic());
         numQuestions = quiz.getQuestions().size();
-        questions = (String[]) quiz.getQuestions().toArray(); //Make a copy of the quizzes questions
-        for (int i = 0; i < questions.length; i++) {
-            String[] existingAnswers = quiz.getAnswers(i);
+        List<Question> tempQuestions = quiz.getQuestions();
+        for(int k=0;k<numQuestions;k++){
+            Question temp = tempQuestions.get(k);
+            questions[k] = temp.getQuestionText();
+        }
+        for (int i = 0; i < numQuestions; i++) {
+            String[] existingAnswers = quiz.getAnswers(i+1);
             System.arraycopy(existingAnswers, 0, answers[i], 0, existingAnswers.length); //Copy all of the question's answers into a 2d array
         }
         refresh();
@@ -274,7 +279,7 @@ public class CreateQuiz extends javax.swing.JFrame {
      */
     public void nextQuestion() {
         record();
-        if (currentQuestion +1 > numQuestions || !validateQuestion(currentQuestion)) {
+        if (currentQuestion > numQuestions || !validateQuestion(currentQuestion)) {
             //Cannot navigate further than the max number of added questions and current question must be valid before moving on
         } else {
             currentQuestion++;

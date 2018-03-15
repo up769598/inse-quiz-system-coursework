@@ -319,6 +319,7 @@ public class LecturerInterface extends javax.swing.JFrame {
         pnlMiscOperations = new javax.swing.JPanel();
         btnLogout = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        btnRefreshTables = new javax.swing.JButton();
         pnlDraftQuiz = new javax.swing.JPanel();
         scrpnlDraftQuiz = new javax.swing.JScrollPane();
         tblDraftQuiz = new javax.swing.JTable();
@@ -429,6 +430,13 @@ public class LecturerInterface extends javax.swing.JFrame {
             }
         });
 
+        btnRefreshTables.setText("Refresh Tables");
+        btnRefreshTables.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshTablesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlMiscOperationsLayout = new javax.swing.GroupLayout(pnlMiscOperations);
         pnlMiscOperations.setLayout(pnlMiscOperationsLayout);
         pnlMiscOperationsLayout.setHorizontalGroup(
@@ -438,7 +446,9 @@ public class LecturerInterface extends javax.swing.JFrame {
                 .addComponent(btnLogout)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnExit)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRefreshTables)
+                .addContainerGap())
         );
         pnlMiscOperationsLayout.setVerticalGroup(
             pnlMiscOperationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -446,7 +456,8 @@ public class LecturerInterface extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlMiscOperationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLogout)
-                    .addComponent(btnExit))
+                    .addComponent(btnExit)
+                    .addComponent(btnRefreshTables))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -569,8 +580,16 @@ public class LecturerInterface extends javax.swing.JFrame {
 
     private void btnEditQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditQuizActionPerformed
         Quiz quiz = getDraftQuiz();
-
+        CreateQuiz cq = new CreateQuiz(quiz,username);
+        cq.setVisible(true);
     }//GEN-LAST:event_btnEditQuizActionPerformed
+
+    private void btnRefreshTablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshTablesActionPerformed
+        loadQuizzes();
+        loadDraftQuizzes();
+        displayDraftQuizzes(draftQuiz);
+        displayQuizzes(quizzes);
+    }//GEN-LAST:event_btnRefreshTablesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdvSearch;
@@ -578,6 +597,7 @@ public class LecturerInterface extends javax.swing.JFrame {
     private javax.swing.JButton btnEditQuiz;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnRefreshTables;
     private javax.swing.JButton btnReviewAnswers;
     private javax.swing.JButton btnWithdrawQuiz;
     private javax.swing.JScrollPane jScrollPane1;
