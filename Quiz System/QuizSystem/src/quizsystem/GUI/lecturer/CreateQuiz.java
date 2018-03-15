@@ -405,7 +405,7 @@ public class CreateQuiz extends javax.swing.JFrame {
                 }
                 HashMap<String, String> questionMap = new HashMap<>();
                 questionMap.put("usrID", user.getUserId());
-                questionMap.put("topic", getQuizTopic());
+                //questionMap.put("topic", getQuizTopic());
                 questionMap.put("category", user.getCourse());
                 questionMap.put("quizID", quizID);
 

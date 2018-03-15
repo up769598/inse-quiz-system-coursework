@@ -236,7 +236,6 @@ public class Quiz extends Model {
             query += ";";
         }
         DatabaseHandler handler = new DatabaseHandler();
-        
         ArrayList<ResultRow> rows = handler.executeParameterized(query, params);
         List<Quiz> quizzes = new ArrayList<>();
         for (int i = 0; i < rows.size(); i++) {
