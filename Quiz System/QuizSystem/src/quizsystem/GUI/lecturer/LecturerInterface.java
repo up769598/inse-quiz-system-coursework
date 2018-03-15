@@ -246,26 +246,28 @@ public class LecturerInterface extends javax.swing.JFrame {
      * attempt data appended to it.
      */
     public void withdrawQuiz() {
-        //revert quiz to draft
-        //write to db
         Quiz quiz = getQuiz();
-        Object[] options = {"Ok"};
-        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to withdraw this quiz? All Data will be lost", "Warning", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
-            //Cancel
-            createMessagePane("Withdrawing Quiz", "Warning");
-            try {
-                quiz.revertToDraft();
-            } catch (SQLException ex) {
-                System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
-                System.out.println(ex);
-            }
-            loadDraftQuizzes();
-            loadQuizzes();
-            displayDraftQuizzes(draftQuiz);
-            displayQuizzes(quizzes);
+        if (tblDraftQuiz.getSelectedRow() == -1) {
+            createMessagePane("Please select a quiz in the draft table to withdraw first", "Warning");
         } else {
-            createMessagePane("Operation Cancelled", "Ok");
+            if (JOptionPane.showConfirmDialog(this, "Are you sure you want to withdraw this quiz? All Data will be lost", "Warning", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
+                //Cancel
+                createMessagePane("Withdrawing Quiz", "Warning");
+                try {
+                    quiz.revertToDraft();
+                } catch (SQLException ex) {
+                    System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
+                    System.out.println(ex);
+                }
+                loadDraftQuizzes();
+                loadQuizzes();
+                displayDraftQuizzes(draftQuiz);
+                displayQuizzes(quizzes);
+            } else {
+                createMessagePane("Operation Cancelled", "Ok");
+            }
         }
+
     }
 
     /**
@@ -568,9 +570,13 @@ public class LecturerInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnWithdrawQuizActionPerformed
 
     private void btnReviewAnswersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewAnswersActionPerformed
-        Quiz quiz = getQuiz();
-        SelectResult sr = new SelectResult(quiz);
-        sr.setVisible(true);
+        if (tblQuiz.getSelectedRow() == -1) {
+            createMessagePane("Please select a quiz to review then try again", "Warning");
+        } else {
+            Quiz quiz = getQuiz();
+            SelectResult sr = new SelectResult(quiz);
+            sr.setVisible(true);
+        }
     }//GEN-LAST:event_btnReviewAnswersActionPerformed
 
     private void btnCreateQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateQuizActionPerformed
@@ -579,9 +585,14 @@ public class LecturerInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCreateQuizActionPerformed
 
     private void btnEditQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditQuizActionPerformed
-        Quiz quiz = getDraftQuiz();
-        CreateQuiz cq = new CreateQuiz(quiz,username);
-        cq.setVisible(true);
+        if (tblDraftQuiz.getSelectedRow() == -1) {
+            createMessagePane("Please select a quiz to edit then try again", "Warning");
+        } else {
+            Quiz quiz = getDraftQuiz();
+            CreateQuiz cq = new CreateQuiz(quiz, username);
+            cq.setVisible(true);
+        }
+
     }//GEN-LAST:event_btnEditQuizActionPerformed
 
     private void btnRefreshTablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshTablesActionPerformed

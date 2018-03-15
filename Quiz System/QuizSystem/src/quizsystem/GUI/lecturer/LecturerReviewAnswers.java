@@ -1,12 +1,18 @@
 package quizsystem.GUI.lecturer;
 
+import java.util.ArrayList;
+import java.util.List;
+import quizsystem.db.AttemptAnswer;
+
 public class LecturerReviewAnswers extends javax.swing.JDialog {
     private final quizsystem.db.Quiz quiz;
+    private final List<AttemptAnswer> attempt;
     
-    public LecturerReviewAnswers(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz) {
+    public LecturerReviewAnswers(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz, List<AttemptAnswer> inAttempt) {
         super(parent, modal);
         initComponents();
         quiz = inQuiz;
+        attempt = inAttempt;
         //Set the marks attained here
     }
     
