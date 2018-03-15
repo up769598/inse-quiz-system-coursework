@@ -32,7 +32,6 @@ public class LoginTest {
         String expResult = "Successful login";
         String result = Login.login(email, password);
         assertEquals(expResult, result);
-        fail(result);
     }
     /**
      * Test of hash method, of class Login.
@@ -42,11 +41,8 @@ public class LoginTest {
         System.out.println("hash");
         String password = "password";
         String salt = "qwertyu";
-        String expResult = "";
         String result = Login.hash(password, salt);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -61,15 +57,7 @@ public class LoginTest {
         boolean expResult = false;
         boolean result = Login.isPasswordCorrect(password, salt, expectedHash);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
-
-
-
-
-
- 
     
 }

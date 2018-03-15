@@ -18,7 +18,9 @@ public class TestRunner {
     
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(LoginTest.class);
+        result.getFailures().forEach((failure) -> {
             System.out.println(failure.toString());
+        });
     }
     
 }
