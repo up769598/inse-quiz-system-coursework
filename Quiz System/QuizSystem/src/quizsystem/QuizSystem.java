@@ -9,6 +9,10 @@ import quizsystem.db.QuizState;
 public class QuizSystem {
 
     public static void main(String[] args) throws SQLException {
+        
+        Login login = new Login();
+        System.out.println(login.hash("password","qwerty"));
+        
        quizsystem.GUI.LoginRegister qr = new quizsystem.GUI.LoginRegister();
        qr.setVisible(true);
                    
