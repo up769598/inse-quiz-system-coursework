@@ -110,6 +110,10 @@ public class Quiz extends Model {
      * @throws SQLException
      */
     public void update(HashMap<String, String> newAttributes) throws SQLException {
+        if (newAttributes.containsKey("draft")) {
+            newAttributes.put("draft", (newAttributes.get("draft").equals("true") ? "1" : "0"));
+        }
+        
         super.update("Quizzes", "quizID", this.get("quizID"), newAttributes);
     }
     

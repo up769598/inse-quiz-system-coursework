@@ -60,6 +60,10 @@ public class Answer extends Model {
      * @throws SQLException 
      */
     public void update(HashMap<String, String> newAttributes) throws SQLException {
+        if (newAttributes.containsKey("correct")) {
+            newAttributes.put("correct", (newAttributes.get("correct").equals("true") ? "1" : "0"));
+        }
+        
         super.update("Answers", "answerID", this.get("answerID"), newAttributes);
     }
     
