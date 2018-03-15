@@ -59,8 +59,8 @@ public class LecturerInterface extends javax.swing.JFrame {
         //Get all quizzes made by the lecturer that are still in their draft phase
         //add results to the draft quiz arraylist
         try {
-            
-            draftQuiz = Quiz.getQuizzesForLecturer(user.getUserId(),DraftState.DRAFT);
+
+            draftQuiz = Quiz.getQuizzesForLecturer(user.getUserId(), DraftState.DRAFT);
         } catch (SQLException ex) {
             System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
             System.out.println(ex);
@@ -74,7 +74,7 @@ public class LecturerInterface extends javax.swing.JFrame {
         //Get all quizzes made by the lecturer that are NOT in their draft phase and potentially have results attached to them
         //Add results to the quizzes arraylist
         try {
-            quizzes = Quiz.getQuizzesForLecturer(user.getUserId(),DraftState.LIVE);
+            quizzes = Quiz.getQuizzesForLecturer(user.getUserId(), DraftState.LIVE);
         } catch (SQLException ex) {
             System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
             System.out.println(ex);
@@ -248,10 +248,24 @@ public class LecturerInterface extends javax.swing.JFrame {
     public void withdrawQuiz() {
         //revert quiz to draft
         //write to db
-        loadDraftQuizzes();
-        loadQuizzes();
-        displayDraftQuizzes(draftQuiz);
-        displayQuizzes(quizzes);
+        Quiz quiz = getQuiz();
+        Object[] options = {"Ok"};
+        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to withdraw this quiz? All Data will be lost", "Warning", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
+            //Cancel
+            createMessagePane("Withdrawing Quiz", "Warning");
+            try {
+                quiz.revertToDraft();
+            } catch (SQLException ex) {
+                System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
+                System.out.println(ex);
+            }
+            loadDraftQuizzes();
+            loadQuizzes();
+            displayDraftQuizzes(draftQuiz);
+            displayQuizzes(quizzes);
+        } else {
+            createMessagePane("Operation Cancelled", "Ok");
+        }
     }
 
     /**
@@ -276,6 +290,17 @@ public class LecturerInterface extends javax.swing.JFrame {
             quiz = quizzes.get(tblQuiz.getSelectedRow());
         }
         return quiz;
+    }
+
+    /**
+     * Display a message to the user
+     *
+     * @param message The message to be displayed to the user
+     * @param title The title found on the window decoration
+     */
+    public void createMessagePane(String message, String title) {
+        Object[] options = {"Ok"};
+        JOptionPane.showOptionDialog(this, message, title, JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
     }
 
     @SuppressWarnings("unchecked")
@@ -528,9 +553,7 @@ public class LecturerInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnWithdrawQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawQuizActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Are you sure you want to withdraw this quiz? All data surrounding quiz attempts will be lost", "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            //Withdraw the quiz
-        }
+        withdrawQuiz();
     }//GEN-LAST:event_btnWithdrawQuizActionPerformed
 
     private void btnReviewAnswersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewAnswersActionPerformed
