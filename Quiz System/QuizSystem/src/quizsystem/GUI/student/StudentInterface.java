@@ -48,8 +48,9 @@ public class StudentInterface extends javax.swing.JFrame {
         //Get all quizzes from the database that are able to be taken by the student but have not yet completed
         //Load the results in the setQuiz arraylist
         try {
+            User user = User.getByEmail(username);
             DatabaseHandler db = new DatabaseHandler();
-            setQuiz = db.getQuizzesForStudent(username, QuizState.INCOMPLETE);
+            setQuiz = db.getQuizzesForStudent(user.getUserId(), QuizState.INCOMPLETE);
         } catch (SQLException ex) {
             System.out.println("[WARN] QuizSystem.GUI.student.StudentInterface encountered SQLException:");
             System.out.println(ex);
@@ -60,8 +61,9 @@ public class StudentInterface extends javax.swing.JFrame {
         //Get all quizzes from the database that have results attached to them
         //Load the results into the compQuiz arraylist
         try {
+            User user = User.getByEmail(username);
             DatabaseHandler db = new DatabaseHandler();
-            compQuiz = db.getQuizzesForStudent(username, QuizState.COMPLETED);
+            compQuiz = db.getQuizzesForStudent(user.getUserId(), QuizState.COMPLETED);
         } catch (SQLException ex) {
             System.out.println("[WARN] QuizSystem.GUI.student.StudentInterface encountered SQLException:");
             System.out.println(ex);
