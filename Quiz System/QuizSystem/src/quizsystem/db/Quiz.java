@@ -72,11 +72,11 @@ public class Quiz extends Model {
         Question question = this._questions.get(questionNumber - 1);
         String id = question.getQuestionId();
         List<Answer> answers = this._answers.get(id);
-        List<String> texts = new ArrayList<>();
+        String[] texts = new String[8];
         for (int i = 0; i < answers.size(); i++) {
-            texts.add(answers.get(i).getAnswerText());
+            texts[i] = (answers.get(i).getAnswerText());
         }
-        return (String[])texts.toArray();
+        return texts;
     }
     
     public String getName() {
