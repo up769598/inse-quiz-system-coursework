@@ -47,6 +47,15 @@ public class Answer extends Model {
     }
     
     /**
+     * Update the current Answer with new attributes.
+     * @param newAttributes new attributes to set
+     * @throws SQLException 
+     */
+    public void update(HashMap<String, String> newAttributes) throws SQLException {
+        super.update("Answers", "answerID", this.get("answerID"), newAttributes);
+    }
+    
+    /**
      * Create an instance of Answer using the specified attributes and persist it to the underlying database.
      * @param attributes a map of attributes where keys are database column names
      * @return           the constructed Answer instance

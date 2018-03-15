@@ -10,8 +10,6 @@ import java.util.Set;
 
 public class Model {
     protected HashMap<String, String> _values;
-    private final ResultRow _row;
-    private final boolean _isReadonlyInstance;
     
     /**
      * Construct a new model instance based on a ResultRow directly from the database.
@@ -25,30 +23,6 @@ public class Model {
             String name = names.get(i);
             this._values.put(name, row.get(name));
         }
-        
-        this._row = row;
-        this._isReadonlyInstance = !row.supportsConcurrentUpdate();
-    }
-    
-    /**
-     * Pass a setter operation on to the underlying ResultRow if the current instance supports concurrent updates.
-     * @param attrName the column name to update
-     * @param value the new value to update to
-     * @return a boolean indicating whether the new value was persisted to the database successfully
-     */
-    protected boolean set(String attrName, String value) {
-        if (!this._isReadonlyInstance) {
-            try {
-                this._row.set(attrName, value);
-                return true;
-            }
-            catch (SQLException ex) {
-                System.out.println("[WARN] Model.set encountered SQLException:");
-                System.out.println(ex);
-                return false;
-            }
-        }
-        return false;
     }
     
     /**
@@ -58,6 +32,33 @@ public class Model {
      */
     protected String get(String name) {
         return this._values.get(name);
+    }
+    
+    /**
+     * Update the current model instance with new attributes.
+     * @param tableName  the table name to update
+     * @param idColumn   the primary key or other unique column on the specified table
+     * @param id         the value of idColumn to key the update to
+     * @param attributes new attributes to set
+     * @throws SQLException 
+     */
+    protected void update(String tableName, String idColumn, String id, HashMap<String, String> attributes)
+     throws SQLException {
+        List<String> params = new ArrayList<>();
+        List<String> columns = new ArrayList<>(attributes.keySet());
+        List<String> values = new ArrayList<>(attributes.values());
+        for (int i = 0; i < columns.size(); i++) {
+            columns.set(i, columns.get(i) + " = ?");
+            params.add(values.get(i));
+        }
+        params.add(id);
+        
+        String setClause = DatabaseHandler.join(columns, ", ");
+        String query = "UPDATE " + tableName + " SET " + setClause + " WHERE " + idColumn + " = ?;";
+        DatabaseHandler handler = new DatabaseHandler();
+        handler.executeManipulator(query, params);
+        
+        this._values.putAll(attributes);
     }
     
     /**

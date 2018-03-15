@@ -33,22 +33,6 @@ public class ResultRow {
         columns.put(colName, value);
     }
     
-    void set(String attrName, String value) throws SQLException {
-        this.parentSet.updateString(attrName, value);
-        this.parentSet.updateRow();
-        this.columns.put(attrName, value);
-    }
-    
-    void set(HashMap<String, String> values) throws SQLException {
-        List<String> keySet = new ArrayList<>(values.keySet());
-        for (int i = 0; i < values.size(); i++) {
-            String attrName = keySet.get(i);
-            String value = values.get(attrName);
-            this.parentSet.updateString(attrName, value);
-        }
-        this.parentSet.updateRow();
-    }
-    
     public int getColumnCount() throws SQLException {
         return meta.getColumnCount();
     }

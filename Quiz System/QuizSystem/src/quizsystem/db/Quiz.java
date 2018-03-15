@@ -100,11 +100,23 @@ public class Quiz extends Model {
     }
     
     /**
+     * Update the current Quiz with new attributes.
+     * @param newAttributes a HashMap of new values to set, where keys are column names
+     * @throws SQLException
+     */
+    public void update(HashMap<String, String> newAttributes) throws SQLException {
+        super.update("Quizzes", "quizID", this.get("quizID"), newAttributes);
+    }
+    
+    /**
      * Revert the current quiz to a draft state and delete all results data belonging to it.
      * @throws SQLException 
      */
     public void revertToDraft() throws SQLException {
-        this.set("draft", "1");
+        HashMap<String, String> updatedAttributes = new HashMap<>();
+        updatedAttributes.put("draft", "1");
+        this.update(updatedAttributes);
+        
         String deleteAttempts = "DELETE FROM AttemptAnswers WHERE quizID = ?;";
         String deleteCompletions = "DELETE FROM QuizCompletions WHERE quizID = ?;";
         List<String> params = Arrays.asList(this.get("quizID"));

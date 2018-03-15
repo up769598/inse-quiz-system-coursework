@@ -1,6 +1,7 @@
 package quizsystem.db;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class User extends Model {
     private String email;
@@ -32,11 +33,13 @@ public class User extends Model {
     /**
      * Change the user's email address.
      * @param email the new email address to set
-     * @return a boolean indicating whether the new value was persisted to the database successfully
+     * @throws java.sql.SQLException
      */
-    public boolean setEmail(String email) {
+    public void setEmail(String email) throws SQLException {
         this.email = email;
-        return this.set("email", email);
+        HashMap<String, String> updatedAttributes = new HashMap<>();
+        updatedAttributes.put("email", email);
+        this.update(updatedAttributes);
     }
 
     /**
@@ -50,11 +53,13 @@ public class User extends Model {
     /**
      * Change the user's password.
      * @param password the new password to set - any hashing must be done by calling code
-     * @return a boolean indicating whether the new value was persisted to the database successfully
+     * @throws java.sql.SQLException
      */
-    public boolean setPassword(String password) {
+    public void setPassword(String password) throws SQLException {
         this.password = password;
-        return this.set("password", password);
+        HashMap<String, String> updatedAttributes = new HashMap<>();
+        updatedAttributes.put("password", password);
+        this.update(updatedAttributes);
     }
 
     /**
@@ -68,11 +73,22 @@ public class User extends Model {
     /**
      * Change the user's course.
      * @param course the new course to set
-     * @return a boolean indicating whether the new value was persisted to the database successfully
+     * @throws java.sql.SQLException
      */
-    public boolean setCourse(String course) {
+    public void setCourse(String course) throws SQLException {
         this.course = course;
-        return this.set("course", course);
+        HashMap<String, String> updatedAttributes = new HashMap<>();
+        updatedAttributes.put("course", course);
+        this.update(updatedAttributes);
+    }
+    
+    /**
+     * Update the current User with new attributes.
+     * @param newAttributes new attributes to set
+     * @throws SQLException 
+     */
+    public void update(HashMap<String, String> newAttributes) throws SQLException {
+        super.update("Users", "usrID", this.get("usrID"), newAttributes);
     }
     
     /**
