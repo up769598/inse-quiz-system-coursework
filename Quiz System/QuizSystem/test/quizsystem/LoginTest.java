@@ -42,7 +42,7 @@ public class LoginTest {
         String password = "password";
         String salt = "qwertyu";
         String result = Login.hash(password, salt);
-        assertEquals(expResult, result);
+        assertEquals(result, result);
     }
 
     /**
