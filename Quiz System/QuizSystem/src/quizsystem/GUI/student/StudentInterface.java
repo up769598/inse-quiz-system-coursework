@@ -6,18 +6,15 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import quizsystem.GUI.LoginRegister;
-import quizsystem.db.AttemptAnswer;
-import quizsystem.db.DatabaseHandler;
-import quizsystem.db.Quiz;
-import quizsystem.db.QuizState;
+import quizsystem.db.*;
 
 public class StudentInterface extends javax.swing.JFrame {
 
     private final DefaultTableModel modelSetQuiz;
     private final DefaultTableModel modelCompQuiz;
-    private ArrayList<quizsystem.db.Quiz> setQuiz;
-    private ArrayList<quizsystem.db.Quiz> compQuiz;
-    private final ArrayList<quizsystem.db.Quiz> searchQuiz;
+    private ArrayList<Quiz> setQuiz;
+    private ArrayList<Quiz> compQuiz;
+    private final ArrayList<Quiz> searchQuiz;
     private boolean searched;
     private final String username;
 
@@ -537,8 +534,8 @@ public class StudentInterface extends javax.swing.JFrame {
     private void btnReviewAnswersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewAnswersActionPerformed
         //Review answers given for that completed quiz
         Quiz quiz = getCompQuiz();
-        StudentReviewAnswers sra = new StudentReviewAnswers(this, true, quiz);
-        sra.setVisible(true);
+        //StudentReviewAnswers sra = new StudentReviewAnswers(this, true, quiz);
+        //sra.setVisible(true);
     }//GEN-LAST:event_btnReviewAnswersActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
