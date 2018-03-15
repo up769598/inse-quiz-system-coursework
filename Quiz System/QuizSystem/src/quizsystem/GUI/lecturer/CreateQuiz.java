@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import quizsystem.db.Answer;
 import quizsystem.db.Question;
@@ -21,20 +22,37 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
     private String username;
     private boolean loaded = false;
 
+    /**
+     * Create a new instance of createQuiz and initialise the GUI.
+     * @param inUsername The username of the lecturer using the system
+     */
     public CreateQuiz(String inUsername) {
         initComponents();
         username = inUsername;
     }
 
+    /**
+     * Create a new instance of createQuiz, initialise the GUI and load the passed Quiz into the GUI.
+     * @param inQuiz Quiz to be edited, this will be loaded into the GUI
+     * @param inUsername The username of the lecturer using the system
+     */
     public CreateQuiz(Quiz inQuiz, String inUsername) {
         initComponents();
         //Load whats already complete into GUI
         quiz = inQuiz;
         username = inUsername;
+        loaded = true; //As an existing quiz is being edited, update upon save, not create new
         sldTime.setValue((int) quiz.getTimeLimit());
         tfName.setText(quiz.getName());
+        tfTopic.setText(quiz.getTopic());
         numQuestions = quiz.getQuestions().size();
-        loaded = true;
+        questions = (String[]) quiz.getQuestions().toArray(); //Make a copy of the quizzes questions
+        for(int i=0;i<questions.length;i++){
+            String[] existingAnswers = quiz.getAnswers(i);
+            System.arraycopy(existingAnswers, 0, answers[i], 0, existingAnswers.length); //Copy all of the question's answers into a 2d array
+        }
+        refresh();
+        createMessagePane("Loaded Quiz","Success!");
     }
 
     /**
@@ -49,6 +67,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
             name = tfName.getText();
         } catch (NullPointerException ex) {
             //Text field is empty
+            createMessagePane("Please give the quiz a name","Error");
         }
         return name;
     }
@@ -65,6 +84,7 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
             topic = tfTopic.getText();
         } catch (NullPointerException ex) {
             //Text field is empty
+            createMessagePane("Please give the quiz a topic","");
         }
         return topic;
     }
@@ -142,7 +162,8 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
             questions[currentQuestion] = taQuestion.getText();
         } catch (NullPointerException ex) {
             //Text Area is empty
-            questions[currentQuestion] = "Please enter a question here";
+            createMessagePane("Question cannot be blank, please enter a question into the text area","Error");
+            questions[currentQuestion] = "Please enter a question here"; //Set a default value to prevent possible error
         }
     }
 
@@ -299,7 +320,6 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
 
         try {
             User user = User.getByEmail(username);
-
             HashMap<String, String> quizMap = new HashMap<>();
             quizMap.put("usrID", user.getUserId());
             quizMap.put("timeLimit", Integer.toString(sldTime.getValue()));
@@ -310,13 +330,22 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
             }
             quizMap.put("draft", "false");
             quizMap.put("name", getQuizName());
-            Quiz newQuiz = Quiz.create(quizMap);
-
+            
+            String quizID;
+            if(loaded){
+                //Update existing if loading a draft quiz instead of creating a brand new quiz
+                quiz.update(quizMap);
+                quizID = quiz.getQuizID();
+            } else {
+                //Create a new quiz
+                Quiz newQuiz = Quiz.create(quizMap);
+                quizID = newQuiz.getQuizID();
+            }
             HashMap<String, String> questionMap = new HashMap<>();
             questionMap.put("usrID", user.getUserId());
             questionMap.put("topic", getQuizTopic());
             questionMap.put("category", user.getCourse());
-            questionMap.put("quizID", newQuiz.getQuizID());
+            questionMap.put("quizID", quizID);
 
             HashMap<String, String> answerMap = new HashMap<>();
             answerMap.put("category", user.getCourse());
@@ -339,13 +368,17 @@ public class CreateQuiz extends javax.swing.JFrame implements ActionListener {
                     }
                 }
             }
-
+            createMessagePane("Save Successful!","Success!");
         } catch (SQLException ex) {
+            createMessagePane("Save Unsuccessful","Error");
             System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered SQLException:");
             System.out.println(ex);
         }
-        dispose();
-
+    }
+    
+    public void createMessagePane(String message, String title) {
+        Object[] options = {"Ok"};
+        JOptionPane.showOptionDialog(this, message, title, JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
     }
 
     @SuppressWarnings("unchecked")
