@@ -13,6 +13,9 @@ import quizsystem.db.DraftState;
 import quizsystem.db.Quiz;
 import quizsystem.db.User;
 
+/**
+ * Create a new instance of the LecturerInterface GUI
+ */
 public class LecturerInterface extends javax.swing.JFrame {
 
     private final DefaultTableModel modelDraftQuiz;
@@ -297,6 +300,11 @@ public class LecturerInterface extends javax.swing.JFrame {
         JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
     }
 
+    /**
+     * Calculate the average mark for a quiz across all of its attempts
+     * @param quiz A quiz thats average mark will be evaluated
+     * @return The calculated average mark
+     */
     public int averageMark(Quiz quiz) {
         try {
             DatabaseHandler db = new DatabaseHandler();

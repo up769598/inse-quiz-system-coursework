@@ -13,20 +13,34 @@ public class AdvSearch extends javax.swing.JDialog {
 
     /**
      * Creates new form AdvSearch
+     * @param parent The parent frame which created this JDialog instance
+     * @param modal The modality of the new JDialog
      */
     public AdvSearch(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
     
+    /**
+     * Get the entered name
+     * @return The name search term entered into the GUI
+     */
     public String getName(){
         return tfName.getText();
     }
     
+    /**
+     * Get the entered topic
+     * @return The topic search term entered into the GUI
+     */
     public String getTopic(){
         return tfTopic.getText();
     }
     
+    /**
+     * Get the entered lecturer name
+     * @return The lecturer name search term entered into the GUI
+     */
     public String getLecturer(){
         return tfSetBy.getText();
     }
