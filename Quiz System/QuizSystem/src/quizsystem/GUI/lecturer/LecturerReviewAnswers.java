@@ -74,7 +74,7 @@ public class LecturerReviewAnswers extends javax.swing.JDialog {
     }
 
     public void setAnswers() {
-        String[] answers = quiz.getAnswers(quiz.getCurrentQuestion());
+        String[] answers = quiz.getAnswers(currentQuestion+1);
         switch (answers.length) {
             case 8:
                 lblAnswer8.setVisible(true);
@@ -274,6 +274,7 @@ public class LecturerReviewAnswers extends javax.swing.JDialog {
             }
         });
 
+        taQuestion.setEditable(false);
         taQuestion.setColumns(20);
         taQuestion.setRows(5);
         taQuestion.setText("(Insert Question Here)");
