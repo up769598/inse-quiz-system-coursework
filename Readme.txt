@@ -1,13 +1,13 @@
 Usernames 
 
-Hazza1555 = up808621
+Hazza1555  = up808621
+ArtOfCode- = up820915
 
 
-
-Test Lecture acount 
+Test Lecturer account 
 User: aaa.bbb@port.ac.uk
 Password: inse1inse
 
-Test Sutdent account
-User: 123456@myport.ac.uk
+Test Student account
+User: up123456@myport.ac.uk
 Password: inse1inse
