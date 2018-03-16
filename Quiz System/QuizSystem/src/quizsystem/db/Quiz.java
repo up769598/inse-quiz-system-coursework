@@ -118,21 +118,25 @@ public class Quiz extends Model {
     }
     
     /**
-     * Revert the current quiz to a draft state and delete all results data belonging to it.
-     * @throws SQLException 
+     * Delete all associated data - attempts, completions, questions, answers - and revert the quiz to a draft state.
+     * @throws SQLException
      */
-    public void revertToDraft() throws SQLException {
+    public void deleteAndRevert() throws SQLException {
         HashMap<String, String> updatedAttributes = new HashMap<>();
         updatedAttributes.put("draft", "true");
         this.update(updatedAttributes);
         
         String deleteAttempts = "DELETE FROM AttemptAnswers WHERE quizID = ?;";
         String deleteCompletions = "DELETE FROM QuizCompletions WHERE quizID = ?;";
+        String deleteAnswers = "DELETE a FROM Answers AS a INNER JOIN Questions AS q WHERE q.quizID = ?;";
+        String deleteQuestions = "DELETE FROM Questions WHERE quizID = ?;";
         List<String> params = Arrays.asList(this.get("quizID"));
-        DatabaseHandler handler = new DatabaseHandler();
         
+        DatabaseHandler handler = new DatabaseHandler();
         handler.executeManipulator(deleteAttempts, params);
         handler.executeManipulator(deleteCompletions, params);
+        handler.executeManipulator(deleteAnswers, params);
+        handler.executeManipulator(deleteQuestions, params);
     }
     
     /**
@@ -170,26 +174,6 @@ public class Quiz extends Model {
             List<String> completedParams = Arrays.asList(quizID, student.getUserId());
             String completedInsert = "INSERT INTO QuizCompletions (quizID, usrID) VALUES (?, ?);";
             handler.executeManipulator(completedInsert, completedParams);
-        }
-    }
-    
-    /**
-     * Delete all associated questions and answers on a quiz.
-     * @throws InvalidObjectException
-     * @throws SQLException
-     */
-    public void deleteAssociated() throws InvalidObjectException, SQLException {
-        if (this.isDraft()) {
-            List<String> params = Arrays.asList(this.get("quizID"));
-            String deleteAnswers = "DELETE a FROM Answers AS a INNER JOIN Questions AS q WHERE q.quizID = ?;";
-            String deleteQuestions = "DELETE FROM Questions WHERE quizID = ?;";
-            DatabaseHandler handler = new DatabaseHandler();
-            
-            handler.executeManipulator(deleteAnswers, params);
-            handler.executeManipulator(deleteQuestions, params);
-        }
-        else {
-            throw new InvalidObjectException("Quiz must be in a draft state to delete associations.");
         }
     }
     
