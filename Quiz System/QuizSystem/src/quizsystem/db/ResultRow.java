@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResultRow {
-    private HashMap<String, String> columns;
-    private ResultSet parentSet;
-    private ResultSetMetaData meta;
+    private final HashMap<String, String> columns;
+    private final ResultSet parentSet;
+    private final ResultSetMetaData meta;
     
     public ResultRow(ResultSet parent, ResultSetMetaData meta) {
         this.parentSet = parent;

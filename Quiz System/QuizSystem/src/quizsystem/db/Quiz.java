@@ -32,7 +32,7 @@ public class Quiz extends Model {
         
         List<Answer> answers = Answer.answersForQuestions(handler, questionIDs);
         for (int i = 0; i < answers.size(); i++) {
-            String questionID = answers.get(i).getQuestionID();
+            String questionID = answers.get(i).getQuestionId();
             
             if (!this._answers.containsKey(questionID)) {
                 this._answers.put(questionID, new ArrayList<>());
@@ -99,7 +99,7 @@ public class Quiz extends Model {
         return this.get("draft").equals("1");
     }
     
-    public String getQuizID(){
+    public String getQuizId() {
         return this.get("quizID");
     }
     

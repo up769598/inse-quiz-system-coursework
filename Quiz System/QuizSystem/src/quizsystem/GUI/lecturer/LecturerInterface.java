@@ -309,10 +309,10 @@ public class LecturerInterface extends javax.swing.JFrame {
     public int averageMark(Quiz quiz) {
         try {
             DatabaseHandler db = new DatabaseHandler();
-            List<String> attemptingStudents = db.getStudentsTakenQuiz(quiz.getQuizID());
+            List<String> attemptingStudents = db.getStudentsTakenQuiz(quiz.getQuizId());
             double totalMark = 0;
             for (String tempUsername : attemptingStudents) {
-                List<AttemptAnswer> tempResults = db.getQuizAttempt(quiz.getQuizID(), User.getByEmail(tempUsername).getUserId());
+                List<AttemptAnswer> tempResults = db.getQuizAttempt(quiz.getQuizId(), User.getByEmail(tempUsername).getUserId());
                 for (AttemptAnswer tempResult : tempResults) {
                     totalMark += tempResult.getMarks();
                 }

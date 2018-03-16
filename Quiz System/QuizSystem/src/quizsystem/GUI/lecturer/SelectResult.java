@@ -41,7 +41,7 @@ public class SelectResult extends javax.swing.JFrame {
     public void loadResults() {
         try {
             DatabaseHandler db = new DatabaseHandler();
-            attemptingStudents = db.getStudentsTakenQuiz(quiz.getQuizID());
+            attemptingStudents = db.getStudentsTakenQuiz(quiz.getQuizId());
         } catch (SQLException ex) {
             System.out.println("[WARN] QuizSystem.GUI.lecturer.SelectResult encountered SQLException:");
             System.out.println(ex);
@@ -55,7 +55,7 @@ public class SelectResult extends javax.swing.JFrame {
         int totalMark = 0;
         try {
             DatabaseHandler db = new DatabaseHandler();
-            List<AttemptAnswer> tempResults = db.getQuizAttempt(quiz.getQuizID(), User.getByEmail(username).getUserId());
+            List<AttemptAnswer> tempResults = db.getQuizAttempt(quiz.getQuizId(), User.getByEmail(username).getUserId());
             for (AttemptAnswer tempResult : tempResults) {
                 totalMark += tempResult.getMarks();
             }
@@ -185,7 +185,7 @@ public class SelectResult extends javax.swing.JFrame {
             String username = attemptingStudents.get(tblResults.getSelectedRow());
             try {
                 DatabaseHandler db = new DatabaseHandler();
-                List<AttemptAnswer> results = db.getQuizAttempt(quiz.getQuizID(), User.getByEmail(username).getUserId());
+                List<AttemptAnswer> results = db.getQuizAttempt(quiz.getQuizId(), User.getByEmail(username).getUserId());
                 ReviewAnswers ra = new ReviewAnswers(this, true, quiz, results);
                 ra.setVisible(true);
             } catch (SQLException ex) {

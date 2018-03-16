@@ -85,6 +85,7 @@ public class DatabaseHandler {
             rows.add(row);
         }
 
+        stmt.close();
         return rows;
     }
     
@@ -128,6 +129,7 @@ public class DatabaseHandler {
             rows.add(row);
         }
 
+        stmt.close();
         return rows;
     }
     
@@ -145,7 +147,9 @@ public class DatabaseHandler {
             stmt.setString(i + 1, parameters.get(i));
         }
 
-        return stmt.execute();
+        boolean success = stmt.execute();
+        stmt.close();
+        return success;
     }
 
     /**

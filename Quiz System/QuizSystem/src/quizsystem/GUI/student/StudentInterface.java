@@ -95,7 +95,7 @@ public class StudentInterface extends javax.swing.JFrame {
         int totalMark = 0;
         try {
             DatabaseHandler db = new DatabaseHandler();
-            List<AttemptAnswer> tempResults = db.getQuizAttempt(inQuiz.getQuizID(), User.getByEmail(username).getUserId());
+            List<AttemptAnswer> tempResults = db.getQuizAttempt(inQuiz.getQuizId(), User.getByEmail(username).getUserId());
             for (AttemptAnswer tempResult : tempResults) {
                 totalMark += tempResult.getMarks();
             }
@@ -516,7 +516,7 @@ public class StudentInterface extends javax.swing.JFrame {
         Quiz quiz = getCompQuiz();
         try {
             DatabaseHandler db = new DatabaseHandler();
-            List<AttemptAnswer> results = db.getQuizAttempt(quiz.getQuizID(), User.getByEmail(username).getUserId());
+            List<AttemptAnswer> results = db.getQuizAttempt(quiz.getQuizId(), User.getByEmail(username).getUserId());
             ReviewAnswers ra = new ReviewAnswers(this, true, quiz, results);
             ra.setVisible(true);
 

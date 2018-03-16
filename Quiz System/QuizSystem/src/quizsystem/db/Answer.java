@@ -38,7 +38,7 @@ public class Answer extends Model {
         super(row);
     }
     
-    public String getQuestionID() {
+    public String getQuestionId() {
         return this.get("questionID");
     }
     

@@ -400,12 +400,12 @@ public class CreateQuiz extends javax.swing.JFrame {
                 String quizID;
                 if (loaded) {
                     //Update existing if loading a draft quiz instead of creating a brand new quiz
-                    quizID = quiz.getQuizID();
+                    quizID = quiz.getQuizId();
                     quiz.update(quizMap);
                 } else {
                     //Create a new quiz
                     Quiz newQuiz = Quiz.create(quizMap);
-                    quizID = newQuiz.getQuizID();
+                    quizID = newQuiz.getQuizId();
                 }
                 HashMap<String, String> questionMap = new HashMap<>();
                 questionMap.put("usrID", user.getUserId());

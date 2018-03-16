@@ -125,7 +125,7 @@ public class ReviewAnswers extends javax.swing.JDialog {
     public void setCorrectAnswer() {
         for (int i = 0; i < answers.size(); i++) {
             Answer answer = answers.get(i);
-            if (answer.isCorrect() && answer.getQuestionID().equals(questions.get(currentQuestion).getQuestionId())) {
+            if (answer.isCorrect() && answer.getQuestionId().equals(questions.get(currentQuestion).getQuestionId())) {
                 lblCorrectAnswerNum.setText(answer.getAnswerText());
             }
         }
