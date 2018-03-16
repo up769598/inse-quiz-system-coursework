@@ -50,7 +50,9 @@ public class StudentInterface extends javax.swing.JFrame {
         displaySetQuizzes(setQuiz);
         displayCompQuizzes(compQuiz);
     }
-
+    /**
+     * Loads set quizzes from the database
+     */
     public void loadSetQuizzes() {
         //Get all quizzes from the database that are able to be taken by the student but have not yet completed
         //Load the results in the setQuiz arraylist
@@ -62,7 +64,9 @@ public class StudentInterface extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }
-
+    /**
+     * Loads completed quizzes from the database
+     */
     public void loadCompQuizzes() {
         //Get all quizzes from the database that have results attached to them
         //Load the results into the compQuiz arraylist
@@ -205,7 +209,12 @@ public class StudentInterface extends javax.swing.JFrame {
             }
         }
     }
-
+    /**
+     * Searches through the list of completed quizzes to find quizzes that have
+     * topic names that contains the search term
+     * 
+     * @param topic name of the topic of the quiz used as a search term
+     */
     public void searchByTopic(String topic) {
         if (!topic.equals("Default") && !"".equals(topic)) {
             for (Quiz quiz : compQuiz) {
@@ -253,11 +262,17 @@ public class StudentInterface extends javax.swing.JFrame {
         quizsystem.db.Quiz quiz = setQuiz.get(tblSetQuiz.getSelectedRow());
         quizsystem.GUI.student.QuizPreview qp = new quizsystem.GUI.student.QuizPreview(quiz, username);
     }
-
+    /**
+     * Gets the selected set quiz from setQuiz
+     * @return quiz
+     */
     public quizsystem.db.Quiz getSetQuiz() {
         return setQuiz.get(tblSetQuiz.getSelectedRow());
     }
-
+    /**
+     * Gets the selected completed quiz from compQuiz
+     * @return quiz
+     */
     public quizsystem.db.Quiz getCompQuiz() {
         Quiz quiz;
         if (searched) {
