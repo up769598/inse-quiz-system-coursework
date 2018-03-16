@@ -1,8 +1,6 @@
 package quizsystem.GUI;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -11,6 +9,9 @@ import javax.swing.JTextField;
 import quizsystem.Login;
 import quizsystem.db.DatabaseHandler;
 
+/**
+ * This GUI class handles logging in as a pre-existing user or registering as a new one
+ */
 public class LoginRegister extends javax.swing.JFrame {
 
     /**
@@ -67,10 +68,19 @@ public class LoginRegister extends javax.swing.JFrame {
         return password1.equals(password2) && password1.length() >= 8 && password1.matches(".*\\d+.*");
     }
 
+    /**
+     * Tests whether the username is an email with either a student or lecturer email handle
+     * @param username
+     * @return Whether the username is valid or not
+     */
     public boolean validateUsername(String username) {
         return username.endsWith("@myport.ac.uk") || username.endsWith("@port.ac.uk");
     }
 
+    /**
+     * Attempts to get the registration email
+     * @return The found registration email or a default value if the email is not valid
+     */
     public String getRegEmail() {
         String email = getTextInput(tfEmailRegister);
         if (validateUsername(email)) {
@@ -79,6 +89,10 @@ public class LoginRegister extends javax.swing.JFrame {
         return "Default"; //Return the email if correct
     }
 
+    /**
+     * Attempts to get the registration password
+     * @return The found registration password or a default value if the password is not valid
+     */
     public String getRegPassword() {
         String password = getPasswordInput(tfPasswordRegister);
         String cpassword = getPasswordInput(tfCPasswordRegister);
@@ -89,10 +103,17 @@ public class LoginRegister extends javax.swing.JFrame {
         return null;
     }
 
+    /**
+     * Gets the item selected in the course combo box
+     * @return The item selected from the course combo box
+     */
     public String getRegCourse() {
         return (String) cboCourseRegister.getSelectedItem();
     }
 
+    /**
+     * Register a new user on the system. 
+     */
     public void registerNewUser() {
         System.out.println("registerNewUser");
         
@@ -130,17 +151,29 @@ public class LoginRegister extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Get the username from the GUI
+     * @return The username from the GUI or a default value if nothing is entered
+     */
     public String getUserName() {
        return getTextInput(tfEmailLogin);
     }
     
+    /**
+     * Get the password from the GUI
+     * @return The password from the GUI or a default value if nothing is entered
+     */
     public String getPassword(){
         return getPasswordInput(tfPasswordLogin);
     }
     
+    /**
+     * Show a pop-up message to the user.
+     * @param message The message to be displayed to the user
+     * @param title The title shown in the window frame
+     */
     public void createMessagePane(String message, String title) {
-        Object[] options = {"Ok"};
-        JOptionPane.showOptionDialog(this, message, title, JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
     }
 
     @SuppressWarnings("unchecked")

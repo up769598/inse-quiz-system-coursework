@@ -11,20 +11,37 @@ import java.sql.SQLException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+/**
+ * A class to handle logging into the system, including handling encryption
+ */
 public class Login {
     private static final Random random = new SecureRandom();
     private static final int iterations = 4096;
     private static final int keyLength = 256;
 
+    /**
+     * Create a new instance of Login.
+     */
     public Login(){    
     }    
 
     private DatabaseHandler _handler;
     
+    /**
+     * Create a new instance of Login
+     * @param handler An instance of database handler to avoid creating a new one
+     */
     public Login(DatabaseHandler handler) {
         this._handler = handler;
     }
 
+    /**
+     * Attempt to login to the system with the users credentials
+     * @param email A users email
+     * @param password A users password
+     * @return A description of the success/failure of the login. Gives a description on why the login failed if failed.
+     * @throws SQLException
+     */
     public static String login(String email, String password) throws SQLException {
         DatabaseHandler db = new DatabaseHandler();
         try {
