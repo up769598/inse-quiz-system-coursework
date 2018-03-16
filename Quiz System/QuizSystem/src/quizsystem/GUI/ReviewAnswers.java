@@ -52,7 +52,7 @@ public class ReviewAnswers extends javax.swing.JDialog {
     }
 
     public void nextQuestion() {
-        if (currentQuestion + 1 > questions.size()) {
+        if (currentQuestion + 1 >= questions.size()) {
             //Cannot navigate outside the list of questions
         } else {
             currentQuestion++;

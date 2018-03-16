@@ -254,7 +254,7 @@ public class LecturerInterface extends javax.swing.JFrame {
                 //Cancel
                 createMessagePane("Withdrawing Quiz", "Warning");
                 try {
-                    quiz.revertToDraft();
+                    quiz.deleteAndRevert();
                 } catch (SQLException ex) {
                     System.out.println("[WARN] QuizSystem.GUI.lecturer.LecturerInterface encountered SQLException:");
                     System.out.println(ex);

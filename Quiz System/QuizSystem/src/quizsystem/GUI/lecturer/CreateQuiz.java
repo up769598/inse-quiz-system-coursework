@@ -401,7 +401,6 @@ public class CreateQuiz extends javax.swing.JFrame {
                 if (loaded) {
                     //Update existing if loading a draft quiz instead of creating a brand new quiz
                     quizID = quiz.getQuizID();
-                    quiz.deleteAssociated();
                     quiz.update(quizMap);
                 } else {
                     //Create a new quiz
@@ -410,7 +409,6 @@ public class CreateQuiz extends javax.swing.JFrame {
                 }
                 HashMap<String, String> questionMap = new HashMap<>();
                 questionMap.put("usrID", user.getUserId());
-                //  questionMap.put("topic", getQuizTopic());
                 questionMap.put("category", user.getCourse());
                 questionMap.put("quizID", quizID);
 
@@ -439,9 +437,6 @@ public class CreateQuiz extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 createMessagePane("Save Unsuccessful", "Error");
                 System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered SQLException:");
-                System.out.println(ex);
-            } catch(InvalidObjectException ex){
-                System.out.println("[WARN] QuizSystem.GUI.lecturer.CreateQuiz encountered InvalidObjectException:");
                 System.out.println(ex);
             }
         } else {
