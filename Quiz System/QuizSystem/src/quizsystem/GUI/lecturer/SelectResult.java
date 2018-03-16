@@ -40,7 +40,7 @@ public class SelectResult extends javax.swing.JFrame {
     public void loadResults() {
         try {
             DatabaseHandler db = new DatabaseHandler();
-            List<AttemptAnswer> tempResults = db.getQuizAttempt(quiz.getQuizID(), "*");
+            List<AttemptAnswer> tempResults = db.getQuizAttempt("1", "*");
             for (AttemptAnswer tempResult : tempResults) {
                 if (attemptingStudents.contains(tempResult.getUser().getEmail())) {
                     attemptingStudents.add(tempResult.getUser().getEmail());
@@ -49,6 +49,9 @@ public class SelectResult extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.out.println("[WARN] QuizSystem.GUI.lecturer.SelectResult encountered SQLException:");
             System.out.println(ex);
+        }
+        if(attemptingStudents.isEmpty()){
+            JOptionPane.showConfirmDialog(this, "No results found for this quiz", "Warning", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
         }
     }
 
