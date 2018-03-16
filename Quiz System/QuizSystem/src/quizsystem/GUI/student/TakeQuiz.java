@@ -1,20 +1,29 @@
 package quizsystem.GUI.student;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javax.swing.JOptionPane;
+import quizsystem.db.*;
+
 public class TakeQuiz extends javax.swing.JDialog {
 
     quizsystem.db.Quiz quiz;
+    private String username;
     Integer[] selAnswers;
     int selectedAnswer = 0;
 
     /**
      *
-     * @param parent The parent JFrame that this JDialog is created from. 
-     * @param modal 
-     * @param inQuiz The Quiz that the user is taking 
+     * @param parent The parent JFrame that this JDialog is created from.
+     * @param modal
+     * @param inQuiz The Quiz that the user is taking
      */
-    public TakeQuiz(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz) {
+    public TakeQuiz(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz, String inUsername) {
         initComponents();
         quiz = inQuiz;
+        username = inUsername;
         Integer[] answers = new Integer[quiz.getQuestions().size()];
         selAnswers = answers;
         quiz.setCurrentQuestion(1);
@@ -22,7 +31,8 @@ public class TakeQuiz extends javax.swing.JDialog {
     }
 
     /**
-     * Resets the GUI, refreshing the list of answers, the question and the question number.
+     * Resets the GUI, refreshing the list of answers, the question and the
+     * question number.
      */
     public void refresh() {
         setQuestion();
@@ -39,29 +49,34 @@ public class TakeQuiz extends javax.swing.JDialog {
     }
 
     /**
-     * Saves the chosen answer, proceeds the quiz onto the next question and refreshes the GUI.
+     * Saves the chosen answer, proceeds the quiz onto the next question and
+     * refreshes the GUI.
      */
     public void nextQuestion() {
+        selectAnswer();
+        if (quiz.getCurrentQuestion() +1 > quiz.getQuestions().size()) {
+            //Cannot navigate further than the length of the quiz
+            JOptionPane.showMessageDialog(this, "Cannot navigate further, there are no questions left!", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            quiz.setCurrentQuestion(quiz.getCurrentQuestion()+1);
+            refresh();
+        }
         
-        int questionNum = quiz.getCurrentQuestion();
-        if (questionNum == quiz.getQuestions().size()){
-            
-        }
-        else{
-            selectAnswer();
-            quiz.setCurrentQuestion(questionNum+1);
-        }
-        refresh();
     }
 
     /**
-     * Saves the chosen answer, proceeds the quiz onto the previous question and refreshes the GUI.
+     * Saves the chosen answer, proceeds the quiz onto the previous question and
+     * refreshes the GUI.
      */
     public void prevQuestion() {
         selectAnswer();
-        int questionNum = quiz.getCurrentQuestion();
-        quiz.setCurrentQuestion(questionNum-1);
-        refresh();
+        if (quiz.getCurrentQuestion() -1 < 0) {
+            //Cannot navigate into negative questions
+            JOptionPane.showMessageDialog(this, "This is the first question in the quiz, can't go back further!", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else {
+            quiz.setCurrentQuestion(quiz.getCurrentQuestion()-1);
+            refresh();
+        }
     }
 
     /**
@@ -72,7 +87,8 @@ public class TakeQuiz extends javax.swing.JDialog {
     }
 
     /**
-     * Sets the labels attached to each checkbox to show each possible answer for the question.
+     * Sets the labels attached to each checkbox to show each possible answer
+     * for the question.
      */
     public void setAnswers() {
         String[] answers = quiz.getAnswers(quiz.getCurrentQuestion());
@@ -131,16 +147,35 @@ public class TakeQuiz extends javax.swing.JDialog {
      * Saves the selected answer into an array.
      */
     public void selectAnswer() {
-        selAnswers[quiz.getCurrentQuestion()] = selectedAnswer;
+        selAnswers[quiz.getCurrentQuestion()-1] = selectedAnswer;
         System.out.println(selectedAnswer);
     }
-    
+
     /**
-     * Record the complete collection of given answers ready to be written to the database.
+     * Record the complete collection of given answers ready to be written to
+     * the database.
      */
-    public void saveAnswers(){
+    public void saveAnswers() {
         //Save answers and write them to the database
-        System.out.println(selAnswers);
+        List<String> questionID = new ArrayList<>();
+        List<Question> questions = quiz.getQuestions();
+        try {
+            DatabaseHandler db = new DatabaseHandler();
+            User Student = User.getByEmail(username);
+            HashMap<Question, Answer> attemptMap = new HashMap<>();
+            for (int i = 0; i < questions.size(); i++) {
+                questionID.clear();
+                questionID.add(questions.get(i).getQuestionId());
+                List<Answer> answers = Answer.answersForQuestions(db, questionID);
+                attemptMap.put(questions.get(i), answers.get(selAnswers[i] - 1));
+            }
+            quiz.addAttempt(Student, attemptMap, true);
+            JOptionPane.showMessageDialog(this, "Save successful", "Success", JOptionPane.PLAIN_MESSAGE);
+        } catch (SQLException ex) {
+            System.out.println("[WARN] QuizSystem.GUI.student.TakeQuiz encountered SQLException:");
+            System.out.println(ex);
+            JOptionPane.showMessageDialog(this, "Save Unsuccessful", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     @SuppressWarnings("unchecked")
