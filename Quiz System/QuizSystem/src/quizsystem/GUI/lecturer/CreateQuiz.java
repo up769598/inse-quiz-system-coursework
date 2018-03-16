@@ -11,6 +11,9 @@ import quizsystem.db.Question;
 import quizsystem.db.Quiz;
 import quizsystem.db.User;
 
+/**
+ * Create a new instance of the CreateQuiz GUI
+ */
 public class CreateQuiz extends javax.swing.JFrame {
 
     private Quiz quiz;

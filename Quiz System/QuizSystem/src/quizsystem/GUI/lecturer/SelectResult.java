@@ -11,12 +11,19 @@ import quizsystem.db.DatabaseHandler;
 import quizsystem.db.Quiz;
 import quizsystem.db.User;
 
+/**
+ * Create a new instance of the SelectResult GUI
+ */
 public class SelectResult extends javax.swing.JFrame {
 
     private Quiz quiz;
     private DefaultTableModel resultsModel;
     private List<String> attemptingStudents;
 
+    /**
+     * Generate the SelectResult GUI and setup the table found on the GUI
+     * @param inQuiz
+     */
     public SelectResult(Quiz inQuiz) {
         initComponents();
         quiz = inQuiz;
@@ -31,6 +38,9 @@ public class SelectResult extends javax.swing.JFrame {
         displayResults();
     }
 
+    /**
+     * Append information to the GUI's table of results.
+     */
     public void displayResults() {
         for (String username : attemptingStudents) {
             Object[] data = {username, totalMarks(username)};
@@ -38,6 +48,9 @@ public class SelectResult extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Load the results from the database into lists.
+     */
     public void loadResults() {
         try {
             DatabaseHandler db = new DatabaseHandler();
@@ -51,6 +64,11 @@ public class SelectResult extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Calculate the total marks attained by a student
+     * @param username The username of the student
+     * @return The total mark attained by the student
+     */
     public int totalMarks(String username) {
         int totalMark = 0;
         try {
