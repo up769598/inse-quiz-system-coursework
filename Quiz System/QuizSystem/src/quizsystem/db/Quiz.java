@@ -140,6 +140,21 @@ public class Quiz extends Model {
     }
     
     /**
+     * Delete just the questions and answers that belong to a quiz, so that updated content can be created without
+     * duplicating anything.
+     * @throws SQLException 
+     */
+    public void deleteContent() throws SQLException {
+        String deleteAnswers = "DELETE a FROM Answers AS a INNER JOIN Questions AS q WHERE q.quizID = ?;";
+        String deleteQuestions = "DELETE FROM Questions WHERE quizID = ?;";
+        List<String> params = Arrays.asList(this.get("quizID"));
+        
+        DatabaseHandler handler = new DatabaseHandler();
+        handler.executeManipulator(deleteAnswers, params);
+        handler.executeManipulator(deleteQuestions, params);
+    }
+    
+    /**
      * Create a record of a quiz attempt.
      * @param student               the completing student
      * @param chosenAnswers         a map between questions in the quiz and the answers the student chose
