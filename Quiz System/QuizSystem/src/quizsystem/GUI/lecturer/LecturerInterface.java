@@ -247,7 +247,7 @@ public class LecturerInterface extends javax.swing.JFrame {
      */
     public void withdrawQuiz() {
         Quiz quiz = getQuiz();
-        if (tblDraftQuiz.getSelectedRow() == -1) {
+        if (tblQuiz.getSelectedRow() == -1) {
             createMessagePane("Please select a quiz in the draft table to withdraw first", "Warning");
         } else {
             if (JOptionPane.showConfirmDialog(this, "Are you sure you want to withdraw this quiz? All Data will be lost", "Warning", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.YES_OPTION) {
