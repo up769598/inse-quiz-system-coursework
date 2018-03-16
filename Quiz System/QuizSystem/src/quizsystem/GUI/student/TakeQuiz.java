@@ -3,7 +3,7 @@ package quizsystem.GUI.student;
 public class TakeQuiz extends javax.swing.JDialog {
 
     quizsystem.db.Quiz quiz;
-    Integer[] selAnswers = new Integer[quiz.getQuestions().size()];
+    Integer[] selAnswers;
     int selectedAnswer = 0;
 
     /**
@@ -15,6 +15,8 @@ public class TakeQuiz extends javax.swing.JDialog {
     public TakeQuiz(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz) {
         initComponents();
         quiz = inQuiz;
+        Integer[] answers = new Integer[quiz.getQuestions().size()];
+        selAnswers = answers;
     }
 
     /**

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package quizsystem.db;
 
 import java.util.ArrayList;
@@ -11,10 +6,6 @@ import java.util.Set;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author James
- */
 public class DatabaseHandlerTest {
     
     public DatabaseHandlerTest() {
@@ -28,8 +19,8 @@ public class DatabaseHandlerTest {
         DatabaseHandler instance = new DatabaseHandler();
         ArrayList<ResultRow> result = instance.execute(query);
         assertNotNull(result);
-
     }
+    
     /**
      * Test of isUserRegistered method, of class DatabaseHandler.
      */
@@ -39,6 +30,20 @@ public class DatabaseHandlerTest {
         String email = "up769598@myport.ac.uk";
         DatabaseHandler instance = new DatabaseHandler();
         boolean expResult = true;
+        boolean result = instance.isUserRegistered(email);
+        assertEquals(expResult, result);
+    }
+    
+     /**
+     * Test of isUserRegistered method, of class DatabaseHandler.
+     * with a user that dose not exist
+     */
+    @Test
+    public void testIsNotUserRegistered() throws Exception {
+        System.out.println("isNotUserRegistered");
+        String email = "up999999@myport.ac.uk";
+        DatabaseHandler instance = new DatabaseHandler();
+        boolean expResult = false;
         boolean result = instance.isUserRegistered(email);
         assertEquals(expResult, result);
     }
