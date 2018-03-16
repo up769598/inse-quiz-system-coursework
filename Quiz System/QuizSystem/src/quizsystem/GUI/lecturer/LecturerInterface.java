@@ -40,7 +40,7 @@ public class LecturerInterface extends javax.swing.JFrame {
         }
         loadQuizzes();
         loadDraftQuizzes();
-        Object[] colQuiz = {"Lecturer", "Name", "Time", "Avg Mark"};
+        Object[] colQuiz = {"Lecturer", "Name", "Avg Mark"};
         modelQuiz = new DefaultTableModel(colQuiz, 0);
         tblQuiz.setModel(modelQuiz);
 
@@ -120,7 +120,7 @@ public class LecturerInterface extends javax.swing.JFrame {
      * @param inQuiz The Quiz to be appended onto the quiz table
      */
     private void addQuiz(quizsystem.db.Quiz inQuiz) {
-        Object[] data = {inQuiz.getLecturerName(), inQuiz.getName(), inQuiz.getTimeLimit(), 0}; //Add average mark
+        Object[] data = {inQuiz.getLecturerName(), inQuiz.getName(), 0}; //Add average mark
         modelQuiz.addRow(data);
     }
 
@@ -301,8 +301,7 @@ public class LecturerInterface extends javax.swing.JFrame {
      * @param title The title found on the window decoration
      */
     public void createMessagePane(String message, String title) {
-        Object[] options = {"Ok"};
-        JOptionPane.showOptionDialog(this, message, title, JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
     }
 
     @SuppressWarnings("unchecked")

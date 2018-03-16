@@ -14,7 +14,7 @@ public class SelectResult extends javax.swing.JFrame {
 
     private Quiz quiz;
     private DefaultTableModel resultsModel;
-    private ArrayList<String> attemptingStudents;
+    private List<String> attemptingStudents;
 
     public SelectResult(Quiz inQuiz) {
         initComponents();
@@ -40,18 +40,13 @@ public class SelectResult extends javax.swing.JFrame {
     public void loadResults() {
         try {
             DatabaseHandler db = new DatabaseHandler();
-            List<AttemptAnswer> tempResults = db.getQuizAttempt("1", "*");
-            for (AttemptAnswer tempResult : tempResults) {
-                if (attemptingStudents.contains(tempResult.getUser().getEmail())) {
-                    attemptingStudents.add(tempResult.getUser().getEmail());
-                }
-            }
+            attemptingStudents = db.getStudentsTakenQuiz(quiz.getQuizID());
         } catch (SQLException ex) {
             System.out.println("[WARN] QuizSystem.GUI.lecturer.SelectResult encountered SQLException:");
             System.out.println(ex);
         }
         if(attemptingStudents.isEmpty()){
-            JOptionPane.showConfirmDialog(this, "No results found for this quiz", "Warning", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No results found for this quiz", "Warning", JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -78,10 +73,11 @@ public class SelectResult extends javax.swing.JFrame {
         lblQuizName = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblResults = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
         btnGoBack = new javax.swing.JButton();
         btnReviewResults = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         lblQuizNameTitle.setText("Quiz Name: ");
@@ -101,6 +97,8 @@ public class SelectResult extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblResults);
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         btnGoBack.setText("Go Back");
         btnGoBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,6 +113,27 @@ public class SelectResult extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnGoBack)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnReviewResults)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGoBack)
+                    .addComponent(btnReviewResults))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -123,18 +142,15 @@ public class SelectResult extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnGoBack)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnReviewResults))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblQuizNameTitle)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblQuizName, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,11 +164,9 @@ public class SelectResult extends javax.swing.JFrame {
                         .addComponent(lblQuizName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGoBack)
-                    .addComponent(btnReviewResults))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -165,7 +179,7 @@ public class SelectResult extends javax.swing.JFrame {
     private void btnReviewResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewResultsActionPerformed
 
         if (tblResults.getSelectedRow() == -1) {
-            JOptionPane.showConfirmDialog(this, "Please select a student and try again", "Warning", JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please select a student and try again", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
             String username = attemptingStudents.get(tblResults.getSelectedRow());
             try {
@@ -184,6 +198,7 @@ public class SelectResult extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGoBack;
     private javax.swing.JButton btnReviewResults;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblQuizName;
     private javax.swing.JLabel lblQuizNameTitle;
