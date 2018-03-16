@@ -17,6 +17,8 @@ public class TakeQuiz extends javax.swing.JDialog {
         quiz = inQuiz;
         Integer[] answers = new Integer[quiz.getQuestions().size()];
         selAnswers = answers;
+        quiz.setCurrentQuestion(1);
+        refresh();
     }
 
     /**
@@ -40,9 +42,15 @@ public class TakeQuiz extends javax.swing.JDialog {
      * Saves the chosen answer, proceeds the quiz onto the next question and refreshes the GUI.
      */
     public void nextQuestion() {
-        selectAnswer();
+        
         int questionNum = quiz.getCurrentQuestion();
-        quiz.setCurrentQuestion(questionNum++);
+        if (questionNum == quiz.getQuestions().size()){
+            
+        }
+        else{
+            selectAnswer();
+            quiz.setCurrentQuestion(questionNum+1);
+        }
         refresh();
     }
 
@@ -52,7 +60,7 @@ public class TakeQuiz extends javax.swing.JDialog {
     public void prevQuestion() {
         selectAnswer();
         int questionNum = quiz.getCurrentQuestion();
-        quiz.setCurrentQuestion(questionNum--);
+        quiz.setCurrentQuestion(questionNum-1);
         refresh();
     }
 
@@ -124,6 +132,7 @@ public class TakeQuiz extends javax.swing.JDialog {
      */
     public void selectAnswer() {
         selAnswers[quiz.getCurrentQuestion()] = selectedAnswer;
+        System.out.println(selectedAnswer);
     }
     
     /**
@@ -131,6 +140,7 @@ public class TakeQuiz extends javax.swing.JDialog {
      */
     public void saveAnswers(){
         //Save answers and write them to the database
+        System.out.println(selAnswers);
     }
 
     @SuppressWarnings("unchecked")
@@ -359,11 +369,12 @@ public class TakeQuiz extends javax.swing.JDialog {
 
     private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
         //Finish and submit answers
-        selectAnswer();
+        saveAnswers();
     }//GEN-LAST:event_btnFinishActionPerformed
 
     private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
         //Quit and go back to quiz preview
+        dispose();
     }//GEN-LAST:event_btnQuitActionPerformed
 
     private void chbAnswer1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbAnswer1ActionPerformed
