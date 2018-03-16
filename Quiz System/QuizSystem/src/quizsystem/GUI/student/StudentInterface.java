@@ -263,7 +263,7 @@ public class StudentInterface extends javax.swing.JFrame {
      */
     public void takeQuiz() {
         quizsystem.db.Quiz quiz = setQuiz.get(tblSetQuiz.getSelectedRow());
-        quizsystem.GUI.student.QuizPreview qp = new quizsystem.GUI.student.QuizPreview(quiz);
+        quizsystem.GUI.student.QuizPreview qp = new quizsystem.GUI.student.QuizPreview(quiz,username);
     }
 
     public quizsystem.db.Quiz getSetQuiz() {
@@ -300,7 +300,6 @@ public class StudentInterface extends javax.swing.JFrame {
         tblCompQuiz = new javax.swing.JTable();
         btnAdvSearch = new javax.swing.JButton();
         btnReviewAnswers = new javax.swing.JButton();
-        btnAttemptAgain = new javax.swing.JButton();
         btnClearSearch = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
@@ -434,8 +433,6 @@ public class StudentInterface extends javax.swing.JFrame {
             }
         });
 
-        btnAttemptAgain.setText("Attempt Again");
-
         btnClearSearch.setText("Clear Search");
 
         javax.swing.GroupLayout pnlCompQuizLayout = new javax.swing.GroupLayout(pnlCompQuiz);
@@ -454,9 +451,7 @@ public class StudentInterface extends javax.swing.JFrame {
                             .addComponent(btnClearSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAdvSearch))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnAttemptAgain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnReviewAnswers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btnReviewAnswers)))
                 .addContainerGap())
         );
         pnlCompQuizLayout.setVerticalGroup(
@@ -471,9 +466,7 @@ public class StudentInterface extends javax.swing.JFrame {
                     .addComponent(btnAdvSearch)
                     .addComponent(btnReviewAnswers))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlCompQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnClearSearch)
-                    .addComponent(btnAttemptAgain))
+                .addComponent(btnClearSearch)
                 .addContainerGap())
         );
 
@@ -536,7 +529,7 @@ public class StudentInterface extends javax.swing.JFrame {
     private void btnSelectQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectQuizActionPerformed
         //Selects the quiz pressed on the table and continues onto taking that quiz
         Quiz quiz = getSetQuiz();
-        QuizPreview qp = new QuizPreview(quiz);
+        QuizPreview qp = new QuizPreview(quiz,username);
         qp.setVisible(true);
     }//GEN-LAST:event_btnSelectQuizActionPerformed
 
@@ -568,7 +561,6 @@ public class StudentInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExitActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdvSearch;
-    private javax.swing.JButton btnAttemptAgain;
     private javax.swing.JButton btnClearSearch;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnLogout;

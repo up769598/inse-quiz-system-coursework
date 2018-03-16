@@ -1,24 +1,26 @@
 package quizsystem.GUI.student;
 
 public class QuizPreview extends javax.swing.JFrame {
-        
+
     private final quizsystem.db.Quiz quiz;
+    private String username;
     //private final quizsystem.db.Student student;
 
     /**
      * Creates new form QuizPreview
+     *
      * @param inQuiz Quiz being taken by the student
      */
-    public QuizPreview(quizsystem.db.Quiz inQuiz) {
+    public QuizPreview(quizsystem.db.Quiz inQuiz, String inUsername) {
         initComponents();
         quiz = inQuiz;
-        //student = inStudent;
+        username = inUsername;
         lblName.setText("Name: " + quiz.getName());
         lblLecturerName.setText("Lecturer: " + quiz.getLecturerName());
         lblTime.setText(Float.toString(quiz.getTimeLimit()));
         lblNumQuestions.setText("Total Number of Questions: " + Integer.toString(quiz.getQuestions().size()));
     }
-   
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -101,7 +103,7 @@ public class QuizPreview extends javax.swing.JFrame {
 
     private void btnTakeQuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTakeQuizActionPerformed
         //Continue onto taking the quiz
-        TakeQuiz tq = new TakeQuiz(this, true, quiz);
+        TakeQuiz tq = new TakeQuiz(this, true, quiz, username);
         tq.setVisible(true);
     }//GEN-LAST:event_btnTakeQuizActionPerformed
 
