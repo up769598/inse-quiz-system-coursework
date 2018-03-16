@@ -295,6 +295,7 @@ public class StudentInterface extends javax.swing.JFrame {
         btnClearSearch = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
+        btnRefreshTables = new javax.swing.JButton();
 
         jMenu1.setText("jMenu1");
 
@@ -362,7 +363,7 @@ public class StudentInterface extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lblSetQuizTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(srpnlSetQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(srpnlSetQuiz)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSelectQuiz)
                 .addContainerGap())
@@ -455,6 +456,13 @@ public class StudentInterface extends javax.swing.JFrame {
             }
         });
 
+        btnRefreshTables.setText("Refresh Tables");
+        btnRefreshTables.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshTablesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -466,7 +474,9 @@ public class StudentInterface extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnLogout)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExit)))
+                        .addComponent(btnExit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRefreshTables, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(pnlCompQuiz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -479,10 +489,11 @@ public class StudentInterface extends javax.swing.JFrame {
                     .addComponent(pnlCompQuiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlSetQuiz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(73, 73, 73)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnLogout)
-                            .addComponent(btnExit))))
+                            .addComponent(btnExit)
+                            .addComponent(btnRefreshTables))))
                 .addContainerGap())
         );
 
@@ -528,11 +539,19 @@ public class StudentInterface extends javax.swing.JFrame {
         clearSearch();
     }//GEN-LAST:event_btnClearSearchActionPerformed
 
+    private void btnRefreshTablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshTablesActionPerformed
+        loadSetQuizzes();
+        loadCompQuizzes();
+        displaySetQuizzes(setQuiz);
+        displayCompQuizzes(compQuiz);
+    }//GEN-LAST:event_btnRefreshTablesActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdvSearch;
     private javax.swing.JButton btnClearSearch;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnRefreshTables;
     private javax.swing.JButton btnReviewAnswers;
     private javax.swing.JButton btnSelectQuiz;
     private javax.swing.JMenu jMenu1;
