@@ -274,4 +274,27 @@ public class DatabaseHandler {
         }
         return attempts;
     }
+    
+    /**
+     * Get a list of usernames who have taken a specific quiz.
+     * @param quizID the quiz ID to return usernames for
+     * @return a List of Strings
+     * @throws SQLException 
+     */
+    public List<String> getStudentsTakenQuiz(String quizID) throws SQLException {
+        String query = "SELECT u.* FROM Quizzes q INNER JOIN AttemptAnswers aa ON q.quizID = aa.quizID " +
+                "INNER JOIN Users u ON aa.usrID = u.usrID WHERE q.quizID = ?;";
+        List<String> params = Arrays.asList(quizID);
+        ArrayList<ResultRow> rows = this.executeParameterized(query, params);
+        List<String> usernames = new ArrayList<>();
+        
+        for (int i = 0; i < rows.size(); i++) {
+            User u = new User(rows.get(i));
+            if (!usernames.contains(u.getEmail())) {
+                usernames.add(u.getEmail());
+            }
+        }
+        
+        return usernames;
+    }
 }
