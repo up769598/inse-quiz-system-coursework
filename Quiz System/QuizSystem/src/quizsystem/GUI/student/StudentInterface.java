@@ -43,7 +43,7 @@ public class StudentInterface extends javax.swing.JFrame {
         modelSetQuiz = new DefaultTableModel(colSetQuiz, 0);
         tblSetQuiz.setModel(modelSetQuiz);
 
-        Object[] colCompQuiz = {"Lecturer", "Name", "Mark"};
+        Object[] colCompQuiz = {"Name", "Mark"};
         modelCompQuiz = new DefaultTableModel(colCompQuiz, 0);
         tblCompQuiz.setModel(modelCompQuiz);
 
@@ -103,9 +103,9 @@ public class StudentInterface extends javax.swing.JFrame {
             System.out.println("[WARN] QuizSystem.GUI.lecturer.SelectResult encountered SQLException:");
             System.out.println(ex);
         }
+        Object[] data = {inQuiz.getName(), totalMark};
+            modelCompQuiz.addRow(data);
 
-        Object[] data = {inQuiz.getLecturerName(), inQuiz.getName(), totalMark};
-        modelCompQuiz.addRow(data);
     }
 
     /**
@@ -175,8 +175,8 @@ public class StudentInterface extends javax.swing.JFrame {
     }
 
     /**
-     * Searches through the list of completed quizzes to find quizzes that have names that
-     * contain the search term
+     * Searches through the list of completed quizzes to find quizzes that have
+     * names that contain the search term
      *
      * @param name Name of the quiz used as the search term
      */
@@ -193,8 +193,8 @@ public class StudentInterface extends javax.swing.JFrame {
     }
 
     /**
-     * Searches through the list of completed quizzes to find quizzes that have lecturer
-     * names that contain the search term
+     * Searches through the list of completed quizzes to find quizzes that have
+     * lecturer names that contain the search term
      *
      * @param lectName Name of the quiz creator lecturer used as a search term
      */

@@ -7,6 +7,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import quizsystem.GUI.LoginRegister;
+import quizsystem.db.AttemptAnswer;
+import quizsystem.db.DatabaseHandler;
 import quizsystem.db.DraftState;
 import quizsystem.db.Quiz;
 import quizsystem.db.User;
@@ -40,7 +42,7 @@ public class LecturerInterface extends javax.swing.JFrame {
         }
         loadQuizzes();
         loadDraftQuizzes();
-        Object[] colQuiz = {"Lecturer", "Name", "Avg Mark"};
+        Object[] colQuiz = {"Name","Average Mark"};
         modelQuiz = new DefaultTableModel(colQuiz, 0);
         tblQuiz.setModel(modelQuiz);
 
@@ -120,7 +122,7 @@ public class LecturerInterface extends javax.swing.JFrame {
      * @param inQuiz The Quiz to be appended onto the quiz table
      */
     private void addQuiz(quizsystem.db.Quiz inQuiz) {
-        Object[] data = {inQuiz.getLecturerName(), inQuiz.getName(), 0}; //Add average mark
+        Object[] data = {inQuiz.getName(),averageMark(inQuiz)}; //Add average mark
         modelQuiz.addRow(data);
     }
 
@@ -302,6 +304,26 @@ public class LecturerInterface extends javax.swing.JFrame {
      */
     public void createMessagePane(String message, String title) {
         JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_OPTION, JOptionPane.WARNING_MESSAGE);
+    }
+
+    public int averageMark(Quiz quiz) {
+        try {
+            DatabaseHandler db = new DatabaseHandler();
+            List<String> attemptingStudents = db.getStudentsTakenQuiz(quiz.getQuizID());
+            double totalMark = 0;
+            for (String tempUsername : attemptingStudents) {
+                List<AttemptAnswer> tempResults = db.getQuizAttempt(quiz.getQuizID(), User.getByEmail(tempUsername).getUserId());
+                for (AttemptAnswer tempResult : tempResults) {
+                    totalMark += tempResult.getMarks();
+                }
+            }
+            int avgMark = (int) (Math.ceil(totalMark / attemptingStudents.size()));
+            return avgMark;
+        } catch (SQLException ex) {
+            System.out.println("[WARN] QuizSystem.GUI.lecturer.SelectResult encountered SQLException:");
+            System.out.println(ex);
+            return 0;
+        }
     }
 
     @SuppressWarnings("unchecked")
