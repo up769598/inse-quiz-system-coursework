@@ -1,5 +1,6 @@
 package quizsystem.GUI.lecturer;
 
+import quizsystem.GUI.ReviewAnswers;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -185,9 +186,8 @@ public class SelectResult extends javax.swing.JFrame {
             try {
                 DatabaseHandler db = new DatabaseHandler();
                 List<AttemptAnswer> results = db.getQuizAttempt(quiz.getQuizID(), User.getByEmail(username).getUserId());
-                LecturerReviewAnswers lra = new LecturerReviewAnswers(this, true, quiz, results);
-                lra.setVisible(true);
-
+                ReviewAnswers ra = new ReviewAnswers(this, true, quiz, results);
+                ra.setVisible(true);
             } catch (SQLException ex) {
                 System.out.println("[WARN] QuizSystem.GUI.lecturer.SelectResult encountered SQLException:");
                 System.out.println(ex);

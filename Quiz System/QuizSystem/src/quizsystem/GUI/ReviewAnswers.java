@@ -1,45 +1,81 @@
-package quizsystem.GUI.student;
+package quizsystem.GUI;
 
-public class StudentReviewAnswers extends javax.swing.JDialog {
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import quizsystem.db.Answer;
+import quizsystem.db.AttemptAnswer;
+import quizsystem.db.DatabaseHandler;
+import quizsystem.db.Question;
+
+public class ReviewAnswers extends javax.swing.JDialog {
+
     private final quizsystem.db.Quiz quiz;
-    private final quizsystem.db.AttemptAnswer ans;
-    
-    public StudentReviewAnswers(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz,quizsystem.db.AttemptAnswer inAnswer) {
+    private final List<AttemptAnswer> attempt;
+    private List<Answer> answers;
+    private List<Question> questions;
+    private int currentQuestion = 0;
+
+    public ReviewAnswers(java.awt.Frame parent, boolean modal, quizsystem.db.Quiz inQuiz, List<AttemptAnswer> inAttempt) {
         super(parent, modal);
         initComponents();
         quiz = inQuiz;
-        ans= inAnswer;
+        attempt = inAttempt;
+        //Set the marks attained here
+
+        List<String> questionID = new ArrayList<>();
+        questions = quiz.getQuestions();
+        for (int i = 0; i < questions.size(); i++) {
+            questionID.add(questions.get(i).getQuestionId());
+        }
+        try {
+            DatabaseHandler db = new DatabaseHandler();
+            answers = Answer.answersForQuestions(db, questionID);
+        } catch (SQLException ex) {
+
+        }
+        refresh();
+        setTotalMark();
     }
-    
-    public void refresh(){
+
+    public void refresh() {
         setNumQuestion();
+        setQuestion();
         setAnswers();
-        hideCheckBoxes();
+        hideLabels();
+        setChosenAnswer();
+        setCorrectAnswer();
     }
-    
-    public void setNumQuestion(){
-        lblQuestionNumber.setText(Integer.toString(quiz.getCurrentQuestion())  + " / " + Integer.toString(quiz.getQuestions().size()));
+
+    public void setNumQuestion() {
+        lblQuestionNumber.setText(Integer.toString(currentQuestion + 1) + " / " + Integer.toString(questions.size()));
     }
-    
-    public void nextQuestion(){
-        int questionNum = quiz.getCurrentQuestion();
-        quiz.setCurrentQuestion(questionNum++);
-        refresh();
+
+    public void nextQuestion() {
+        if (currentQuestion + 1 > questions.size()) {
+            //Cannot navigate outside the list of questions
+        } else {
+            currentQuestion++;
+            refresh();
+        }
     }
-    
-    public void prevQuestion(){
-        int questionNum = quiz.getCurrentQuestion();
-        quiz.setCurrentQuestion(questionNum--);
-        refresh();
+
+    public void prevQuestion() {
+        if (currentQuestion - 1 < 0) {
+            //Cannot navigate outside the list of questions
+        } else {
+            currentQuestion--;
+            refresh();
+        }
     }
-    
-      public void setQuestion(){
-        taQuestion.setText(quiz.getQuestion(quiz.getCurrentQuestion()));
+
+    public void setQuestion() {
+        taQuestion.setText(questions.get(currentQuestion).getQuestionText());
     }
-    
-    public void setAnswers(){
-        String[] answers = quiz.getAnswers(quiz.getCurrentQuestion());
-        switch(answers.length){
+
+    public void setAnswers() {
+        String[] answers = quiz.getAnswers(currentQuestion+1);
+        switch (answers.length) {
             case 8:
                 lblAnswer8.setVisible(true);
                 lblAnswer8.setText(answers[7]);
@@ -68,9 +104,9 @@ public class StudentReviewAnswers extends javax.swing.JDialog {
                 break;
         }
     }
-    
-    public void hideCheckBoxes(){
-        switch(quiz.getAnswers(quiz.getCurrentQuestion()).length){
+
+    public void hideLabels() {
+        switch (quiz.getAnswers(quiz.getCurrentQuestion()).length) {
             case 2:
                 lblAnswer3.setVisible(false);
             case 3:
@@ -85,14 +121,49 @@ public class StudentReviewAnswers extends javax.swing.JDialog {
                 lblAnswer8.setVisible(false);
         }
     }
-    
-   public void setMark(){
-       int numQuestion = quiz.getQuestions().size();
-       int mark = ans.getMarks();
-       int percentage = mark/numQuestion *100 ;
-       lblPercentage.setText(Integer.toString(percentage)+ "%");
-   }
-  
+
+    public void setCorrectAnswer() {
+        for (int i = 0; i < answers.size(); i++) {
+            Answer answer = answers.get(i);
+            if (answer.isCorrect() && answer.getQuestionID().equals(questions.get(currentQuestion).getQuestionId())) {
+                lblCorrectAnswerNum.setText(answer.getAnswerText());
+            }
+        }
+    }
+
+    public void setChosenAnswer() {
+        try {
+            lblGivenAnswerNum.setText(attempt.get(currentQuestion).getAnswer().getAnswerText());
+        } catch (SQLException | IndexOutOfBoundsException ex) {
+            lblGivenAnswerNum.setText("Answer Not Given");
+        }
+    }
+
+    public void setTotalMark() {
+        double mark = 0;
+        for (AttemptAnswer aa : attempt) {
+            mark += aa.getMarks();
+        }
+        double percentage = (mark / questions.size())*100;
+        lblPercentage.setText("Total Percentage: " + Integer.toString((int) Math.ceil(percentage)));
+        setPredictedGrade(percentage);
+    }
+
+    public void setPredictedGrade(double percentage) {
+        int num = (int) Math.ceil(percentage);
+        if (num >= 70) {
+            lblGrade.setText("Grade = 1");
+        } else if (num >= 60 && num < 70) {
+            lblGrade.setText("Grade = 2:1");
+        } else if (num >= 50 && num < 60) {
+            lblGrade.setText("Grade = 2:2");
+        } else if (num >= 40 && num < 50) {
+            lblGrade.setText("Grade = 3");
+        } else if (num < 40) {
+            lblGrade.setText("Grade = Fail");
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -172,7 +243,7 @@ public class StudentReviewAnswers extends javax.swing.JDialog {
                     .addComponent(lblAnswer6)
                     .addComponent(lblAnswer7)
                     .addComponent(lblAnswer8))
-                .addContainerGap(804, Short.MAX_VALUE))
+                .addContainerGap(596, Short.MAX_VALUE))
         );
         pnlQuestionsLayout.setVerticalGroup(
             pnlQuestionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,6 +274,7 @@ public class StudentReviewAnswers extends javax.swing.JDialog {
             }
         });
 
+        taQuestion.setEditable(false);
         taQuestion.setColumns(20);
         taQuestion.setRows(5);
         taQuestion.setText("(Insert Question Here)");
@@ -263,7 +335,7 @@ public class StudentReviewAnswers extends javax.swing.JDialog {
                                     .addComponent(lblCorrectAnswerNum)
                                     .addComponent(lblGivenAnswerTitle)
                                     .addComponent(lblGivenAnswerNum))
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addGap(0, 252, Short.MAX_VALUE))
                             .addComponent(btnNextQuestion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnPrevQuestion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnQuit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))

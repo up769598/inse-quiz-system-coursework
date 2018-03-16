@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import quizsystem.GUI.LoginRegister;
+import quizsystem.GUI.ReviewAnswers;
 import quizsystem.db.*;
 
 public class StudentInterface extends javax.swing.JFrame {
@@ -547,6 +548,18 @@ public class StudentInterface extends javax.swing.JFrame {
     private void btnReviewAnswersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewAnswersActionPerformed
         //Review answers given for that completed quiz
         Quiz quiz = getCompQuiz();
+        try {
+                DatabaseHandler db = new DatabaseHandler();
+                List<AttemptAnswer> results = db.getQuizAttempt(quiz.getQuizID(), User.getByEmail(username).getUserId());
+                ReviewAnswers ra = new ReviewAnswers(this, true, quiz, results);
+                ra.setVisible(true);
+
+            } catch (SQLException ex) {
+                System.out.println("[WARN] QuizSystem.GUI.lecturer.SelectResult encountered SQLException:");
+                System.out.println(ex);
+            }
+        
+        
         //StudentReviewAnswers sra = new StudentReviewAnswers(this, true, quiz);
         //sra.setVisible(true);
     }//GEN-LAST:event_btnReviewAnswersActionPerformed
