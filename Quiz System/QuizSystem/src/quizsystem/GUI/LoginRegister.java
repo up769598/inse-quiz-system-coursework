@@ -180,13 +180,9 @@ public class LoginRegister extends javax.swing.JFrame {
 
         lblLoginTitle.setText("Login");
 
-        tfEmailLogin.setText("aaa.bbb@port.ac.uk");
-
         jLabel3.setText("Email:");
 
         jLabel4.setText("Password:");
-
-        tfPasswordLogin.setText("inse1inse");
 
         btnLogin.setText("Login");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {

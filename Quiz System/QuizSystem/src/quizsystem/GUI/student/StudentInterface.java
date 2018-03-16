@@ -104,7 +104,7 @@ public class StudentInterface extends javax.swing.JFrame {
             System.out.println(ex);
         }
         Object[] data = {inQuiz.getName(), totalMark};
-            modelCompQuiz.addRow(data);
+        modelCompQuiz.addRow(data);
 
     }
 
@@ -181,12 +181,10 @@ public class StudentInterface extends javax.swing.JFrame {
      * @param name Name of the quiz used as the search term
      */
     public void searchByName(String name) {
-        if (!"".equals(name)) {
-            if (!name.equals("Default")) {
-                for (Quiz quiz : compQuiz) {
-                    if (quiz.getName().contains(name)) {
-                        searchQuiz.add(quiz);
-                    }
+        if (!name.equals("Default") && !"".equals(name)) {
+            for (Quiz quiz : compQuiz) {
+                if (quiz.getName().contains(name)) {
+                    searchQuiz.add(quiz);
                 }
             }
         }
@@ -199,24 +197,20 @@ public class StudentInterface extends javax.swing.JFrame {
      * @param lectName Name of the quiz creator lecturer used as a search term
      */
     public void searchByLectName(String lectName) {
-        if (!"".equals(lectName)) {
-            if (!lectName.equals("Default")) {
-                for (Quiz quiz : compQuiz) {
-                    if (quiz.getLecturerName().contains(lectName)) {
-                        searchQuiz.add(quiz);
-                    }
+        if (!lectName.equals("Default") && !"".equals(lectName)) {
+            for (Quiz quiz : compQuiz) {
+                if (quiz.getLecturerName().contains(lectName)) {
+                    searchQuiz.add(quiz);
                 }
             }
         }
     }
 
     public void searchByTopic(String topic) {
-        if (!"".equals(topic)) {
-            if (!topic.equals("Default")) {
-                for (Quiz quiz : compQuiz) {
-                    if (quiz.getTopic().contains(topic)) {
-                        searchQuiz.add(quiz);
-                    }
+        if (!topic.equals("Default") && !"".equals(topic)) {
+            for (Quiz quiz : compQuiz) {
+                if (quiz.getTopic().contains(topic)) {
+                    searchQuiz.add(quiz);
                 }
             }
         }

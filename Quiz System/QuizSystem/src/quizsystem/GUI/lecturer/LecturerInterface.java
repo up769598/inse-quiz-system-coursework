@@ -152,7 +152,7 @@ public class LecturerInterface extends javax.swing.JFrame {
         });
     }
 
-    /**
+        /**
      * Searches the list of completed quizzes for quizzes that match search
      * terms then display results on GUI
      *
@@ -162,16 +162,13 @@ public class LecturerInterface extends javax.swing.JFrame {
      */
     public void searchQuiz(String name, String lectName, String topic) {
         searchQuiz.clear();
-        List<quizsystem.db.Quiz> searchList1 = searchByName(name, quizzes);
-        List<quizsystem.db.Quiz> searchList2 = searchByLectName(lectName, quizzes);
-        List<quizsystem.db.Quiz> searchList3 = searchByTopic(topic, quizzes);
-        searchList1.stream().filter((quiz) -> (searchList2.contains(quiz))).forEachOrdered((quiz) -> {
-            searchQuiz.add(quiz);
-        });
+        searchByName(name);
+        searchByLectName(lectName);
+        searchByTopic(topic);
         if (!searchQuiz.isEmpty()) {
             //display the new quizzes
             searched = true;
-            //displayCompQuizzes(searchQuiz);
+            displayQuizzes(searchQuiz);
         } else {
             //create a message box saying that no results were found
             Object[] options = {"Ok"};
@@ -194,17 +191,15 @@ public class LecturerInterface extends javax.swing.JFrame {
      * contain a search keyword
      *
      * @param name The name of the quiz to search by
-     * @param quizList The full list of quizzes to search through
-     * @return The list of quizzes with names that contain that keyword
      */
-    public List<quizsystem.db.Quiz> searchByName(String name, List<quizsystem.db.Quiz> quizList) {
-        List<quizsystem.db.Quiz> tempList = new ArrayList<>();
-        if (!name.equals("Default")) {
-            quizList.stream().filter((quiz) -> (quiz.getName().contains(name))).forEachOrdered((quiz) -> {
-                tempList.add(quiz);
-            });
+    public void searchByName(String name) {
+        if (!name.equals("Default") && !"".equals(name)) {
+            for (Quiz quiz : quizzes) {
+                if (quiz.getName().contains(name)) {
+                    searchQuiz.add(quiz);
+                }
+            }
         }
-        return tempList;
     }
 
     /**
@@ -212,17 +207,15 @@ public class LecturerInterface extends javax.swing.JFrame {
      * names that contain a search keyword
      *
      * @param lectName The name of the lecturer to search by
-     * @param quizList The full list of quizzes to search through
-     * @return The list of quizzes with lecturer names that contain that keyword
      */
-    public List<quizsystem.db.Quiz> searchByLectName(String lectName, List<quizsystem.db.Quiz> quizList) {
-        List<quizsystem.db.Quiz> tempList = new ArrayList<>();
-        if (!lectName.equals("Default")) {
-            quizList.stream().filter((quiz) -> (quiz.getLecturerName().contains(lectName))).forEachOrdered((quiz) -> {
-                tempList.add(quiz);
-            });
+    public void searchByLectName(String lectName) {
+        if (!lectName.equals("Default") && !"".equals(lectName)) {
+            for (Quiz quiz : quizzes) {
+                if (quiz.getLecturerName().contains(lectName)) {
+                    searchQuiz.add(quiz);
+                }
+            }
         }
-        return tempList;
     }
 
     /**
@@ -230,17 +223,15 @@ public class LecturerInterface extends javax.swing.JFrame {
      * that contain a search keyword
      *
      * @param topic The topic of the quiz to search by
-     * @param quizList The full list of quizzes to search through
-     * @return The list of quizzes with topics that contain that keyword
      */
-    public List<quizsystem.db.Quiz> searchByTopic(String topic, List<quizsystem.db.Quiz> quizList) {
-        List<quizsystem.db.Quiz> tempList = new ArrayList<>();
-        if (!topic.equals("Default")) {
-            quizList.stream().filter((quiz) -> (quiz.getTopic().contains(topic))).forEachOrdered((quiz) -> {
-                tempList.add(quiz);
-            });
+    public void searchByTopic(String topic) {
+        if (!topic.equals("Default") && !"".equals(topic)) {
+            for (Quiz quiz : quizzes) {
+                if (quiz.getTopic().contains(topic)) {
+                    searchQuiz.add(quiz);
+                }
+            }
         }
-        return tempList;
     }
 
     /**
@@ -339,6 +330,7 @@ public class LecturerInterface extends javax.swing.JFrame {
         btnAdvSearch = new javax.swing.JButton();
         scrpnlQuiz = new javax.swing.JScrollPane();
         tblQuiz = new javax.swing.JTable();
+        btnClearSearch = new javax.swing.JButton();
         pnlMiscOperations = new javax.swing.JPanel();
         btnLogout = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
@@ -401,6 +393,13 @@ public class LecturerInterface extends javax.swing.JFrame {
         ));
         scrpnlQuiz.setViewportView(tblQuiz);
 
+        btnClearSearch.setText("Clear Search");
+        btnClearSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearSearchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlSelectQuizLayout = new javax.swing.GroupLayout(pnlSelectQuiz);
         pnlSelectQuiz.setLayout(pnlSelectQuizLayout);
         pnlSelectQuizLayout.setHorizontalGroup(
@@ -413,9 +412,11 @@ public class LecturerInterface extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnlSelectQuizLayout.createSequentialGroup()
                         .addComponent(btnWithdrawQuiz)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnReviewAnswers)
-                        .addGap(37, 37, 37)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnClearSearch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAdvSearch))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSelectQuizLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -433,7 +434,8 @@ public class LecturerInterface extends javax.swing.JFrame {
                 .addGroup(pnlSelectQuizLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnWithdrawQuiz)
                     .addComponent(btnReviewAnswers)
-                    .addComponent(btnAdvSearch))
+                    .addComponent(btnAdvSearch)
+                    .addComponent(btnClearSearch))
                 .addContainerGap())
         );
 
@@ -623,8 +625,14 @@ public class LecturerInterface extends javax.swing.JFrame {
         displayQuizzes(quizzes);
     }//GEN-LAST:event_btnRefreshTablesActionPerformed
 
+    private void btnClearSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearSearchActionPerformed
+        searched = false;
+        displayQuizzes(quizzes);
+    }//GEN-LAST:event_btnClearSearchActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdvSearch;
+    private javax.swing.JButton btnClearSearch;
     private javax.swing.JButton btnCreateQuiz;
     private javax.swing.JButton btnEditQuiz;
     private javax.swing.JButton btnExit;
